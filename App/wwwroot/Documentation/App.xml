@@ -1,0 +1,1536 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>App</name>
+    </assembly>
+    <members>
+        <member name="T:App.Areas.Crm.Controllers.AddressController">
+            <inheritdoc />
+            <summary>
+            Address API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.AddressController.#ctor(App.Areas.Crm.Repositories.Address.IAddressRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.AddressController})">
+            <summary>
+            Controller for addresses
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.AddressController.Post(App.Areas.Crm.ViewModels.AddressViewModel)">
+            <summary>
+            Create a new address
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.AddressController.Put(App.Areas.Crm.ViewModels.AddressViewModel)">
+            <summary>
+            Updates an address
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.AddressController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an address
+            </summary>
+            <param name="contactId"></param>
+            <param name="id"></param>
+        </member>
+        <member name="T:App.Areas.Crm.Controllers.ContactController">
+            <inheritdoc />
+            <summary>
+            All end-points dealing with contacts 
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.EventController})">
+            <inheritdoc />
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewPersonViewModel)">
+            <summary>
+            Creates a new person
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewCompanyViewModel)">
+            <summary>
+            Creates a new company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Search(App.Areas.Crm.ViewModels.ContactSearchRequest)">
+            <summary>
+            Searches contacts
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.FindByIds(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            Returns contacts with all the listed ids
+            </summary>
+            <param name="guids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Get(System.Guid)">
+            <summary>
+            Gets a specific contact
+            </summary>
+            <param name="id">Contact Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.GetByIdentification(System.String)">
+            <summary>
+            Gets a specific contact by identification number
+            </summary>
+            <param name="idNumber">Contact identification</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Update(App.Areas.Crm.ViewModels.ContactViewModel)">
+            <summary>
+            Updates a contact
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Delete(System.Guid)">
+            <summary>
+            Deletes a contact
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Crm.Controllers.EmailController">
+            <inheritdoc />
+            <summary>
+            Email API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.EmailController.#ctor(App.Areas.Crm.Repositories.Email.IEmailRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.EmailController})">
+            <summary>
+            Controller for emails
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.EmailController.Post(App.Areas.Crm.ViewModels.EmailViewModel)">
+            <summary>
+            Create a new email
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.EmailController.Put(App.Areas.Crm.ViewModels.EmailViewModel)">
+            <summary>
+            Updates an email
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.EmailController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an email
+            </summary>
+            <param name="contactId"></param>
+            <param name="id"></param>
+        </member>
+        <member name="T:App.Areas.Crm.Controllers.IdentificationController">
+            <inheritdoc />
+            <summary>
+            Identification API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.#ctor(App.Areas.Crm.Repositories.Identification.IIdentificationRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.IdentificationController})">
+            <summary>
+            Controller for identifications
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Post(App.Areas.Crm.ViewModels.IdentificationViewModel)">
+            <summary>
+            Create a new identification
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Put(App.Areas.Crm.ViewModels.IdentificationViewModel)">
+            <summary>
+            Updates an identification
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an identification
+            </summary>
+            <param name="contactId"></param>
+            <param name="id"></param>
+        </member>
+        <member name="T:App.Areas.Crm.Controllers.PhoneController">
+            <inheritdoc />
+            <summary>
+            Phone API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.#ctor(App.Areas.Crm.Repositories.Phone.IPhoneRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.PhoneController})">
+            <summary>
+            Controller for phones
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.Post(App.Areas.Crm.ViewModels.PhoneViewModel)">
+            <summary>
+            Create a new phone
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.Put(App.Areas.Crm.ViewModels.PhoneViewModel)">
+            <summary>
+            Updates an phone
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an phone
+            </summary>
+            <param name="contactId"></param>
+            <param name="id"></param>
+        </member>
+        <member name="T:App.Areas.Crm.Enums.Country">
+            <sumary>
+             https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AD">
+            <sumary>
+             Andorra
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AE">
+            <sumary>
+             United Arab Emirates
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AF">
+            <sumary>
+             Afghanistan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AG">
+            <sumary>
+             Antigua and Barbuda
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AI">
+            <sumary>
+             Anguilla
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AL">
+            <sumary>
+             Albania
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AM">
+            <sumary>
+             Armenia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AO">
+            <sumary>
+             Angola
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AQ">
+            <sumary>
+             Antarctica
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AR">
+            <sumary>
+             Argentina
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AS">
+            <sumary>
+             American Samoa
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AT">
+            <sumary>
+             Austria
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AU">
+            <sumary>
+             Australia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AW">
+            <sumary>
+             Aruba
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AX">
+            <sumary>
+             Åland Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.AZ">
+            <sumary>
+             Azerbaijan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BA">
+            <sumary>
+             Bosnia and Herzegovina
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BB">
+            <sumary>
+             Barbados
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BD">
+            <sumary>
+             Bangladesh
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BE">
+            <sumary>
+             Belgium
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BF">
+            <sumary>
+             Burkina Faso
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BG">
+            <sumary>
+             Bulgaria
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BH">
+            <sumary>
+             Bahrain
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BI">
+            <sumary>
+             Burundi
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BJ">
+            <sumary>
+             Benin
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BL">
+            <sumary>
+             Saint Barthélemy
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BM">
+            <sumary>
+             Bermuda
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BN">
+            <sumary>
+             Brunei Darussalam
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BO">
+            <sumary>
+             Bolivia, Plurinational State of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BQ">
+            <sumary>
+             Bonaire, Sint Eustatius and Saba
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BR">
+            <sumary>
+             Brazil
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BS">
+            <sumary>
+             Bahamas
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BT">
+            <sumary>
+             Bhutan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BV">
+            <sumary>
+             Bouvet Island
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BW">
+            <sumary>
+             Botswana
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BY">
+            <sumary>
+             Belarus
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.BZ">
+            <sumary>
+             Belize
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CA">
+            <sumary>
+             Canada
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CC">
+            <sumary>
+             Cocos (Keeling) Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CD">
+            <sumary>
+             Congo, the Democratic Republic of the
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CF">
+            <sumary>
+             Central African Republic
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CG">
+            <sumary>
+             Congo
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CH">
+            <sumary>
+             Switzerland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CI">
+            <sumary>
+             Côte d'Ivoire
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CK">
+            <sumary>
+             Cook Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CL">
+            <sumary>
+             Chile
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CM">
+            <sumary>
+             Cameroon
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CN">
+            <sumary>
+             China
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CO">
+            <sumary>
+             Colombia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CR">
+            <sumary>
+             Costa Rica
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CU">
+            <sumary>
+             Cuba
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CV">
+            <sumary>
+             Cabo Verde
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CW">
+            <sumary>
+             Curaçao
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CX">
+            <sumary>
+             Christmas Island
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CY">
+            <sumary>
+             Cyprus
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.CZ">
+            <sumary>
+             Czech Republic
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DE">
+            <sumary>
+             Germany
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DJ">
+            <sumary>
+             Djibouti
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DK">
+            <sumary>
+             Denmark
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DM">
+            <sumary>
+             Dominica
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DO">
+            <sumary>
+             Dominican Republic
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.DZ">
+            <sumary>
+             Algeria
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.EC">
+            <sumary>
+             Ecuador
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.EE">
+            <sumary>
+             Estonia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.EG">
+            <sumary>
+             Egypt
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.EH">
+            <sumary>
+             Western Sahara
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ER">
+            <sumary>
+             Eritrea
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ES">
+            <sumary>
+             Spain
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ET">
+            <sumary>
+             Ethiopia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FI">
+            <sumary>
+             Finland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FJ">
+            <sumary>
+             Fiji
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FK">
+            <sumary>
+             Falkland Islands (Malvinas)
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FM">
+            <sumary>
+             Micronesia, Federated States of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FO">
+            <sumary>
+             Faroe Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.FR">
+            <sumary>
+             France
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GA">
+            <sumary>
+             Gabon
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GB">
+            <sumary>
+             United Kingdom of Great Britain
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GD">
+            <sumary>
+             Grenada
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GE">
+            <sumary>
+             Georgia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GF">
+            <sumary>
+             French Guiana
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GG">
+            <sumary>
+             Guernsey
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GH">
+            <sumary>
+             Ghana
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GI">
+            <sumary>
+             Gibraltar
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GL">
+            <sumary>
+             Greenland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GM">
+            <sumary>
+             Gambia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GN">
+            <sumary>
+             Guinea
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GP">
+            <sumary>
+             Guadeloupe
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GQ">
+            <sumary>
+             Equatorial Guinea
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GR">
+            <sumary>
+             Greece
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GS">
+            <sumary>
+             South Georgia and the South Sandwich Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GT">
+            <sumary>
+             Guatemala
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GU">
+            <sumary>
+             Guam
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GW">
+            <sumary>
+             Guinea-Bissau
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.GY">
+            <sumary>
+             Guyana
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HK">
+            <sumary>
+             Hong Kong
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HM">
+            <sumary>
+             Heard Island and McDonald Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HN">
+            <sumary>
+             Honduras
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HR">
+            <sumary>
+             Croatia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HT">
+            <sumary>
+             Haiti
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.HU">
+            <sumary>
+             Hungary
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ID">
+            <sumary>
+             Indonesia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IE">
+            <sumary>
+             Ireland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IL">
+            <sumary>
+             Israel
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IM">
+            <sumary>
+             Isle of Man
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IN">
+            <sumary>
+             India
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IO">
+            <sumary>
+             British Indian Ocean Territory
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IQ">
+            <sumary>
+             Iraq
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IR">
+            <sumary>
+             Iran, Islamic Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IS">
+            <sumary>
+             Iceland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.IT">
+            <sumary>
+             Italy
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.JE">
+            <sumary>
+             Jersey
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.JM">
+            <sumary>
+             Jamaica
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.JO">
+            <sumary>
+             Jordan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.JP">
+            <sumary>
+             Japan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KE">
+            <sumary>
+             Kenya
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KG">
+            <sumary>
+             Kyrgyzstan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KH">
+            <sumary>
+             Cambodia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KI">
+            <sumary>
+             Kiribati
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KM">
+            <sumary>
+             Comoros
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KN">
+            <sumary>
+             Saint Kitts and Nevis
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KP">
+            <sumary>
+             Korea, Democratic People's Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KR">
+            <sumary>
+             Korea, Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KW">
+            <sumary>
+             Kuwait
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KY">
+            <sumary>
+             Cayman Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.KZ">
+            <sumary>
+             Kazakhstan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LA">
+            <sumary>
+             Lao People's Democratic Republic
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LB">
+            <sumary>
+             Lebanon
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LC">
+            <sumary>
+             Saint Lucia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LI">
+            <sumary>
+             Liechtenstein
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LK">
+            <sumary>
+             Sri Lanka
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LR">
+            <sumary>
+             Liberia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LS">
+            <sumary>
+             Lesotho
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LT">
+            <sumary>
+             Lithuania
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LU">
+            <sumary>
+             Luxembourg
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LV">
+            <sumary>
+             Latvia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.LY">
+            <sumary>
+             Libya
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MA">
+            <sumary>
+             Morocco
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MC">
+            <sumary>
+             Monaco
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MD">
+            <sumary>
+             Moldova, Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ME">
+            <sumary>
+             Montenegro
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MF">
+            <sumary>
+             Saint Martin (French part)
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MG">
+            <sumary>
+             Madagascar
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MH">
+            <sumary>
+             Marshall Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MK">
+            <sumary>
+             Macedonia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ML">
+            <sumary>
+             Mali
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MM">
+            <sumary>
+             Myanmar
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MN">
+            <sumary>
+             Mongolia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MO">
+            <sumary>
+             Macao
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MP">
+            <sumary>
+             Northern Mariana Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MQ">
+            <sumary>
+             Martinique
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MR">
+            <sumary>
+             Mauritania
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MS">
+            <sumary>
+             Montserrat
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MT">
+            <sumary>
+             Malta
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MU">
+            <sumary>
+             Mauritius
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MV">
+            <sumary>
+             Maldives
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MW">
+            <sumary>
+             Malawi
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MX">
+            <sumary>
+             Mexico
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MY">
+            <sumary>
+             Malaysia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.MZ">
+            <sumary>
+             Mozambique
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NA">
+            <sumary>
+             Namibia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NC">
+            <sumary>
+             New Caledonia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NE">
+            <sumary>
+             Niger
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NF">
+            <sumary>
+             Norfolk Island
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NG">
+            <sumary>
+             Nigeria
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NI">
+            <sumary>
+             Nicaragua
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NL">
+            <sumary>
+             Netherlands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NO">
+            <sumary>
+             Norway
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NP">
+            <sumary>
+             Nepal
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NR">
+            <sumary>
+             Nauru
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NU">
+            <sumary>
+             Niue
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.NZ">
+            <sumary>
+             New Zealand
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.OM">
+            <sumary>
+             Oman
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PA">
+            <sumary>
+             Panama
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PE">
+            <sumary>
+             Peru
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PF">
+            <sumary>
+             French Polynesia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PG">
+            <sumary>
+             Papua New Guinea
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PH">
+            <sumary>
+             Philippines
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PK">
+            <sumary>
+             Pakistan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PL">
+            <sumary>
+             Poland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PM">
+            <sumary>
+             Saint Pierre and Miquelon
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PN">
+            <sumary>
+             Pitcairn
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PR">
+            <sumary>
+             Puerto Rico
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PS">
+            <sumary>
+             Palestine, State of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PT">
+            <sumary>
+             Portugal
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PW">
+            <sumary>
+             Palau
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.PY">
+            <sumary>
+             Paraguay
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.QA">
+            <sumary>
+             Qatar
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.RE">
+            <sumary>
+             Réunion
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.RO">
+            <sumary>
+             Romania
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.RS">
+            <sumary>
+             Serbia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.RU">
+            <sumary>
+             Russian Federation
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.RW">
+            <sumary>
+             Rwanda
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SA">
+            <sumary>
+             Saudi Arabia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SB">
+            <sumary>
+             Solomon Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SC">
+            <sumary>
+             Seychelles
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SD">
+            <sumary>
+             Sudan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SE">
+            <sumary>
+             Sweden
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SG">
+            <sumary>
+             Singapore
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SH">
+            <sumary>
+             Saint Helena, Ascension and Tristan da Cunha
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SI">
+            <sumary>
+             Slovenia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SJ">
+            <sumary>
+             Svalbard and Jan Mayen
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SK">
+            <sumary>
+             Slovakia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SL">
+            <sumary>
+             Sierra Leone
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SM">
+            <sumary>
+             San Marino
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SN">
+            <sumary>
+             Senegal
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SO">
+            <sumary>
+             Somalia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SR">
+            <sumary>
+             Suriname
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SS">
+            <sumary>
+             South Sudan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ST">
+            <sumary>
+             Sao Tome and Principe
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SV">
+            <sumary>
+             El Salvador
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SX">
+            <sumary>
+             Sint Maarten (Dutch part)
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SY">
+            <sumary>
+             Syrian Arab Republic
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.SZ">
+            <sumary>
+             Swaziland
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TC">
+            <sumary>
+             Turks and Caicos Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TD">
+            <sumary>
+             Chad
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TF">
+            <sumary>
+             French Southern Territories
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TG">
+            <sumary>
+             Togo
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TH">
+            <sumary>
+             Thailand
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TJ">
+            <sumary>
+             Tajikistan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TK">
+            <sumary>
+             Tokelau
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TL">
+            <sumary>
+             Timor-Leste
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TM">
+            <sumary>
+             Turkmenistan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TN">
+            <sumary>
+             Tunisia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TO">
+            <sumary>
+             Tonga
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TR">
+            <sumary>
+             Turkey
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TT">
+            <sumary>
+             Trinidad and Tobago
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TV">
+            <sumary>
+             Tuvalu
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TW">
+            <sumary>
+             Taiwan, Province of China
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.TZ">
+            <sumary>
+             Tanzania, United Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.UA">
+            <sumary>
+             Ukraine
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.UG">
+            <sumary>
+             Uganda
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.UM">
+            <sumary>
+             United States Minor Outlying Islands
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.US">
+            <sumary>
+             United States of America
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.UY">
+            <sumary>
+             Uruguay
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.UZ">
+            <sumary>
+             Uzbekistan
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VA">
+            <sumary>
+             Holy See
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VC">
+            <sumary>
+             Saint Vincent and the Grenadines
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VE">
+            <sumary>
+             Venezuela, Bolivarian Republic of
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VG">
+            <sumary>
+             Virgin Islands, British
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VI">
+            <sumary>
+             Virgin Islands, U.S.
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VN">
+            <sumary>
+             Viet Nam
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.VU">
+            <sumary>
+             Vanuatu
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.WF">
+            <sumary>
+             Wallis and Futuna
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.WS">
+            <sumary>
+             Samoa
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.YE">
+            <sumary>
+             Yemen
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.YT">
+            <sumary>
+             Mayotte
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ZA">
+            <sumary>
+             South Africa
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ZM">
+            <sumary>
+             Zambia
+            </sumary>
+        </member>
+        <member name="F:App.Areas.Crm.Enums.Country.ZW">
+            <sumary>
+             Zimbabwe
+            </sumary>
+        </member>
+        <member name="T:App.Areas.Crm.Repositories.Email.IEmailRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:App.Areas.Events.Controllers.EventController">
+            <inheritdoc />
+            <summary>
+            All end-points dealing with events 
+            </summary>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.EventController.Search(App.Areas.Events.ViewModels.EventSearchRequest)">
+            <summary>
+            Searches events
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.EventController.Get(System.Guid)">
+            <summary>
+            Deletes a event
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.EventController.Create(App.Areas.Events.ViewModels.EventViewModel)">
+            <summary>
+            Creates a new event
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.EventController.Update(App.Areas.Events.ViewModels.EventViewModel)">
+            <summary>
+            Updates a event
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.EventController.Delete(System.Guid)">
+            <summary>
+            Deletes a event
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Events.Controllers.AgendaItemController">
+            <inheritdoc />
+            <summary>
+            AgendaItem API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.#ctor(App.Areas.Events.Repositories.AgendaItem.IEventItemRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.AgendaItemController})">
+            <summary>
+            Controller for event-items
+            </summary>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Post(App.Areas.Events.ViewModels.EventItemViewModel)">
+            <summary>
+            Create a new event-item
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Put(App.Areas.Events.ViewModels.EventItemViewModel)">
+            <summary>
+            Updates an event-item
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an event-item
+            </summary>
+            <param name="eventId"></param>
+            <param name="id"></param>
+        </member>
+        <member name="T:App.Areas.Events.Repositories.AgendaItem.IEventItemRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:App.Areas.Events.Repositories.Event.IEventRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:App.Areas.Events.Repositories.Event.IEventRepository.SearchAsync(App.Areas.Events.ViewModels.EventSearchRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
