@@ -4,9 +4,8 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class IdentificationViewModel : ViewModel
+    public class IdentificationViewModel : MiniViewModel
     {
-        public Guid ContactId { get; set; }
         public IdentificationCategory Category { get; set; }
         public string IdentificationNumber { get; set; }
         public string IssuingCountry { get; set; }

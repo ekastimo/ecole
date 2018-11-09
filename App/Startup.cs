@@ -7,16 +7,15 @@ using System.Reflection;
 using System.Text;
 using App.Areas.Auth.Models;
 using App.Areas.Crm.Utils;
-using App.Areas.Documents.Utils;
+using App.Areas.Doc.Utils;
 using App.Areas.Events.Utils;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using App.Data;
 using App.Gql;
+using AspNetCore.Identity.Mongo;
 using AutoMapper;
 using Core.Extensions;
 using GraphQL;
@@ -56,15 +55,22 @@ namespace App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options
-                    .EnableSensitiveDataLogging()
-                    //.UseLazyLoadingProxies()
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddScoped<ApplicationDbContext>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddMongoIdentityProvider<ApplicationUser, ApplicationRole>(Configuration.GetMongoConnection(), options =>
+            {
+                options.Password.RequiredLength = 6;
+
+                options.Password.RequireLowercase = false;
+
+                options.Password.RequireUppercase = false;
+
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Password.RequireDigit = false;
+
+            });
 
             services.AddAutoMapper(config =>
             {
@@ -96,7 +102,16 @@ namespace App
                     };
                 });
 
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("*")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
             services.AddMvc(options => { options.Filters.Add(new ValidateModelAttribute()); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
@@ -126,20 +141,20 @@ namespace App
                 var xmlPath = Path.Combine(basePath, "Documentation", "App.xml");
                 c.IncludeXmlComments(xmlPath);
                 c.DescribeAllEnumsAsStrings();
-                c.TagActionsBy(api =>
-                    {
-                        if (!api.TryGetMethodInfo(out var methodInfo))
-                        {
-                            return api.RelativePath;
-                        }
-
-                        var attrs = Attribute.GetCustomAttributes(methodInfo.DeclaringType);
-                        var areaName = attrs?.FirstOrDefault(it => it is AreaName) as AreaName;
-                        return areaName?.GetName() ?? api.RelativePath;
-                    }
-                );
+                //c.TagActionsBy();
+//                c.TagActionsBy(api =>
+//                    {
+//                        if (!api.TryGetMethodInfo(out var methodInfo))
+//                        {
+//                            return api.RelativePath;
+//                        }
+//
+//                        var attrs = Attribute.GetCustomAttributes(methodInfo.DeclaringType);
+//                        var areaName = attrs?.FirstOrDefault(it => it is AreaName) as AreaName;
+//                        return areaName?.GetName() ?? api.RelativePath;
+//                    }
+//                );
             });
-
             ConfigureGraphQlModels(services);
             // GraphQL
             services.AddSingleton<IDependencyResolver>(c => new FuncDependencyResolver(c.GetRequiredService));
@@ -223,7 +238,7 @@ namespace App
             var assembly = GetType().Assembly;
             var types = assembly
                 .GetExportedTypes()
-                .Where(it => it.IsClass && it.Namespace.Contains("GraphQL"))
+                .Where(it => it.IsClass && it.Namespace.Contains("Gql"))
                 .ToList();
 
             foreach (var type in types)

@@ -4,9 +4,8 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class EmailViewModel : ViewModel
+    public class EmailViewModel : MiniViewModel
     {
-        public Guid ContactId { get; set; }
         public EmailCategory Category { get; set; }
         public string Address { get; set; }
         public bool IsPrimary { get; set; }

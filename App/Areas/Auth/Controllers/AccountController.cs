@@ -9,6 +9,7 @@ using App.Areas.Auth.Models;
 using App.Areas.Auth.Services.Account;
 using App.Areas.Auth.ViewModels;
 using App.Areas.Auth.ViewModels.Account;
+using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
@@ -25,17 +26,19 @@ namespace App.Areas.Auth.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IAccountService _accountService;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration,
             IAccountService accountService,
+            IContactRepository contactRepository,
             IMapper mapper
         )
         {
@@ -44,6 +47,7 @@ namespace App.Areas.Auth.Controllers
             _signInManager = signInManager;
             _configuration = configuration;
             _accountService = accountService;
+            _contactRepository = contactRepository;
             _mapper = mapper;
         }
 
@@ -87,12 +91,15 @@ namespace App.Areas.Auth.Controllers
         private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var contact = user.Contact;
+            var contact = await _contactRepository.GetByIdAsync(user.ContactId);
+            var person = _mapper.Map<PersonViewModel>(contact.Person);
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("id", user.Id),
+                new Claim("fullName",  $"{person.FirstName} {person.OtherNames}")
             };
             foreach (var role in roles)
             {
@@ -112,7 +119,7 @@ namespace App.Areas.Auth.Controllers
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            var person = _mapper.Map<PersonViewModel>(contact.Person);
+            
             return new
             {
                 Token = tokenString,

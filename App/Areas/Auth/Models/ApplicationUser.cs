@@ -1,12 +1,10 @@
 ﻿using System;
-using App.Areas.Crm.Models;
-using Microsoft.AspNetCore.Identity;
+using AspNetCore.Identity.Mongo;
 
 namespace App.Areas.Auth.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : MongoIdentityUser
     {
         public Guid ContactId { get; set; }
-        public virtual Contact Contact { get; set; }
     }
 }

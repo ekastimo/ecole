@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Areas.Crm.Models;
-using App.Areas.Crm.Repositories.Email;
+using App.Areas.Crm.Repositories;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
-using Core.Exceptions;
+using Core.Controllers;
 using Core.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,15 +15,9 @@ namespace App.Areas.Crm.Controllers
     /// <summary>
     /// Email API
     /// </summary>
-    [Authorize]
     [AreaName("Crm")]
     [Route("api/crm/email")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(OkResult), 200)]
-    [ProducesResponseType(typeof(NotFoundResult), 400)]
-    [ProducesResponseType(typeof(UnauthorizedResult), 401)]
-    [ProducesResponseType(500)]
-    public class EmailController : Controller
+    public class EmailController : BaseController
     {
         private readonly IEmailRepository _repository;
         private readonly IMapper _mapper;
@@ -40,28 +33,20 @@ namespace App.Areas.Crm.Controllers
             _logger = logger;
         }
 
-        private void AssertValidIds(params Guid[] ids)
-        {
-            foreach (var guid in ids)
-            {
-                if (guid == Guid.Empty)
-                    throw new ClientFriendlyException($"Invalid record id:{guid}");
-            }
-        }
-
         /// <summary>
         /// Create a new email
         /// </summary>
+        /// <param name="contactId"></param>
         /// <param name="model"></param>
-        [HttpPost]
+        [HttpPost("{contactId}")]
         [Produces(typeof(EmailViewModel))]
-        public async Task<EmailViewModel> Post([FromBody] EmailViewModel model)
+        public async Task<EmailViewModel> Post(Guid contactId, [FromBody] EmailViewModel model)
         {
-            _logger.LogInformation($"add.email contact: {model.ContactId}");
-            AssertValidIds(model.ContactId);
+            _logger.LogInformation($"add.email contact: {contactId}");
+            AssertValidIds(contactId);
             var data = _mapper.Map<Email>(model);
-            var saved = await _repository.CreateAsync(data);
-            _logger.LogInformation($"added.email contact: {model.ContactId} record: {saved.Id}");
+            var saved = await _repository.CreateAsync(contactId, data);
+            _logger.LogInformation($"added.email contact: {contactId} record: {saved.Id}");
             return _mapper.Map<EmailViewModel>(saved);
         }
 
@@ -69,16 +54,17 @@ namespace App.Areas.Crm.Controllers
         /// <summary>
         /// Updates an email
         /// </summary>
+        /// <param name="contactId"></param>
         /// <param name="model"></param>
-        [HttpPut]
+        [HttpPut("{contactId}")]
         [Produces(typeof(EmailViewModel))]
-        public async Task<EmailViewModel> Put([FromBody] EmailViewModel model)
+        public async Task<EmailViewModel> Put(Guid contactId, [FromBody] EmailViewModel model)
         {
-            _logger.LogInformation($"update.email contact: {model.ContactId} record: {model.Id}");
-            AssertValidIds(model.ContactId, model.Id);
+            _logger.LogInformation($"update.email contact: {contactId} record: {model.Id}");
+            AssertValidIds(contactId, model.Id);
             var data = _mapper.Map<Email>(model);
-            var saved = await _repository.UpdateAsync(data);
-            _logger.LogInformation($"updated.email contact: {model.ContactId} record: {saved.Id}");
+            var saved = await _repository.UpdateAsync(contactId, data);
+            _logger.LogInformation($"updated.email contact: {contactId} record: {saved.Id}");
             return _mapper.Map<EmailViewModel>(saved);
         }
 
@@ -92,8 +78,8 @@ namespace App.Areas.Crm.Controllers
         {
             _logger.LogInformation($"delete.email contact: {id} record: {id}");
             AssertValidIds(contactId, id);
-            var resp = await _repository.DeleteAsync(id);
-            _logger.LogInformation($"deleted.email contact: contact: {id} record: {id} resp: {resp}");
+            var resp = await _repository.DeleteAsync(contactId, id);
+            _logger.LogInformation($"deleted.email contact: {id} record: {id} resp: {resp}");
         }
     }
 }

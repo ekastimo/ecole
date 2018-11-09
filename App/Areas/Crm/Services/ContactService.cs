@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Models;
+using App.Areas.Crm.Repositories;
 using App.Areas.Crm.Repositories.Contact;
-using App.Areas.Crm.Repositories.Identification;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
+using Core.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace App.Areas.Crm.Services
@@ -16,7 +17,6 @@ namespace App.Areas.Crm.Services
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        private readonly IIdentificationRepository _identificationRepository;
 
         private readonly IMapper _mapper;
         private readonly ILogger<ContactService> _logger;
@@ -27,13 +27,16 @@ namespace App.Areas.Crm.Services
             IMapper mapper, ILogger<ContactService> logger)
         {
             _contactRepository = contactRepository;
-            _identificationRepository = identificationRepository;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<ContactViewModel> CreateAsync(NewPersonViewModel model)
         {
+            var contactExists = await ContactExistsByEmailAsync(model.Email);
+            if (contactExists)
+                throw new ClientFriendlyException($"Contact ( Email:{model.Email}) already exists");
+
             var data = new Contact
             {
                 Category = ContactCategory.Person,
@@ -50,12 +53,58 @@ namespace App.Areas.Crm.Services
                 }
             };
             LoadProperties(data, model);
-            var contactExists = await ContactExistsAsync(model.IdentificationNumber);
-            if (contactExists)
-                throw new ClientFriendlyException($"Person ( NIN:{model.IdentificationNumber}) already exists");
-
             var result = await _contactRepository.CreateAsync(data);
+            return _mapper.Map<ContactViewModel>(result);
+        }
 
+
+        public async Task<ContactViewModel> CreateAsync(ContactViewModel model)
+        {
+            var emailAddresses = model.Emails.Select(it => it.Address).ToArray();
+            var contactExists = await ContactExistsByEmailAsync(emailAddresses);
+            if (contactExists)
+                throw new ClientFriendlyException($"One of the emails: {emailAddresses.Stringify()} already exists");
+
+            var person = _mapper.Map<Person>(model.Person);
+            var emails = model.Emails.Select(it =>
+            {
+                var rec = _mapper.Map<Email>(it);
+                rec.Id = Guid.NewGuid();
+                return rec;
+            }).ToArray();
+
+            var phones = model.Phones?.Select(it =>
+            {
+                var rec = _mapper.Map<Phone>(it);
+                rec.Id = Guid.NewGuid();
+                return rec;
+            }).ToArray() ?? new Phone[0];
+
+            var addresses = model.Addresses?.Select(it =>
+            {
+                var rec = _mapper.Map<Address>(it);
+                rec.Id = Guid.NewGuid();
+                return rec;
+            }).ToArray() ?? new Address[0];
+
+            var identifications = model.Identifications?.Select(it =>
+            {
+                var rec = _mapper.Map<Identification>(it);
+                rec.Id = Guid.NewGuid();
+                return rec;
+            }).ToArray() ?? new Identification[0];
+
+            var data = new Contact
+            {
+                Category = ContactCategory.Person,
+                Person = person,
+                Emails = emails,
+                Phones = phones,
+                Addresses = addresses,
+                Identifications = identifications,
+                Tags = model.Tags
+            };
+            var result = await _contactRepository.CreateAsync(data);
             return _mapper.Map<ContactViewModel>(result);
         }
 
@@ -75,6 +124,7 @@ namespace App.Areas.Crm.Services
 
             var identification = new Identification
             {
+                Id = Guid.NewGuid(),
                 Category = model.IdentificationCategory.Value,
                 Number = model.IdentificationNumber,
                 StartDate = model.IdentificationValidFrom.Value,
@@ -90,38 +140,40 @@ namespace App.Areas.Crm.Services
             bool IsDefined(string value) => !string.IsNullOrWhiteSpace(value);
 
             contact.Identifications = idData.valid
-                ? new List<Identification>
+                ? new[]
                 {
                     idData.identification
                 }
-                : null;
+                : new Identification[] { };
 
             contact.Emails = IsDefined(model.Email)
-                ? new List<Email>
+                ? new[]
                 {
                     new Email
                     {
-                        Category = EmailCategory.Private,
+                        Id = Guid.NewGuid(),
+                        Category = EmailCategory.Personal,
                         Address = model.Email,
                         IsPrimary = true
                     }
                 }
-                : null;
+                : new Email[] { };
             contact.Phones = IsDefined(model.Phone)
-                ? new List<Phone>
+                ? new[]
                 {
                     new Phone
                     {
+                        Id = Guid.NewGuid(),
                         Category = PhoneCategory.Mobile,
                         Number = model.Phone,
                         IsPrimary = true
                     }
                 }
-                : null;
+                : new Phone[] { };
             var hasTags = model.Tags?.Any() ?? false;
-            contact.ContactTags = hasTags
-                ? model.Tags.Select(it => new ContactCTag {Tag = new CTag {Id = it}}).ToList()
-                : null;
+            contact.Tags = hasTags
+                ? model.Tags.ToArray()
+                : new string[] { };
         }
 
         public async Task<ContactViewModel> CreateAsync(NewCompanyViewModel model)
@@ -136,21 +188,18 @@ namespace App.Areas.Crm.Services
             };
             LoadProperties(data, model);
 
-            var contactExists = await ContactExistsAsync(model.IdentificationNumber);
+            var contactExists = await ContactExistsByIdentificationAsync(model.IdentificationNumber);
             if (contactExists)
                 throw new Exception($"Company ( NIN:{model.IdentificationNumber}) already exists");
 
             var result = await _contactRepository.CreateAsync(data);
-
             return _mapper.Map<ContactViewModel>(result);
         }
 
         public async Task<ContactViewModel> GetByIdAsync(Guid id)
         {
             var result = await _contactRepository.GetByIdAsync(id);
-            var model = _mapper.Map<ContactViewModel>(result);
-           // model.
-            return model;
+            return _mapper.Map<ContactViewModel>(result);
         }
 
         public async Task<int> DeleteAsync(Guid id)
@@ -171,6 +220,7 @@ namespace App.Areas.Crm.Services
             return result.Select(contact =>
             {
                 var miniContact = _mapper.Map<MinimalContact>(contact.Person);
+                miniContact.Id = contact.Id;
                 miniContact.Category = contact.Category;
                 miniContact.Email = contact.Emails?.FirstOrDefault(it => it.IsPrimary)?.Address;
                 miniContact.Phone = contact.Phones?.FirstOrDefault(it => it.IsPrimary)?.Number;
@@ -178,10 +228,6 @@ namespace App.Areas.Crm.Services
             }).ToList();
         }
 
-        private async Task<bool> ContactExistsAsync(string number)
-        {
-            return await _contactRepository.ContactExistsByIdentificationAsync(number);
-        }
 
         public async Task<IEnumerable<MinimalContact>> GetContactsAsync(List<Guid> guids)
         {
@@ -199,18 +245,22 @@ namespace App.Areas.Crm.Services
         public async Task<ContactViewModel> GetByIdentificationAsync(string idNumber)
         {
             var exception = new Exception($"No person with identification {idNumber}");
-            var identification = await _identificationRepository.GetByIndentificationNumberAsync(idNumber);
-            if (identification == null)
-                throw exception;
-            var data = await _contactRepository.GetByIdAsync(identification.ContactId);
-            if (identification == null)
+            var data = await _contactRepository.GetByIdentificationAsync(idNumber);
+            if (data == null)
                 throw exception;
             return _mapper.Map<ContactViewModel>(data);
         }
 
-        public async Task<bool> ContactExistsByEmailAsync(string data)
+        public async Task<bool> ContactExistsByEmailAsync(params string[] values)
         {
-            return await _contactRepository.ContactExistsByEmailAsync(data);
+            foreach (var value in values)
+            {
+                var result = await _contactRepository.ContactExistsByEmailAsync(value);
+                if (result)
+                    return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> ContactExistsByPhoneAsync(string data)

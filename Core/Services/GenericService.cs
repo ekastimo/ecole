@@ -45,13 +45,6 @@ namespace Core.Services
             return _mapper.Map<TViewModel>(result);
         }
 
-
-        public async Task<IEnumerable<TViewModel>> GetAllAsync()
-        {
-            var result = await _repository.GetAllAsync();
-            return _mapper.Map<IEnumerable<TViewModel>>(result);
-        }
-
         public async Task DeleteAsync(Guid id)
         {
             await _repository.DeleteAsync(id);

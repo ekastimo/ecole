@@ -1,9 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment
-using System.Collections.Generic;
-using System.Linq;
 using App.Areas.Crm.Models;
 using App.Areas.Crm.ViewModels;
-using App.Areas.Events.Models;
 using AutoMapper;
 
 namespace App.Areas.Crm.Utils 
@@ -11,34 +8,15 @@ namespace App.Areas.Crm.Utils
     public class CrmMapper
     {
 
-        private static ICollection<ContactCTag> ParseTags(string[] tags)
-        {
-            var hasTags = tags?.Any() ?? false;
-            if (!hasTags)
-                return null;
-            return tags.Select(it => new ContactCTag
-            {
-                Tag = new CTag { Id = it }
-            }).ToList();
-        }
-
-        private static string[] ParseCTags(ICollection<ContactCTag> ctags)
-        {
-            var hasTags = ctags?.Any() ?? false;
-            if (!hasTags)
-                return null;
-            return ctags.Select(it => it.TagId).ToArray();
-        }
+       
 
 
         public static void MapModels(IMapperConfigurationExpression config)
         {
             // Contact
-            config.CreateMap<ContactViewModel, Contact>()
-                .ForMember(d=>d.ContactTags,o=>o.MapFrom(s=> ParseTags(s.Tags)));
+            config.CreateMap<ContactViewModel, Contact>();
 
-            config.CreateMap<Contact, ContactViewModel>()
-                .ForMember(d=>d.Tags,o=>o.MapFrom(s=>ParseCTags(s.ContactTags)));
+            config.CreateMap<Contact, ContactViewModel>();
 
             // Identification
             config.CreateMap<IdentificationViewModel, Identification>();

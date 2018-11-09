@@ -55,7 +55,7 @@ namespace Core.Middleware
                 {
                     case NotFoundException _:
                         code = HttpStatusCode.NotFound;
-                        message = "Oops, We cant find this resource";
+                        message = exception.Message;
                         break;
                     case ClientFriendlyException _:
                         code = HttpStatusCode.BadRequest;
@@ -73,7 +73,7 @@ namespace Core.Middleware
             }
 
             
-            var result = JsonConvert.SerializeObject(new { Code = code, Message = message });
+            var result = JsonConvert.SerializeObject(new { code, message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             await context.Response.WriteAsync(result);

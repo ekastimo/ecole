@@ -4,22 +4,21 @@ namespace Core.Extensions
 {
     public static class ConfigExtentions
     {
-        public static string GetLoggingServer(this IConfiguration configuration)
+  
+
+        public static string GetMongoConnection(this IConfiguration configuration)
         {
-            return configuration["Servers:Log"];
-        }
-        public static string GetAuthServer(this IConfiguration configuration)
-        {
-            return configuration["Servers:Authentication"];
+            return configuration["MongoConnection:ConnectionString"];
         }
 
-        public static string GetClientId(this IConfiguration configuration)
+        public static string GetMongoDatabase(this IConfiguration configuration)
         {
-            return configuration["ClientId"];
+            return configuration["MongoConnection:Database"];
         }
-        public static string GetClientSecret(this IConfiguration configuration)
+
+        public static string GetTempUploadFolder(this IConfiguration configuration)
         {
-            return configuration["ClientSecret"];
+            return configuration["FileUploadLocation"];
         }
 
     }

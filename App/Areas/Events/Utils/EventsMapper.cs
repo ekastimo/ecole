@@ -12,8 +12,8 @@ namespace App.Areas.Events.Utils
             config.CreateMap<EventViewModel, Event>();
             config.CreateMap<Event, EventViewModel>();
 
-            config.CreateMap<EventItemViewModel, EventItem>();
-            config.CreateMap<EventItem, EventItemViewModel>();
+            config.CreateMap<ItemViewModel, Item>();
+            config.CreateMap<Item, ItemViewModel>();
 
         }
     }

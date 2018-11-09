@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using App.Areas.Crm.Enums;
-using App.Areas.Crm.Models;
 using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
@@ -21,9 +20,14 @@ namespace App.Areas.Crm.ViewModels
 
     public class NewContactViewModel
     {
-        [Required] public ContactCategory Category { get; set; }
-        [Required] public string Email { get; set; }
-        [Required] public string Phone { get; set; }
+        [Required]
+        public ContactCategory Category { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
         public IdentificationCategory? IdentificationCategory { get; set; }
         public string IdentificationNumber { get; set; }
         public DateTime? IdentificationValidFrom { get; set; }

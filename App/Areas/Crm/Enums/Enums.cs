@@ -15,7 +15,7 @@
     public enum EmailCategory
     {
         Work = 1,
-        Private = 2,
+        Personal = 2,
         Other = 3
     }
 
@@ -53,9 +53,9 @@
 
     public enum PhoneCategory
     {
-        Home = 0,
+        Mobile = 0,
         Office = 1,
-        Mobile = 2,
+        Home = 2,
         Fax = 3,
         Other = 4
     }

@@ -13,5 +13,6 @@ namespace App.Areas.Crm.Repositories.Contact
         Task<bool> ContactExistsByEmailAsync(string email);
         Task<bool> ContactExistsByPhoneAsync(string phone);
         Task<IEnumerable<Models.Contact>> GetContactsAsync(List<Guid> guids);
+        Task<Models.Contact> GetByIdentificationAsync(string idNumber);
     }
 }

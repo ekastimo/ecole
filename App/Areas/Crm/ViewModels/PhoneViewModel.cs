@@ -4,9 +4,8 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class PhoneViewModel : ViewModel
+    public class PhoneViewModel : MiniViewModel
     {
-        public Guid ContactId { get; set; }
         public PhoneCategory Category { get; set; }
         public string Number { get; set; }
         public bool IsPrimary { get; set; }

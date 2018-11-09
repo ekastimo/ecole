@@ -4,7 +4,7 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class PersonViewModel : ViewModel
+    public class PersonViewModel
     {
         public Salutation? Salutation { get; set; }
         public string FirstName { get; set; }

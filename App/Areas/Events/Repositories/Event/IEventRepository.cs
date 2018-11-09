@@ -14,7 +14,8 @@ namespace App.Areas.Events.Repositories.Event
         /// 
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="fullQuery"></param>
         /// <returns></returns>
-        Task<IEnumerable<Models.Event>> SearchAsync(EventSearchRequest request);
+        Task<IEnumerable<Models.Event>> SearchAsync(EventSearchRequest request, bool fullQuery = false);
     }
 }

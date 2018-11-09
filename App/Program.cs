@@ -2,8 +2,10 @@
 using App.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
 using Serilog.Events;
 
@@ -13,6 +15,7 @@ namespace App
     {
         public static int Main(string[] args)
         {
+            BsonSerializer.RegisterSerializer(typeof(Guid), new GuidSerializer(BsonType.String));
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -43,6 +46,8 @@ namespace App
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseKestrel()
+                .UseUrls("http://0.0.0.0:9001")
                 .Build();
 
         public IServiceProvider ConfigureServices(IServiceCollection services)

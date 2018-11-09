@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace Core.Repositories
 {
@@ -11,7 +11,7 @@ namespace Core.Repositories
         /// Get all entities
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> GetAllAsync();  
+        Task<IEnumerable<TEntity>> GetAllAsync(FilterDefinition<TEntity> filter, int skip = 0, int limit = 100);
 
         /// <summary>
         /// Get entity by id
@@ -19,6 +19,7 @@ namespace Core.Repositories
         /// <param name="id"></param>
         /// <returns></returns>
         Task<TEntity> GetByIdAsync(Guid id);
+     
 
         /// <summary>
         /// Create entity
@@ -33,7 +34,7 @@ namespace Core.Repositories
         /// </summary>
         /// <param name="entities"></param> 
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> CreateBatchAsync(IEnumerable<TEntity> entities);  
+        Task<IEnumerable<TEntity>> CreateBatchAsync(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Update entity
@@ -52,8 +53,8 @@ namespace Core.Repositories
         /// <summary>
         /// Determines if the condition in the expression returns any results
         /// </summary>
-        /// <param name="predicate"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        Task<bool> MatchesConditionAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> MatchesConditionAsync(FilterDefinition<TEntity> filter);
     }
 }

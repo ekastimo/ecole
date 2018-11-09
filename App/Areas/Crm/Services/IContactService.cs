@@ -23,8 +23,11 @@ namespace App.Areas.Crm.Services
         Task<IEnumerable<MinimalContact>> GetContactsAsync(List<Guid> guids);
         Task<ContactViewModel> GetByIdentificationAsync(string id);
 
-        Task<bool> ContactExistsByEmailAsync(string data);
+        Task<bool> ContactExistsByEmailAsync(params string[] values);
+
         Task<bool> ContactExistsByPhoneAsync(string data);
+
         Task<bool> ContactExistsByIdentificationAsync(string data);
+        Task<ContactViewModel> CreateAsync(ContactViewModel contact);
     }
 }

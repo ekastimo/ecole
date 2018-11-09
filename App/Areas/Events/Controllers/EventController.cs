@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Areas.Events.Services;
+using App.Areas.Events.Services.Event;
 using App.Areas.Events.ViewModels;
+using Core.Controllers;
 using Core.Exceptions;
 using Core.Extensions;
 using Core.Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -18,15 +18,10 @@ namespace App.Areas.Events.Controllers
     /// <summary>
     /// All end-points dealing with events 
     /// </summary>
-    [Authorize]
+ 
     [AreaName("Events")]
     [Route("api/evt/event")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(OkResult), 200)]
-    [ProducesResponseType(typeof(NotFoundResult), 400)]
-    [ProducesResponseType(typeof(UnauthorizedResult), 401)]
-    [ProducesResponseType(500)]
-    public class EventController : Controller
+    public class EventController : BaseController
     {
         private readonly IEventService _service;
         private readonly ILogger<EventController> _logger;

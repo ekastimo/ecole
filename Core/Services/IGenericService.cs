@@ -11,7 +11,6 @@ namespace Core.Services
         Task<TViewModel> GetByIdAsync(Guid id);
         Task<TViewModel> GetDetailsByIdAsync(Guid id);
         Task<IEnumerable<TViewModel>> GetDetailsAsync(TSearchRequest request);
-        Task<IEnumerable<TViewModel>> GetAllAsync();
         Task DeleteAsync(Guid id);
         Task<TViewModel> UpdateAsync(TViewModel entry);
         Task<IEnumerable<TViewModel>> SearchAsync(TSearchRequest request);

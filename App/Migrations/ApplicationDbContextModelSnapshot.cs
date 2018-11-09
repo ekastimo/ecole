@@ -4,7 +4,6 @@ using App.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Migrations
 {
@@ -297,7 +296,7 @@ namespace App.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("App.Areas.Documents.Models.Document", b =>
+            modelBuilder.Entity("App.Areas.Documents.Models.Doc", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -306,13 +305,15 @@ namespace App.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("Description");
+                    b.Property<Guid>("CreatedBy");
 
-                    b.Property<Guid?>("EventItemId");
+                    b.Property<string>("Description");
 
                     b.Property<string>("FileName");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsPrimary");
 
                     b.Property<DateTime?>("LastUpdated");
 
@@ -321,8 +322,6 @@ namespace App.Migrations
                     b.Property<double>("SizeInMbs");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventItemId");
 
                     b.ToTable("Documents");
                 });
@@ -346,15 +345,13 @@ namespace App.Migrations
 
                     b.Property<Guid>("CreatorId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Details");
 
                     b.Property<DateTime>("EndDate");
 
                     b.Property<string>("FreeFormAddress");
 
                     b.Property<string>("GeoCoOrdinates");
-
-                    b.Property<Guid>("ImageId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -369,8 +366,6 @@ namespace App.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Events");
                 });
@@ -397,9 +392,11 @@ namespace App.Migrations
 
                     b.Property<Guid>("CreatorId");
 
+                    b.Property<string>("Details");
+
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<Guid>("ImageId");
+                    b.Property<Guid>("EventId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -411,9 +408,7 @@ namespace App.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ImageId");
+                    b.HasIndex("EventId");
 
                     b.ToTable("EventItems");
                 });
@@ -555,7 +550,7 @@ namespace App.Migrations
             modelBuilder.Entity("App.Areas.Crm.Models.ContactCTag", b =>
                 {
                     b.HasOne("App.Areas.Crm.Models.Contact", "Contact")
-                        .WithMany("ContactTags")
+                        .WithMany("ContactCTags")
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -597,30 +592,18 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("App.Areas.Documents.Models.Document", b =>
-                {
-                    b.HasOne("App.Areas.Events.Models.EventItem")
-                        .WithMany("Documents")
-                        .HasForeignKey("EventItemId");
-                });
-
             modelBuilder.Entity("App.Areas.Events.Models.Event", b =>
                 {
                     b.HasOne("App.Areas.Crm.Models.Contact", "Creator")
-                        .WithMany()
+                        .WithMany("Events")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("App.Areas.Documents.Models.Document", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("App.Areas.Events.Models.EventETag", b =>
                 {
                     b.HasOne("App.Areas.Events.Models.Event", "Event")
-                        .WithMany("EventTags")
+                        .WithMany("EventETags")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -632,14 +615,9 @@ namespace App.Migrations
 
             modelBuilder.Entity("App.Areas.Events.Models.EventItem", b =>
                 {
-                    b.HasOne("App.Areas.Crm.Models.Contact", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("App.Areas.Documents.Models.Document", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
+                    b.HasOne("App.Areas.Events.Models.Event", "Event")
+                        .WithMany("Items")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

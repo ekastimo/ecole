@@ -4,9 +4,8 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class AddressViewModel : ViewModel
+    public class AddressViewModel : MiniViewModel
     {
-        public Guid ContactId { get; set; }
         public AddressCategory Category { get; set; }
         public Country Country { get; set; }
         public string District { get; set; }

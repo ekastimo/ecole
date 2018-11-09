@@ -2,36 +2,44 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Core.Exceptions;
+using MongoDB.Driver;
 
 namespace Core.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly DbContext _context;
+        private readonly IMongoCollection<TEntity> _collection;
 
-        public GenericRepository(DbContext context)
+
+        public GenericRepository(IMongoCollection<TEntity> collection)
         {
-            _context = context;
+            _collection = collection;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(FilterDefinition<TEntity> filter, int skip = 0,
+            int limit = 100)
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _collection.Find(filter).Skip(skip).Limit(limit).ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id)
         {
-            
-            return await _context.Set<TEntity>().FindAsync(id);
+            try
+            {
+                var filter = Builders<TEntity>.Filter.Eq("_id", id);
+                return await _collection.Find(filter).FirstAsync();
+            }
+            catch (Exception )
+            {
+                throw new NotFoundException($"Invalid record {id}");
+            }
         }
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
-            await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _collection.InsertOneAsync(entity);
             return entity;
         }
 
@@ -40,8 +48,7 @@ namespace Core.Repositories
             try
             {
                 var batch = entities as IList<TEntity> ?? entities.ToList();
-                await _context.Set<TEntity>().AddRangeAsync(batch);
-                await _context.SaveChangesAsync();
+                await _collection.InsertManyAsync(batch);
                 return batch;
             }
             catch (Exception exception)
@@ -97,22 +104,24 @@ namespace Core.Repositories
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
+            var id = GetId(entity);
+            var filter = Builders<TEntity>.Filter.Eq("_id", id);
             SetLastUpdated(entity);
-            _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
+            await _collection.ReplaceOneAsync(filter, entity);
             return entity;
         }
 
         public async Task<int> DeleteAsync(Guid id)
         {
-            var entity = await GetByIdAsync(id);
-            _context.Set<TEntity>().Remove(entity);
-            return await _context.SaveChangesAsync();
+            var filter = Builders<TEntity>.Filter.Eq("_id", id);
+            var result = await _collection.DeleteOneAsync(filter);
+            return (int) result.DeletedCount;
         }
 
-        public async Task<bool> MatchesConditionAsync(Expression<Func<TEntity, bool>> condition)
+        public async Task<bool> MatchesConditionAsync(FilterDefinition<TEntity> filter)
         {
-            return await _context.Set<TEntity>().AnyAsync(condition);
+            var result = await _collection.CountAsync(filter);
+            return result > 0;
         }
     }
 }

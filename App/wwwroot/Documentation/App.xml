@@ -10,21 +10,23 @@
             Address API
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.AddressController.#ctor(App.Areas.Crm.Repositories.Address.IAddressRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.AddressController})">
+        <member name="M:App.Areas.Crm.Controllers.AddressController.#ctor(App.Areas.Crm.Repositories.IAddressRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.AddressController})">
             <summary>
-            Controller for addresses
+            Controller for addresss
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.AddressController.Post(App.Areas.Crm.ViewModels.AddressViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.AddressController.Post(System.Guid,App.Areas.Crm.ViewModels.AddressViewModel)">
             <summary>
             Create a new address
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.AddressController.Put(App.Areas.Crm.ViewModels.AddressViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.AddressController.Put(System.Guid,App.Areas.Crm.ViewModels.AddressViewModel)">
             <summary>
             Updates an address
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
         <member name="M:App.Areas.Crm.Controllers.AddressController.Delete(System.Guid,System.Guid)">
@@ -43,16 +45,9 @@
         <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.EventController})">
             <inheritdoc />
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewPersonViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.ContactViewModel)">
             <summary>
-            Creates a new person
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewCompanyViewModel)">
-            <summary>
-            Creates a new company
+            Creates Contact
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -64,25 +59,11 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.FindByIds(System.Collections.Generic.List{System.Guid})">
-            <summary>
-            Returns contacts with all the listed ids
-            </summary>
-            <param name="guids"></param>
-            <returns></returns>
-        </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Get(System.Guid)">
             <summary>
             Gets a specific contact
             </summary>
             <param name="id">Contact Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.GetByIdentification(System.String)">
-            <summary>
-            Gets a specific contact by identification number
-            </summary>
-            <param name="idNumber">Contact identification</param>
             <returns></returns>
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Update(App.Areas.Crm.ViewModels.ContactViewModel)">
@@ -99,27 +80,57 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.FindByIds(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            Returns contacts with all the listed ids
+            </summary>
+            <param name="guids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.GetByIdentification(System.String)">
+            <summary>
+            Gets a specific contact by identification number
+            </summary>
+            <param name="idNumber">Contact identification</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewPersonViewModel)">
+            <summary>
+            Creates a new person
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewCompanyViewModel)">
+            <summary>
+            Creates a new company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Crm.Controllers.EmailController">
             <inheritdoc />
             <summary>
             Email API
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.EmailController.#ctor(App.Areas.Crm.Repositories.Email.IEmailRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.EmailController})">
+        <member name="M:App.Areas.Crm.Controllers.EmailController.#ctor(App.Areas.Crm.Repositories.IEmailRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.EmailController})">
             <summary>
             Controller for emails
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.EmailController.Post(App.Areas.Crm.ViewModels.EmailViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.EmailController.Post(System.Guid,App.Areas.Crm.ViewModels.EmailViewModel)">
             <summary>
             Create a new email
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.EmailController.Put(App.Areas.Crm.ViewModels.EmailViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.EmailController.Put(System.Guid,App.Areas.Crm.ViewModels.EmailViewModel)">
             <summary>
             Updates an email
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
         <member name="M:App.Areas.Crm.Controllers.EmailController.Delete(System.Guid,System.Guid)">
@@ -135,21 +146,23 @@
             Identification API
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.IdentificationController.#ctor(App.Areas.Crm.Repositories.Identification.IIdentificationRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.IdentificationController})">
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.#ctor(App.Areas.Crm.Repositories.IIdentificationRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.IdentificationController})">
             <summary>
             Controller for identifications
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Post(App.Areas.Crm.ViewModels.IdentificationViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Post(System.Guid,App.Areas.Crm.ViewModels.IdentificationViewModel)">
             <summary>
             Create a new identification
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Put(App.Areas.Crm.ViewModels.IdentificationViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.IdentificationController.Put(System.Guid,App.Areas.Crm.ViewModels.IdentificationViewModel)">
             <summary>
             Updates an identification
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
         <member name="M:App.Areas.Crm.Controllers.IdentificationController.Delete(System.Guid,System.Guid)">
@@ -165,21 +178,23 @@
             Phone API
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.PhoneController.#ctor(App.Areas.Crm.Repositories.Phone.IPhoneRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.PhoneController})">
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.#ctor(App.Areas.Crm.Repositories.IPhoneRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.PhoneController})">
             <summary>
             Controller for phones
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.PhoneController.Post(App.Areas.Crm.ViewModels.PhoneViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.Post(System.Guid,App.Areas.Crm.ViewModels.PhoneViewModel)">
             <summary>
             Create a new phone
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.PhoneController.Put(App.Areas.Crm.ViewModels.PhoneViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.PhoneController.Put(System.Guid,App.Areas.Crm.ViewModels.PhoneViewModel)">
             <summary>
             Updates an phone
             </summary>
+            <param name="contactId"></param>
             <param name="model"></param>
         </member>
         <member name="M:App.Areas.Crm.Controllers.PhoneController.Delete(System.Guid,System.Guid)">
@@ -1439,10 +1454,43 @@
              Zimbabwe
             </sumary>
         </member>
-        <member name="T:App.Areas.Crm.Repositories.Email.IEmailRepository">
+        <member name="T:App.Areas.Doc.Controllers.DocController">
             <summary>
-            
+            Documents API
             </summary>
+        </member>
+        <member name="M:App.Areas.Doc.Controllers.DocController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Doc.Repositories.IDocRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Doc.Controllers.DocController})">
+            <summary>
+            Controller for addresses
+            </summary>
+        </member>
+        <member name="M:App.Areas.Doc.Controllers.DocController.Search(App.Areas.Doc.ViewModels.DocSearchRequest)">
+            <summary>
+            Searches files
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Doc.Controllers.DocController.Get(System.Guid)">
+            <summary>
+            Get Doc
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Doc.Controllers.DocController.Download(System.Guid)">
+            <summary>
+            Download file
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Doc.Controllers.DocController.Upload(App.Areas.Doc.ViewModels.UploadRequest)">
+            <summary>
+            Upload Doc
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
         </member>
         <member name="T:App.Areas.Events.Controllers.EventController">
             <inheritdoc />
@@ -1491,18 +1539,18 @@
             AgendaItem API
             </summary>
         </member>
-        <member name="M:App.Areas.Events.Controllers.AgendaItemController.#ctor(App.Areas.Events.Repositories.AgendaItem.IEventItemRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.AgendaItemController})">
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.#ctor(App.Areas.Events.Services.EventItem.IItemService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.AgendaItemController})">
             <summary>
             Controller for event-items
             </summary>
         </member>
-        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Post(App.Areas.Events.ViewModels.EventItemViewModel)">
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Post(App.Areas.Events.ViewModels.ItemViewModel)">
             <summary>
             Create a new event-item
             </summary>
             <param name="model"></param>
         </member>
-        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Put(App.Areas.Events.ViewModels.EventItemViewModel)">
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.Put(App.Areas.Events.ViewModels.ItemViewModel)">
             <summary>
             Updates an event-item
             </summary>
@@ -1515,21 +1563,30 @@
             <param name="eventId"></param>
             <param name="id"></param>
         </member>
-        <member name="T:App.Areas.Events.Repositories.AgendaItem.IEventItemRepository">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:App.Areas.Events.Repositories.Event.IEventRepository">
             <summary>
             
             </summary>
         </member>
-        <member name="M:App.Areas.Events.Repositories.Event.IEventRepository.SearchAsync(App.Areas.Events.ViewModels.EventSearchRequest)">
+        <member name="M:App.Areas.Events.Repositories.Event.IEventRepository.SearchAsync(App.Areas.Events.ViewModels.EventSearchRequest,System.Boolean)">
             <summary>
             
             </summary>
             <param name="request"></param>
+            <param name="fullQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Events.Repositories.Todo.ITodoRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:App.Areas.Events.Repositories.Todo.ITodoRepository.SearchAsync(App.Areas.Events.ViewModels.TodoSearchRequest,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <param name="fullQuery"></param>
             <returns></returns>
         </member>
     </members>

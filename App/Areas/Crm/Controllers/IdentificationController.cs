@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using App.Areas.Crm.Models;
-using App.Areas.Crm.Repositories.Identification;
+using App.Areas.Crm.Repositories;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
-using Core.Exceptions;
+using Core.Controllers;
 using Core.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,15 +15,9 @@ namespace App.Areas.Crm.Controllers
     /// <summary>
     /// Identification API
     /// </summary>
-    [Authorize]
     [AreaName("Crm")]
     [Route("api/crm/identification")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(OkResult), 200)]
-    [ProducesResponseType(typeof(NotFoundResult), 400)]
-    [ProducesResponseType(typeof(UnauthorizedResult), 401)]
-    [ProducesResponseType(500)]
-    public class IdentificationController : Controller
+    public class IdentificationController : BaseController
     {
         private readonly IIdentificationRepository _repository;
         private readonly IMapper _mapper;
@@ -40,28 +33,20 @@ namespace App.Areas.Crm.Controllers
             _logger = logger;
         }
 
-        private void AssertValidIds(params Guid[] ids)
-        {
-            foreach (var guid in ids)
-            {
-                if (guid == Guid.Empty)
-                    throw new ClientFriendlyException($"Invalid record id:{guid}");
-            }
-        }
-
         /// <summary>
         /// Create a new identification
         /// </summary>
+        /// <param name="contactId"></param>
         /// <param name="model"></param>
-        [HttpPost]
+        [HttpPost("{contactId}")]
         [Produces(typeof(IdentificationViewModel))]
-        public async Task<IdentificationViewModel> Post([FromBody] IdentificationViewModel model)
+        public async Task<IdentificationViewModel> Post(Guid contactId, [FromBody] IdentificationViewModel model)
         {
-            _logger.LogInformation($"add.identification contact: {model.ContactId}");
-            AssertValidIds(model.ContactId);
+            _logger.LogInformation($"add.identification contact: {contactId}");
+            AssertValidIds(contactId);
             var data = _mapper.Map<Identification>(model);
-            var saved = await _repository.CreateAsync(data);
-            _logger.LogInformation($"added.identification contact: {model.ContactId} record: {saved.Id}");
+            var saved = await _repository.CreateAsync(contactId, data);
+            _logger.LogInformation($"added.identification contact: {contactId} record: {saved.Id}");
             return _mapper.Map<IdentificationViewModel>(saved);
         }
 
@@ -69,16 +54,17 @@ namespace App.Areas.Crm.Controllers
         /// <summary>
         /// Updates an identification
         /// </summary>
+        /// <param name="contactId"></param>
         /// <param name="model"></param>
-        [HttpPut]
+        [HttpPut("{contactId}")]
         [Produces(typeof(IdentificationViewModel))]
-        public async Task<IdentificationViewModel> Put([FromBody] IdentificationViewModel model)
+        public async Task<IdentificationViewModel> Put(Guid contactId, [FromBody] IdentificationViewModel model)
         {
-            _logger.LogInformation($"update.identification contact: {model.ContactId} record: {model.Id}");
-            AssertValidIds(model.ContactId, model.Id);
+            _logger.LogInformation($"update.identification contact: {contactId} record: {model.Id}");
+            AssertValidIds(contactId, model.Id);
             var data = _mapper.Map<Identification>(model);
-            var saved = await _repository.UpdateAsync(data);
-            _logger.LogInformation($"updated.identification contact: {model.ContactId} record: {saved.Id}");
+            var saved = await _repository.UpdateAsync(contactId, data);
+            _logger.LogInformation($"updated.identification contact: {contactId} record: {saved.Id}");
             return _mapper.Map<IdentificationViewModel>(saved);
         }
 
@@ -92,8 +78,8 @@ namespace App.Areas.Crm.Controllers
         {
             _logger.LogInformation($"delete.identification contact: {id} record: {id}");
             AssertValidIds(contactId, id);
-            var resp = await _repository.DeleteAsync(id);
-            _logger.LogInformation($"deleted.identification contact: contact: {id} record: {id} resp: {resp}");
+            var resp = await _repository.DeleteAsync(contactId, id);
+            _logger.LogInformation($"deleted.identification contact: {id} record: {id} resp: {resp}");
         }
     }
 }

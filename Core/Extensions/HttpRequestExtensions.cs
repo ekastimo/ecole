@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Extensions
@@ -16,7 +18,7 @@ namespace Core.Extensions
                 return connection.LocalIpAddress.IsSet()
                     //The request is local if LocalIpAddress == RemoteIpAddress
                     ? connection.RemoteIpAddress.Equals(connection.LocalIpAddress)
-                    //else request is remote if the remote IP address is not a loop-back address
+                    //else request is remote if the remote IP address is not a loopback address
                     : IPAddress.IsLoopback(connection.RemoteIpAddress);
             }
 
@@ -26,6 +28,24 @@ namespace Core.Extensions
         private static bool IsSet(this IPAddress address)
         {
             return address != null && address.ToString() != NullIpAddress;
+        }
+
+        public static (Guid userId, IDictionary<string, string> userClaims) GetUser(
+            this IHttpContextAccessor contextAccessor)
+        {
+            var user = contextAccessor.HttpContext.User;
+
+            IDictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["username"] = user.Identity.Name
+            };
+            foreach (var userClaim in user.Claims)
+            {
+                data[userClaim.Type] = userClaim.Value;
+            }
+
+            var id = Guid.Parse(data["id"]);
+            return (userId: id, userClaims: data);
         }
     }
 }

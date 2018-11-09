@@ -17,14 +17,14 @@ namespace App.Areas.Auth.Services.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AccountService> _logger;
         private readonly IContactService _contactService;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration,
             ILogger<AccountService> logger,

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using App.Areas.Crm.Enums;
-using Core.Models;
 
 namespace App.Areas.Crm.Models
 {
-    public class Person : ModelBase
+    public class Person 
     {
-        [ForeignKey("Contact")]
-        public new Guid Id { get; set; }
-        public virtual Contact Contact { get; set; }
         public Salutation? Salutation { get; set; }
         public string FirstName { get; set; }
         public string OtherNames { get; set; }
