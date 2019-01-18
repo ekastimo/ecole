@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Core.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Produces("application/json")]
     [ProducesResponseType(typeof(OkResult), 200)]
     [ProducesResponseType(typeof(NotFoundResult), 400)]

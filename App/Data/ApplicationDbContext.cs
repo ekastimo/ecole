@@ -2,8 +2,10 @@
 using App.Areas.Crm.Models;
 using App.Areas.Doc.Models;
 using App.Areas.Events.Models;
+using App.Areas.Teams.Models;
 using Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
@@ -14,7 +16,7 @@ namespace App.Data
     {
         private readonly IMongoDatabase _database;
 
-        public ApplicationDbContext(IConfiguration config)
+        public ApplicationDbContext(IConfiguration config,ILogger<ApplicationDbContext> logger)
         {
             var mongoConnectionUrl = new MongoUrl(config.GetMongoConnection());
             var settings = MongoClientSettings.FromUrl(mongoConnectionUrl);
@@ -23,7 +25,7 @@ namespace App.Data
                 cb.Subscribe<CommandStartedEvent>(e =>
                 {
                     var msg = $"{e.CommandName} - {e.Command.ToJson()}";
-                    Debug.WriteLine(msg);
+                    logger.LogInformation(msg);
                 });
             };
             ;
@@ -35,5 +37,7 @@ namespace App.Data
         public IMongoCollection<Event> Events => _database.GetCollection<Event>("events");
         public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("todos");
         public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("docs");
+        public IMongoCollection<Team> Teams => _database.GetCollection<Team>("teams");
+        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("team-members");
     }
 }

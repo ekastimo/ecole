@@ -1,6 +1,4 @@
-﻿using Core.Models;
-
-namespace App.Areas.Crm.ViewModels
+﻿namespace App.Areas.Crm.ViewModels
 {
     public class CompanyViewModel
     {

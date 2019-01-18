@@ -42,7 +42,7 @@
             All end-points dealing with contacts 
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.EventController})">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.EventController},App.Areas.Doc.Services.IDocService)">
             <inheritdoc />
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.ContactViewModel)">
@@ -64,6 +64,13 @@
             Gets a specific contact
             </summary>
             <param name="id">Contact Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.SearchContacts(Core.Models.SearchBase)">
+            <summary>
+            Searches contacts
+            </summary>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Update(App.Areas.Crm.ViewModels.ContactViewModel)">
@@ -106,6 +113,21 @@
             Creates a new company
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.UpdateAvatar(App.Areas.Doc.ViewModels.UploadRequest)">
+            <summary>
+            Update avatar
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.UpdatePerson(System.Guid,App.Areas.Crm.ViewModels.PersonViewModel)">
+            <summary>
+            Update basic information
+            </summary>
+            <param name="contactId">The contact to be updated</param>
+            <param name="person">Person data</param>
             <returns></returns>
         </member>
         <member name="T:App.Areas.Crm.Controllers.EmailController">
@@ -1459,7 +1481,7 @@
             Documents API
             </summary>
         </member>
-        <member name="M:App.Areas.Doc.Controllers.DocController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Doc.Repositories.IDocRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Doc.Controllers.DocController})">
+        <member name="M:App.Areas.Doc.Controllers.DocController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Doc.Repositories.IDocRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Doc.Controllers.DocController},App.Areas.Doc.Services.IDocService)">
             <summary>
             Controller for addresses
             </summary>
@@ -1539,7 +1561,7 @@
             AgendaItem API
             </summary>
         </member>
-        <member name="M:App.Areas.Events.Controllers.AgendaItemController.#ctor(App.Areas.Events.Services.EventItem.IItemService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.AgendaItemController})">
+        <member name="M:App.Areas.Events.Controllers.AgendaItemController.#ctor(App.Areas.Events.Services.Item.IItemService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.AgendaItemController})">
             <summary>
             Controller for event-items
             </summary>
@@ -1587,6 +1609,86 @@
             </summary>
             <param name="request"></param>
             <param name="fullQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Teams.Controllers.TeamController">
+            <summary>
+            Documents API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamController.Search(App.Areas.Teams.ViewModels.TeamSearchRequest)">
+            <summary>
+            Searches teams
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamController.Get(System.Guid)">
+            <summary>
+            Gets a specific team
+            </summary>
+            <param name="id">Team Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamController.Create(App.Areas.Teams.ViewModels.TeamViewModel)">
+            <summary>
+            Create a team
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamController.Update(App.Areas.Teams.ViewModels.TeamViewModel)">
+            <summary>
+            Updates a team
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamController.Delete(System.Guid)">
+            <summary>
+            Deletes a team
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Teams.Controllers.TeamMemberController">
+            <summary>
+            Documents API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Search(App.Areas.Teams.ViewModels.TeamMemberSearchRequest)">
+            <summary>
+            Searches teamMembers
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Get(System.Guid)">
+            <summary>
+            Gets members of a specific team
+            </summary>
+            <param name="teamId">Team Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
+            <summary>
+            Create a teamMember
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Update(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
+            <summary>
+            Updates a teamMember
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Delete(System.Guid)">
+            <summary>
+            Deletes a teamMember
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
     </members>

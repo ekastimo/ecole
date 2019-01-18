@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS1591 // Missing XML comment
-using App.Areas.Crm.Models;
+﻿using App.Areas.Crm.Models;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 
@@ -7,10 +6,6 @@ namespace App.Areas.Crm.Utils
 {
     public class CrmMapper
     {
-
-       
-
-
         public static void MapModels(IMapperConfigurationExpression config)
         {
             // Contact
@@ -25,11 +20,7 @@ namespace App.Areas.Crm.Utils
             // Person
             config.CreateMap<PersonViewModel, Person>();
             config.CreateMap<Person, PersonViewModel>();
-
-            // Person
-            config.CreateMap<MinimalContact, Person>();
-            config.CreateMap<Person, MinimalContact>();
-
+    
             // Company
             config.CreateMap<CompanyViewModel, Company>();
             config.CreateMap<Company, CompanyViewModel>();

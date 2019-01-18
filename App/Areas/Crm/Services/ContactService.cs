@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Models;
-using App.Areas.Crm.Repositories;
 using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
 using Core.Extensions;
+using Core.Models;
 using Microsoft.Extensions.Logging;
 
 namespace App.Areas.Crm.Services
@@ -23,7 +23,6 @@ namespace App.Areas.Crm.Services
 
         public ContactService(
             IContactRepository contactRepository,
-            IIdentificationRepository identificationRepository,
             IMapper mapper, ILogger<ContactService> logger)
         {
             _contactRepository = contactRepository;
@@ -43,7 +42,8 @@ namespace App.Areas.Crm.Services
                 Person = new Person
                 {
                     FirstName = model.FirstName,
-                    OtherNames = model.OtherNames,
+                    MiddleName = model.LastName,
+                    LastName = model.MiddleName,
                     DateOfBirth = model.DateOfBirth,
                     Gender = model.Gender,
                     Salutation = model.Salutation,
@@ -106,6 +106,25 @@ namespace App.Areas.Crm.Services
             };
             var result = await _contactRepository.CreateAsync(data);
             return _mapper.Map<ContactViewModel>(result);
+        }
+
+        public async Task<ContactViewModel> UpdatePerson(Guid contactId, PersonViewModel personModel)
+        {
+            var result = await _contactRepository.GetByIdAsync(contactId);
+            if (result == null)
+            {
+                throw new ClientFriendlyException($"Invalid contact {contactId}");
+            }
+            var person = _mapper.Map<Person>(personModel);
+            person.Avatar = result.Person.Avatar;
+            result.Person = person;
+            var updated = await _contactRepository.UpdateAsync(result);
+            return _mapper.Map<ContactViewModel>(updated);
+        }
+
+        public async Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request)
+        {
+            return await _contactRepository.SearchMinimalAsync(request);
         }
 
         private static (bool valid, Identification identification) ValidateId(NewContactViewModel model)
@@ -174,6 +193,7 @@ namespace App.Areas.Crm.Services
             contact.Tags = hasTags
                 ? model.Tags.ToArray()
                 : new string[] { };
+            contact.Addresses= new Address[0];
         }
 
         public async Task<ContactViewModel> CreateAsync(NewCompanyViewModel model)
@@ -214,32 +234,21 @@ namespace App.Areas.Crm.Services
             return _mapper.Map<ContactViewModel>(result);
         }
 
-        public async Task<IEnumerable<MinimalContact>> SearchAsync(ContactSearchRequest request)
+        public async Task<IEnumerable<ContactViewModel>> SearchAsync(ContactSearchRequest request)
         {
             var result = await _contactRepository.SearchAsync(request);
-            return result.Select(contact =>
-            {
-                var miniContact = _mapper.Map<MinimalContact>(contact.Person);
-                miniContact.Id = contact.Id;
-                miniContact.Category = contact.Category;
-                miniContact.Email = contact.Emails?.FirstOrDefault(it => it.IsPrimary)?.Address;
-                miniContact.Phone = contact.Phones?.FirstOrDefault(it => it.IsPrimary)?.Number;
-                return miniContact;
-            }).ToList();
+            return _mapper.Map<IEnumerable<ContactViewModel>>(result);
         }
 
 
-        public async Task<IEnumerable<MinimalContact>> GetContactsAsync(List<Guid> guids)
+        public async Task<IEnumerable<ContactViewModel>> GetContactsAsync(List<Guid> guids)
         {
             var result = await _contactRepository.GetContactsAsync(guids);
-            return result.Select(contact =>
-            {
-                var miniContact = _mapper.Map<MinimalContact>(contact.Person);
-                miniContact.Category = contact.Category;
-                miniContact.Email = contact.Emails?.FirstOrDefault(it => it.IsPrimary)?.Address;
-                miniContact.Phone = contact.Phones?.FirstOrDefault(it => it.IsPrimary)?.Number;
-                return miniContact;
-            }).ToList();
+            return _mapper.Map<IEnumerable<ContactViewModel>>(result);
+        }
+        public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
+        {
+            return await _contactRepository.GetNamesByIdAsync(guids);
         }
 
         public async Task<ContactViewModel> GetByIdentificationAsync(string idNumber)

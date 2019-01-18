@@ -8,13 +8,9 @@ namespace Core.Models
     {
         [BsonId(IdGenerator = typeof(GuidGenerator))]
         public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? LastUpdated { get; set; }
         public bool IsDeleted { get; set; }
-        public ModelBase()
-        {
-            CreatedAt = DateTime.UtcNow;
-            IsDeleted = false;
-        }
+       
     }
 }

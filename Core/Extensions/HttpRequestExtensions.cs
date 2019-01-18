@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
@@ -30,7 +29,7 @@ namespace Core.Extensions
             return address != null && address.ToString() != NullIpAddress;
         }
 
-        public static (Guid userId, IDictionary<string, string> userClaims) GetUser(
+        public static (string userId, IDictionary<string, string> userClaims) GetUser(
             this IHttpContextAccessor contextAccessor)
         {
             var user = contextAccessor.HttpContext.User;
@@ -43,9 +42,7 @@ namespace Core.Extensions
             {
                 data[userClaim.Type] = userClaim.Value;
             }
-
-            var id = Guid.Parse(data["id"]);
-            return (userId: id, userClaims: data);
+            return (userId: data["id"], userClaims: data);
         }
     }
 }

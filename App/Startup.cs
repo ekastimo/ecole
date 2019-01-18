@@ -9,25 +9,23 @@ using App.Areas.Auth.Models;
 using App.Areas.Crm.Utils;
 using App.Areas.Doc.Utils;
 using App.Areas.Events.Utils;
+using App.Areas.Teams.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using App.Data;
-using App.Gql;
 using AspNetCore.Identity.Mongo;
 using AutoMapper;
 using Core.Extensions;
-using GraphQL;
-using GraphQL.Server;
-using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace App
 {
@@ -52,32 +50,28 @@ namespace App
         public IConfiguration Configuration { get; }
         public IHostingEnvironment Environment { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddScoped<ApplicationDbContext>();
 
-            services.AddMongoIdentityProvider<ApplicationUser, ApplicationRole>(Configuration.GetMongoConnection(), options =>
+            services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole>(identityOptions =>
             {
-                options.Password.RequiredLength = 6;
-
-                options.Password.RequireLowercase = false;
-
-                options.Password.RequireUppercase = false;
-
-                options.Password.RequireNonAlphanumeric = false;
-
-                options.Password.RequireDigit = false;
-
-            });
+                identityOptions.Password.RequiredLength = 6;
+                identityOptions.Password.RequireLowercase = false;
+                identityOptions.Password.RequireUppercase = false;
+                identityOptions.Password.RequireNonAlphanumeric = false;
+                identityOptions.Password.RequireDigit = false;
+            }, mongoIdentityOptions => { mongoIdentityOptions.ConnectionString = Configuration.GetMongoConnection(); });
 
             services.AddAutoMapper(config =>
             {
                 CrmMapper.MapModels(config);
                 EventsMapper.MapModels(config);
                 DocumentsMapper.MapModels(config);
+                EventsMapper.MapModels(config);
+                TeamsMapper.MapModels(config);
             });
+
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
             ConfigureDepenedencyInjection(services);
@@ -112,7 +106,14 @@ namespace App
                         .AllowCredentials();
                 });
             });
-            services.AddMvc(options => { options.Filters.Add(new ValidateModelAttribute()); })
+            services.AddMvc(options =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    options.Filters.Add(new AuthorizeFilter(policy));
+                    options.Filters.Add(new ValidateModelAttribute());
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
                 {
@@ -155,14 +156,6 @@ namespace App
 //                    }
 //                );
             });
-            ConfigureGraphQlModels(services);
-            // GraphQL
-            services.AddSingleton<IDependencyResolver>(c => new FuncDependencyResolver(c.GetRequiredService));
-            services.AddGraphQL(_ =>
-            {
-                _.EnableMetrics = true;
-                _.ExposeExceptions = true;
-            }).AddWebSockets();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -175,7 +168,7 @@ namespace App
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-            
+
             app.UseCustomErrorHandling();
             app.UseAuthentication();
             app.UseMvc();
@@ -187,12 +180,6 @@ namespace App
                 c.DocumentTitle = "CRM Service";
                 c.RoutePrefix = "docs";
             });
-            
-            //GraphQL
-            app.UseWebSockets();
-            app.UseGraphQLWebSockets<AppSchema>("/graphql");
-            app.UseGraphQL<AppSchema>("/graphql");
-            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             app.UseFileServer();
         }
 
@@ -230,21 +217,6 @@ namespace App
                     Console.WriteLine($"Service: {cls.FullName} impl:{intf.FullName}");
                     services.AddScoped(intf, cls);
                 }
-            }
-        }
-
-        private void ConfigureGraphQlModels(IServiceCollection services)
-        {
-            var assembly = GetType().Assembly;
-            var types = assembly
-                .GetExportedTypes()
-                .Where(it => it.IsClass && it.Namespace.Contains("Gql"))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                Console.WriteLine($"GraphQL model: {type.FullName}");
-                services.AddSingleton(type);
             }
         }
     }

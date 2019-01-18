@@ -38,10 +38,15 @@ namespace App.Areas.Crm.ViewModels
     public class NewPersonViewModel : NewContactViewModel
     {
         public new ContactCategory Category { get; set; } = ContactCategory.Person;
-        [Required] public string FirstName { get; set; }
-        [Required] public string OtherNames { get; set; }
-        [Required] public Gender Gender { get; set; }
-        [Required] public DateTime DateOfBirth { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
+        [Required]
+        public Gender Gender { get; set; }
+        [Required]
+        public DateTime DateOfBirth { get; set; }
         public CivilStatus? CivilStatus { get; set; }
         public Salutation? Salutation { get; set; }
         public string About { get; set; }
@@ -55,21 +60,19 @@ namespace App.Areas.Crm.ViewModels
         [Required] public string Name { get; set; }
     }
 
+
     public class MinimalContact
     {
         public Guid Id { get; set; }
-        public ContactCategory Category { get; set; }
+        public Salutation? Salutation { get; set; }
         public string FirstName { get; set; }
-        public string OtherNames { get; set; }
-        public string Name { get; set; }
-        public string FullName => Category == ContactCategory.Person ? $"{FirstName} {OtherNames}" : Name;
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string FullName => $"{Salutation} {FirstName} {MiddleName} {LastName}".Replace("  "," ").Trim();
+        public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string About { get; set; }
         public string Avatar { get; set; }
-        public Gender Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public CivilStatus? CivilStatus { get; set; }
-        public Salutation? Salutation { get; set; }
+
     }
 }

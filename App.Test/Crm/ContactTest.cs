@@ -45,7 +45,7 @@ namespace App.Test.Crm
             IdentificationRepository = new IdentificationRepository(dbContext);
             var mapperConfig = new MapperConfiguration(CustomMapper.CreateConfigs);
             Mapper = new Mapper(mapperConfig);
-            ContactService = new ContactService(ContactRepository, IdentificationRepository, Mapper, _contactLogger);
+            ContactService = new ContactService(ContactRepository, Mapper, _contactLogger);
         }
 
         [Fact]

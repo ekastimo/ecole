@@ -13,7 +13,9 @@ using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
+using Core.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +27,7 @@ namespace App.Areas.Auth.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IConfiguration _configuration;
@@ -32,7 +35,7 @@ namespace App.Areas.Auth.Controllers
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
 
-        public AccountController(
+        public AccountController(IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
@@ -42,6 +45,7 @@ namespace App.Areas.Auth.Controllers
             IMapper mapper
         )
         {
+            _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -51,6 +55,7 @@ namespace App.Areas.Auth.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
@@ -65,6 +70,7 @@ namespace App.Areas.Auth.Controllers
             throw new NotAuthorizedException("Oops, invalid username / password");
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
@@ -99,7 +105,7 @@ namespace App.Areas.Auth.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("id", user.Id),
-                new Claim("fullName",  $"{person.FirstName} {person.OtherNames}")
+                new Claim("fullName",  $"{person.FirstName} {person.MiddleName} {person.LastName}")
             };
             foreach (var role in roles)
             {
@@ -127,7 +133,6 @@ namespace App.Areas.Auth.Controllers
             };
         }
 
-        [Authorize]
         [HttpGet("users")]
         public List<UserViewModel> Get()
         {
@@ -139,7 +144,6 @@ namespace App.Areas.Auth.Controllers
             }).ToList();
         }
 
-        [Authorize]
         [HttpGet("users/{id}")]
         public async Task<object> GetById(string id)
         {
@@ -153,6 +157,26 @@ namespace App.Areas.Auth.Controllers
                 Email = user.Email,
                 Username = user.UserName,
                 Roles = roles
+            };
+        }
+
+        [HttpGet("profile")]
+        public async Task<object> GetById()
+        {
+            var currentUser = _httpContextAccessor.GetUser();
+            var id = currentUser.userId;
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                throw new NotFoundException($"Invalid user: {id}");
+            var roles = await _userManager.GetRolesAsync(user);
+            var name = currentUser.userClaims["fullName"];
+            return new UserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.UserName,
+                Roles = roles,
+                FullName = name
             };
 
         }
