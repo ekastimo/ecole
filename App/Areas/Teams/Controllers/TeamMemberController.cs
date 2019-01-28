@@ -1,43 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Areas.Crm.Services;
+﻿using App.Areas.Crm.Services;
 using App.Areas.Teams.Models;
 using App.Areas.Teams.Repositories;
 using App.Areas.Teams.ViewModels;
 using AutoMapper;
 using Core.Controllers;
-using Core.Exceptions;
 using Core.Extensions;
 using Core.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace App.Areas.Teams.Controllers
 {
     /// <summary>
     /// Documents API
     /// </summary>
-    [AreaName("Teams")]
-    [Route("api/teammembers")]
+    [AreaName("TeamMembers")]
+    [Route("api/teamMembers")]
     public class TeamMemberController : BaseController
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITeamMemberRepository _repository;
+        private readonly ITeamRepository _teamRepository;
         private readonly IContactService _contactService;
         private readonly ILogger<TeamMemberController> _logger;
         private readonly IMapper _mapper;
 
         public TeamMemberController(
             IHttpContextAccessor httpContextAccessor,
-            ITeamMemberRepository repository,IContactService contactService,
+            ITeamMemberRepository repository, ITeamRepository teamRepository, IContactService contactService,
             ILogger<TeamMemberController> logger, IMapper mapper)
         {
             _httpContextAccessor = httpContextAccessor;
             _repository = repository;
+            _teamRepository = teamRepository;
             _contactService = contactService;
             _logger = logger;
             _mapper = mapper;
@@ -73,11 +75,11 @@ namespace App.Areas.Teams.Controllers
         /// </summary>
         /// <param name="teamId">Team Id</param>
         /// <returns></returns>
-        [HttpGet("{teamId}")]
+        [HttpGet("team/{teamId}")]
         [Produces(typeof(IEnumerable<TeamMemberViewModel>))]
         public async Task<IEnumerable<TeamMemberViewModel>> Get(Guid teamId)
         {
-            var request = new TeamMemberSearchRequest {TeamId = teamId };
+            var request = new TeamMemberSearchRequest { TeamId = teamId };
             var json = JsonConvert.SerializeObject(request);
             _logger.LogInformation($"teamMembers.by.query ${json}");
             var data = (await _repository.SearchAsync(request)).ToList();
@@ -95,22 +97,60 @@ namespace App.Areas.Teams.Controllers
         }
 
         /// <summary>
+        /// Gets teams of a specific contact
+        /// </summary>
+        /// <param name="contactId">Contact Id</param>
+        /// <returns></returns>
+        [HttpGet("contact/{contactId}")]
+        [Produces(typeof(IEnumerable<object>))]
+        public async Task<IEnumerable<object>> GetTeams(Guid contactId)
+        {
+            var request = new TeamMemberSearchRequest { ContactId = contactId };
+            var json = JsonConvert.SerializeObject(request);
+            _logger.LogInformation($"teams.by.query ${json}");
+            var data = (await _repository.SearchAsync(request)).ToList();
+            _logger.LogInformation($"found.teams {data.Count}");
+            var teamIds = data.Select(it => it.TeamId);
+            var teams = await _teamRepository.SearchByIdsAsync(teamIds.ToList());
+            var dict = teams.ToImmutableDictionary(x => x.Id, x => x);
+            return data.Select(it => new
+            {
+                it.Id,
+                it.TeamId,
+                it.ContactId,
+                it.Role,
+                dict[it.TeamId].Name,
+                dict[it.TeamId].Description
+            }).ToList();
+        }
+
+        /// <summary>
         /// Create a teamMember
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [Produces(typeof(TeamMemberViewModel))]
-        public async Task<TeamMemberViewModel> Create([FromBody] TeamMemberViewModel model)
+        [Produces(typeof(TeamMemberMultipleViewModel))]
+        public async Task<TeamMemberMultipleViewModel> Create([FromBody] TeamMemberMultipleViewModel model)
         {
-            Tk.AssertValidIds(model.ContactId, model.TeamId);
+            Tk.AssertValidIds(model.TeamId);
+            Tk.AssertValidIds(model.ContactIds.ToArray());
             var (userId, _) = _httpContextAccessor.GetUser();
             model.CreatedBy = userId;
-            _logger.LogInformation($"create.teamMember ${model.ContactId} ${model.TeamId}");
-            var toSave = _mapper.Map<TeamMember>(model);
-            var data = await _repository.CreateAsync(toSave);
-            _logger.LogInformation($"created.teamMember ${data.Id}");
-            return _mapper.Map<TeamMemberViewModel>(data);
+
+            _logger.LogInformation($"create.teamMember ${model.TeamId}");
+
+            var toSave = model.ContactIds.Select(it => new TeamMember
+            {
+                TeamId = model.TeamId,
+                ContactId = it,
+                Role = model.Role,
+                Status = TeamStatus.Active
+            }).ToList();
+            ;
+            var data = await _repository.CreateBatchAsync(toSave);
+            _logger.LogInformation($"created.teamMember ${data.Count()}");
+            return model;
             ;
         }
 

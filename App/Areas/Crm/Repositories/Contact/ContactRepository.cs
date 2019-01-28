@@ -101,6 +101,7 @@ namespace App.Areas.Crm.Repositories.Contact
 
         public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
         {
+            
             var filter = Builders<Models.Contact>.Filter
                 .Where(x => guids.Contains(x.Id));
             var data = await _context.Contacts.Find(filter)

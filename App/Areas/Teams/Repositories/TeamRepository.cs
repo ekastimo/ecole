@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Areas.Teams.ViewModels;
 using App.Data;
@@ -27,6 +28,14 @@ namespace App.Areas.Teams.Repositories
                 .Skip(request.Skip)
                 .Limit(request.Limit)
                 .ToListAsync();
+        }
+        public async Task<IEnumerable<Models.Team>> SearchByIdsAsync(List<Guid> teamIds)
+        {
+            var filter = Builders<Models.Team>.Filter
+                .Where(x => teamIds.Contains(x.Id));
+            var data = await _context.Teams.Find(filter)
+                .ToListAsync();
+            return  data;
         }
 
         public async Task<bool> TeamExistsByNameAsync(string teamName)

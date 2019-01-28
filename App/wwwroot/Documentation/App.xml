@@ -1670,7 +1670,14 @@
             <param name="teamId">Team Id</param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.GetTeams(System.Guid)">
+            <summary>
+            Gets teams of a specific contact
+            </summary>
+            <param name="contactId">Contact Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberMultipleViewModel)">
             <summary>
             Create a teamMember
             </summary>
