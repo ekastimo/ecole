@@ -11,7 +11,7 @@ namespace App.Areas.Events.Models
         public DateTime StartDate { get; set; }
         public DateTime ExpectedDate { get; set; }
         public DateTime? CompletionDate { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid CreatedBy { get; set; }
         public Assignee[] Assignees { get; set; }
         public string[] Tags { get; set; }
     }

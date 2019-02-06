@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using System;
+using Core.Models;
 
 namespace App.Areas.Teams.Models
 {
@@ -6,6 +7,6 @@ namespace App.Areas.Teams.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace App.Areas.Teams.Models
     {
         public Guid TeamId { get; set; }
         public Guid ContactId { get; set; }
-        public string CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
         public TeamRole Role { get; set; }
         public TeamStatus Status { get; set; }
     }

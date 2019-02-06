@@ -19,7 +19,7 @@ namespace App.Areas.Teams.Controllers
     /// Documents API
     /// </summary>
     [AreaName("Teams")]
-    [Route("api/teams")]
+    [Route("api/teams/team")]
     public class TeamController : BaseController
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -76,8 +76,7 @@ namespace App.Areas.Teams.Controllers
         [Produces(typeof(TeamViewModel))]
         public async Task<TeamViewModel> Create([FromBody] TeamViewModel model)
         {
-            var (userId, _) = _httpContextAccessor.GetUser();
-            model.CreatedBy = userId;
+            model.CreatedBy = _httpContextAccessor.GetContactId();
             _logger.LogInformation($"create.team ${model.Name}");
             var data = await _service.CreateAsync(model);
             _logger.LogInformation($"created.team ${data.Id}");

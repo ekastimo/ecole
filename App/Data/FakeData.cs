@@ -44,9 +44,9 @@ namespace App.Data
                 .RuleFor(u => u.StartDate, f => f.Date.Soon(2))
                 .RuleFor(u => u.EndDate, f => f.Date.Soon(3))
                 .RuleFor(u => u.Details, f => f.Lorem.Paragraph())
-                .RuleFor(u => u.CreatorId, contactId)
+                .RuleFor(u => u.CreatedBy, contactId)
                 .RuleFor(u => u.EventId, eventId)
-                .RuleFor(u => u.Images, f => Enumerable.Range(1, 5).Select(it => f.Image.LoremFlickrUrl()).ToArray());
+                .RuleFor(u => u.Images, f => Enumerable.Range(1, 3).Select(it => f.Image.LoremPixelUrl()).ToArray());
             return persons.Generate(count);
         }
 
@@ -60,9 +60,9 @@ namespace App.Data
                 .RuleFor(u => u.FreeFormAddress, f => f.Address.FullAddress())
                 .RuleFor(u => u.Details, f => f.Lorem.Paragraph())
                 .RuleFor(u => u.GeoCoOrdinates, f => f.Address.ZipCode())
-                .RuleFor(u => u.CreatorId, contactId)
+                .RuleFor(u => u.CreatedBy, contactId)
                 .RuleFor(u => u.Tags, f => f.PickRandom(EventTags.Select(it => it.ToLower()), 3).ToArray())
-                .RuleFor(u => u.Images, f => Enumerable.Range(1, 5).Select(it => f.Image.LoremFlickrUrl()).ToArray());
+                .RuleFor(u => u.Images, f => Enumerable.Range(1, 3).Select(it => f.Image.LoremPixelUrl()).ToArray());
             return persons.Generate(count);
         }
     }

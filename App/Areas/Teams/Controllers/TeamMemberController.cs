@@ -22,7 +22,7 @@ namespace App.Areas.Teams.Controllers
     /// Documents API
     /// </summary>
     [AreaName("TeamMembers")]
-    [Route("api/teamMembers")]
+    [Route("api/teams/members")]
     public class TeamMemberController : BaseController
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -137,9 +137,7 @@ namespace App.Areas.Teams.Controllers
             Tk.AssertValidIds(model.ContactIds.ToArray());
             var (userId, _) = _httpContextAccessor.GetUser();
             model.CreatedBy = userId;
-
             _logger.LogInformation($"create.teamMember ${model.TeamId}");
-
             var toSave = model.ContactIds.Select(it => new TeamMember
             {
                 TeamId = model.TeamId,
@@ -147,11 +145,9 @@ namespace App.Areas.Teams.Controllers
                 Role = model.Role,
                 Status = TeamStatus.Active
             }).ToList();
-            ;
             var data = await _repository.CreateBatchAsync(toSave);
             _logger.LogInformation($"created.teamMember ${data.Count()}");
             return model;
-            ;
         }
 
         /// <summary>

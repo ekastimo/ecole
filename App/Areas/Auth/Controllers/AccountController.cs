@@ -105,6 +105,7 @@ namespace App.Areas.Auth.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("id", user.Id),
+                new Claim("contactId", contact.Id.ToString()),
                 new Claim("fullName",  $"{person.FirstName} {person.MiddleName} {person.LastName}")
             };
             foreach (var role in roles)

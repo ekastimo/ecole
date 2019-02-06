@@ -43,8 +43,7 @@ namespace App.Areas.Events.Repositories.Event
                     .ToListAsync();
             }
             var projection = Builders<Models.Event>.Projection
-                .Exclude(x => x.Items)
-                .Exclude(x => x.Images);
+                .Exclude(x => x.Items);
             return await _context.Events.Find(filter)
                 .Project<Models.Event>(projection)
                 .Skip(request.Skip)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
@@ -43,6 +44,20 @@ namespace Core.Extensions
                 data[userClaim.Type] = userClaim.Value;
             }
             return (userId: data["id"], userClaims: data);
+        }
+
+        public static Guid  GetContactId(this IHttpContextAccessor contextAccessor)
+        {
+            var user = contextAccessor.HttpContext.User;
+            IDictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["username"] = user.Identity.Name
+            };
+            foreach (var userClaim in user.Claims)
+            {
+                data[userClaim.Type] = userClaim.Value;
+            }
+            return Guid.Parse(data["contactId"]);
         }
     }
 }

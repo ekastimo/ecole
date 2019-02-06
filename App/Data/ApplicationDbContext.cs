@@ -28,9 +28,13 @@ namespace App.Data
                     logger.LogInformation(msg);
                 });
             };
-            ;
             var client = new MongoClient(settings);
             _database = client.GetDatabase(config.GetMongoDatabase());
+            var index= Builders<TeamMember>.IndexKeys.Ascending(d => d.ContactId).Descending(d => d.TeamId);
+            var options = new CreateIndexOptions { Unique = true,Sparse=true };
+            var indexModel = new CreateIndexModel<TeamMember>(index, options);
+            var resp = TeamMembers.Indexes.CreateOne(indexModel);
+            logger.LogInformation($"created index on team members {resp}");
         }
 
         public IMongoCollection<Contact> Contacts => _database.GetCollection<Contact>("contacts");
@@ -38,6 +42,8 @@ namespace App.Data
         public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("todos");
         public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("docs");
         public IMongoCollection<Team> Teams => _database.GetCollection<Team>("teams");
-        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("team-members");
+        public IMongoCollection<TeamMember> TeamMembers => _database
+            .GetCollection<TeamMember>("team-members");
+        
     }
 }

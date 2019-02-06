@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Core.Models;
 
 namespace App.Areas.Teams.ViewModels
@@ -8,6 +9,6 @@ namespace App.Areas.Teams.ViewModels
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
     }
 }

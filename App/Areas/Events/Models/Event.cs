@@ -9,7 +9,7 @@ namespace App.Areas.Events.Models
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid CreatedBy { get; set; }
         public string Venue { get; set; }
         public string FreeFormAddress { get; set; }
         public string GeoCoOrdinates { get; set; }

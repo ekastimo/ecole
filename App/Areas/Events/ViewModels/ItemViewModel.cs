@@ -11,7 +11,9 @@ namespace App.Areas.Events.ViewModels
         [Required] public string Details { get; set; }
         [Required] public DateTime StartDate { get; set; }
         [Required] public DateTime EndDate { get; set; }
-        public Guid? CreatorId { get; set; }
+        public Guid? CreatedBy { get; set; }
         public string[] Images { get; set; }
+        public string[] Tags { get; set; }
+        public string[] Assignees { get; set; }
     }
 }

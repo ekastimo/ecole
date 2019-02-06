@@ -8,6 +8,7 @@ using Core.Controllers;
 using Core.Exceptions;
 using Core.Extensions;
 using Core.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -23,11 +24,13 @@ namespace App.Areas.Events.Controllers
     [Route("api/evt/event")]
     public class EventController : BaseController
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEventService _service;
         private readonly ILogger<EventController> _logger;
 
-        public EventController(IEventService service, ILogger<EventController> logger)
+        public EventController(IHttpContextAccessor httpContextAccessor, IEventService service, ILogger<EventController> logger)
         {
+            _httpContextAccessor = httpContextAccessor;
             _service = service;
             _logger = logger;
         }
@@ -75,11 +78,11 @@ namespace App.Areas.Events.Controllers
         public async Task<EventViewModel> Create([FromBody] EventViewModel model)
         {
             _logger.LogInformation("add.event");
+            model.CreatedBy = _httpContextAccessor.GetContactId();
             var data = await _service.CreateAsync(model);
             _logger.LogInformation($"added.event {data.Id}");
             return data;
         }
-
 
         /// <summary>
         /// Updates a event
