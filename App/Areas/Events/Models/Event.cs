@@ -5,6 +5,7 @@ namespace App.Areas.Events.Models
 {
     public class Event : ModelBase
     {
+        public EventPublicity Publicity { get; set; }
         public string Name { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
