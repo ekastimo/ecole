@@ -24,6 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace App.Areas.Auth.Controllers
 {
     [Route("api/auth")]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
