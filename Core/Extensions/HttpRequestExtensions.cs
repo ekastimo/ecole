@@ -30,7 +30,7 @@ namespace Core.Extensions
             return address != null && address.ToString() != NullIpAddress;
         }
 
-        public static (Guid userId, IDictionary<string, string> userClaims) GetUser(
+        public static (string userId, IDictionary<string, string> userClaims) GetUser(
             this IHttpContextAccessor contextAccessor)
         {
             var user = contextAccessor.HttpContext.User;
@@ -43,9 +43,21 @@ namespace Core.Extensions
             {
                 data[userClaim.Type] = userClaim.Value;
             }
+            return (userId: data["id"], userClaims: data);
+        }
 
-            var id = Guid.Parse(data["id"]);
-            return (userId: id, userClaims: data);
+        public static Guid  GetContactId(this IHttpContextAccessor contextAccessor)
+        {
+            var user = contextAccessor.HttpContext.User;
+            IDictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["username"] = user.Identity.Name
+            };
+            foreach (var userClaim in user.Claims)
+            {
+                data[userClaim.Type] = userClaim.Value;
+            }
+            return Guid.Parse(data["contactId"]);
         }
     }
 }

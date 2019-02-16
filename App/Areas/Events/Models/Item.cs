@@ -9,8 +9,9 @@ namespace App.Areas.Events.Models
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid CreatedBy { get; set; }
         public string[] Images { get; set; } = { };
         public string[] Tags { get; set; } = { };
+        public Guid[] Assignees { get; set; } = { };
     }
 }

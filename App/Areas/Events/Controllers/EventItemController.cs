@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using App.Areas.Events.Services.EventItem;
+using App.Areas.Events.Services.Item;
 using App.Areas.Events.ViewModels;
 using AutoMapper;
 using Core.Controllers;

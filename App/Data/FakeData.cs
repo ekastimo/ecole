@@ -23,14 +23,15 @@ namespace App.Data
             var persons = new Faker<NewPersonViewModel>()
                 .RuleFor(u => u.Category, ContactCategory.Person)
                 .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
-                .RuleFor(u => u.OtherNames, (f, u) => f.Name.LastName())
+                .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
+                .RuleFor(u => u.MiddleName, (f, u) => f.Name.LastName())
                 .RuleFor(u => u.Gender, f => f.PickRandom<Gender>())
                 .RuleFor(u => u.CivilStatus, f => f.PickRandom<CivilStatus>())
                 .RuleFor(u => u.Salutation, f => f.PickRandom<Salutation>())
                 .RuleFor(u => u.DateOfBirth, f => f.Date.Past())
                 .RuleFor(u => u.About, f => f.Lorem.Paragraph())
                 .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
-                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.OtherNames))
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
                 .RuleFor(u => u.Tags, f => f.PickRandom(ContactTags.Select(it => it.ToLower()), 3).ToArray())
                 .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber());
             return persons.Generate(count);
@@ -43,9 +44,9 @@ namespace App.Data
                 .RuleFor(u => u.StartDate, f => f.Date.Soon(2))
                 .RuleFor(u => u.EndDate, f => f.Date.Soon(3))
                 .RuleFor(u => u.Details, f => f.Lorem.Paragraph())
-                .RuleFor(u => u.CreatorId, contactId)
+                .RuleFor(u => u.CreatedBy, contactId)
                 .RuleFor(u => u.EventId, eventId)
-                .RuleFor(u => u.Images, f => Enumerable.Range(1, 5).Select(it => f.Image.Fashion()).ToArray());
+                .RuleFor(u => u.Images, f => Enumerable.Range(1, 3).Select(it => f.Image.LoremPixelUrl()).ToArray());
             return persons.Generate(count);
         }
 
@@ -59,9 +60,9 @@ namespace App.Data
                 .RuleFor(u => u.FreeFormAddress, f => f.Address.FullAddress())
                 .RuleFor(u => u.Details, f => f.Lorem.Paragraph())
                 .RuleFor(u => u.GeoCoOrdinates, f => f.Address.ZipCode())
-                .RuleFor(u => u.CreatorId, contactId)
+                .RuleFor(u => u.CreatedBy, contactId)
                 .RuleFor(u => u.Tags, f => f.PickRandom(EventTags.Select(it => it.ToLower()), 3).ToArray())
-                .RuleFor(u => u.Images, f => Enumerable.Range(1, 5).Select(it => f.Image.Food()).ToArray());
+                .RuleFor(u => u.Images, f => Enumerable.Range(1, 3).Select(it => f.Image.LoremPixelUrl()).ToArray());
             return persons.Generate(count);
         }
     }

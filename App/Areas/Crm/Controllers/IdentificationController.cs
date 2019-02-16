@@ -74,12 +74,16 @@ namespace App.Areas.Crm.Controllers
         /// <param name="contactId"></param>
         /// <param name="id"></param>
         [HttpDelete("{contactId}/{id}")]
-        public async Task Delete(Guid contactId, Guid id)
+        public async Task<object> Delete(Guid contactId, Guid id)
         {
             _logger.LogInformation($"delete.identification contact: {id} record: {id}");
             AssertValidIds(contactId, id);
             var resp = await _repository.DeleteAsync(contactId, id);
             _logger.LogInformation($"deleted.identification contact: {id} record: {id} resp: {resp}");
+            return new
+            {
+                Message = "Deleted Identification"
+            };
         }
     }
 }

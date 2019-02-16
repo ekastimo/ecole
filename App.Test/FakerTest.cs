@@ -23,7 +23,6 @@ namespace App.Test
         public ItemRepository EventItemRepository { get; }
         public ContactRepository ContactRepository { get; }
         public IdentificationRepository IdentificationRepository { get; }
-   
 
         public Mapper Mapper { get; }
 
@@ -34,7 +33,7 @@ namespace App.Test
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var dbContext = new ApplicationDbContext(config);
+            var dbContext = new ApplicationDbContext(config,null);
             EventRepository = new EventRepository(dbContext);
             EventItemRepository = new ItemRepository(dbContext);
             ContactRepository = new ContactRepository(dbContext);
@@ -51,17 +50,13 @@ namespace App.Test
             var eventLogger = Mock.Of<ILogger<EventService>>();
             var eventItemLogger = Mock.Of<ILogger<ItemService>>();
             var contactLogger = Mock.Of<ILogger<ContactService>>();
-            var contactService = new ContactService(ContactRepository, IdentificationRepository, Mapper, contactLogger);
-
-           
-       
+            var contactService = new ContactService(ContactRepository, Mapper, contactLogger);
 
             var fakeContacts = FakeData.FakeContacts();
             foreach (var fakeContact in fakeContacts)
             {
                 await contactService.CreateAsync(fakeContact);
             }
-
             
             var contacts = await contactService.SearchAsync(new ContactSearchRequest());
             var creatorId = contacts.First().Id;

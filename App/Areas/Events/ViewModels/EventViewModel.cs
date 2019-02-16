@@ -14,8 +14,9 @@ namespace App.Areas.Events.ViewModels
         [Required] public string Details { get; set; }
 
         public string GeoCoOrdinates { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid CreatedBy { get; set; }
         public string[] Images { get; set; } = { };
         public string[] Tags { get; set; } = { };
+        public ItemViewModel[] Items { get; set; } = { };
     }
 }

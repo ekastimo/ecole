@@ -45,7 +45,8 @@ namespace App.Areas.Auth.Services.Account
             var contactModel = new NewPersonViewModel
             {
                 FirstName = model.FirstName,
-                OtherNames = model.OtherNames,
+                LastName = model.LastName,
+                MiddleName = model.MiddleName,
                 DateOfBirth = model.DateOfBirth,
                 Gender = model.Gender,
                 Email = model.Email,
@@ -54,7 +55,7 @@ namespace App.Areas.Auth.Services.Account
             var contactExists = await _contactService.ContactExistsByEmailAsync(model.Email);
             if (contactExists)
             {
-                _logger.LogInformation($"registartion.failed duplicate email: ${model.Email}");
+                _logger.LogInformation($"registration.failed duplicate email: ${model.Email}");
                 throw new DuplicateEntityException($"Email: {model.Email} already has an account");
             }
 

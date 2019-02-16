@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Models;
+﻿using Core.Models;
 
 namespace App.Areas.Doc.Models
 {
@@ -11,6 +10,6 @@ namespace App.Areas.Doc.Models
         public double SizeInMbs { get; set; }
         public string ContentType { get; set; }
         public bool IsPrimary { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

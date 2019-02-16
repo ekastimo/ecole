@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.ViewModels;
 using App.Data;
+using Core.Models;
 using Core.Repositories;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -32,7 +35,8 @@ namespace App.Areas.Crm.Repositories.Contact
                 var regex = new BsonRegularExpression(request.Name, "i");
                 filter = filter & builder.Or(
                              builder.Regex(x => x.Person.FirstName, regex),
-                             builder.Regex(x => x.Person.OtherNames, regex),
+                             builder.Regex(x => x.Person.LastName, regex),
+                             builder.Regex(x => x.Person.MiddleName, regex),
                              builder.Regex(x => x.Company.Name, regex)
                          );
             }
@@ -54,6 +58,13 @@ namespace App.Areas.Crm.Repositories.Contact
                 .ToListAsync();
         }
 
+        public async Task<bool> ContactExistsByIdAsync(Guid id)
+        {
+            var filter = Builders<Models.Contact>.Filter
+                .Eq(it => it.Id, id);
+            return await _context.Contacts.Find(filter).AnyAsync();
+        }
+
         public async Task<bool> ContactExistsByIdentificationAsync(string idNumber)
         {
             var filter = Builders<Models.Contact>.Filter
@@ -73,12 +84,6 @@ namespace App.Areas.Crm.Repositories.Contact
             var filter = Builders<Models.Contact>.Filter
                 .ElemMatch(x => x.Phones, x => x.Number == phone);
             return await _context.Contacts.Find(filter).AnyAsync();
-
-//           var result = await (from x in _context.Contacts.AsQueryable()
-//                where x.Emails.Any(child =>
-//                    child.Address == phone)
-//                select x).AnyAsync();
-//            return result;
         }
 
         public async Task<IEnumerable<Models.Contact>> GetContactsAsync(List<Guid> guids)
@@ -92,6 +97,53 @@ namespace App.Areas.Crm.Repositories.Contact
             var filter = Builders<Models.Contact>.Filter
                 .ElemMatch(x => x.Identifications, x => x.Number == idNumber);
             return await _context.Contacts.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
+        {
+            
+            var filter = Builders<Models.Contact>.Filter
+                .Where(x => guids.Contains(x.Id));
+            var data = await _context.Contacts.Find(filter)
+                .Project(x => new MinimalContact
+                {
+                    Id = x.Id,
+                    FirstName = x.Person.FirstName,
+                    LastName = x.Person.LastName,
+                    MiddleName = x.Person.MiddleName,
+                    Avatar = x.Person.Avatar
+                })
+                .ToListAsync();
+            return data.ToImmutableDictionary(x => x.Id, x => x);
+        }
+
+        public async Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request)
+        {
+            var builder = Builders<Models.Contact>.Filter;
+            
+            var filter = builder.Empty;
+
+            if (!string.IsNullOrWhiteSpace(request.Query))
+            {
+                var regex = new BsonRegularExpression(request.Query, "i");
+                filter =builder.Or(
+                    builder.Regex(x => x.Person.FirstName, regex),
+                    builder.Regex(x => x.Person.LastName, regex),
+                    builder.Regex(x => x.Person.MiddleName, regex),
+                    builder.Regex(x => x.Company.Name, regex)
+                );
+            }
+            
+            return await _context.Contacts.Find(filter)
+                .Project(x => new MinimalContact
+                {
+                    Id = x.Id,
+                    FirstName = x.Person.FirstName,
+                    LastName = x.Person.LastName,
+                    MiddleName = x.Person.MiddleName,
+                    Avatar = x.Person.Avatar
+                })
+                .ToListAsync();
         }
     }
 }

@@ -5,11 +5,12 @@ namespace App.Areas.Events.Models
 {
     public class Event : ModelBase
     {
+        public EventPublicity Publicity { get; set; }
         public string Name { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid CreatedBy { get; set; }
         public string Venue { get; set; }
         public string FreeFormAddress { get; set; }
         public string GeoCoOrdinates { get; set; }

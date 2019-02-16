@@ -39,6 +39,7 @@ namespace Core.Repositories
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
+            SetCreatedAt(entity);
             await _collection.InsertOneAsync(entity);
             return entity;
         }
@@ -87,6 +88,20 @@ namespace Core.Repositories
             }
         }
 
+        private void SetCreatedAt(TEntity entity)
+        {
+            try
+            {
+                var type = entity.GetType();
+                var prop = type.GetProperty("CreatedAt");
+                prop.SetValue(entity, DateTime.Now);
+            }
+            catch (Exception)
+            {
+                throw new InvalidDataException("Cant change CreatedAt");
+            }
+        }
+
         private async Task AssertRecordExists(TEntity entity)
         {
             try
@@ -120,7 +135,7 @@ namespace Core.Repositories
 
         public async Task<bool> MatchesConditionAsync(FilterDefinition<TEntity> filter)
         {
-            var result = await _collection.CountAsync(filter);
+            var result = await _collection.CountDocumentsAsync(filter);
             return result > 0;
         }
     }

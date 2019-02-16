@@ -7,9 +7,8 @@ using App.Areas.Auth.Services.Account;
 using App.Areas.Auth.ViewModels.Account;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Services;
-using App.Areas.Crm.ViewModels;
 using App.Areas.Events.Services.Event;
-using App.Areas.Events.Services.EventItem;
+using App.Areas.Events.Services.Item;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,7 +44,7 @@ namespace App.Data
                     var userView = new RegisterViewModel
                     {
                         FirstName = "Super",
-                        OtherNames = "Admin",
+                        LastName = "Admin",
                         Email = "ekastimo@gmail.com",
                         Phone = "+256700106164",
                         DateOfBirth = new DateTime(1990, 12, 20),

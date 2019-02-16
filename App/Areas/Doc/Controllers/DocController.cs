@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Doc.Repositories;
+using App.Areas.Doc.Services;
 using App.Areas.Doc.ViewModels;
 using AutoMapper;
 using Core.Controllers;
@@ -27,17 +28,19 @@ namespace App.Areas.Doc.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDocRepository _repository;
         private readonly ILogger<DocController> _logger;
+        private readonly IDocService _docService;
         private readonly string DocStore = "Uploads";
 
         /// <summary>
         /// Controller for addresses
         /// </summary>
         public DocController(IHttpContextAccessor httpContextAccessor, IDocRepository repository,
-            IMapper mapper, ILogger<DocController> logger)
+            IMapper mapper, ILogger<DocController> logger, IDocService docService)
         {
             _httpContextAccessor = httpContextAccessor;
             _repository = repository;
             _logger = logger;
+            _docService = docService;
             Directory.CreateDirectory(DocStore);
         }
 
@@ -94,6 +97,7 @@ namespace App.Areas.Doc.Controllers
             {
                 await stream.CopyToAsync(memory);
             }
+
             memory.Position = 0;
             return File(memory, GetContentType(filePath), data.OriginalFileName);
         }
@@ -106,28 +110,7 @@ namespace App.Areas.Doc.Controllers
         [HttpPost("upload")]
         public async Task<ActionResult> Upload(UploadRequest request)
         {
-            var fileData = request.File;
-            var document = new Models.Doc
-            {
-                ContentType = request.File.ContentType,
-                Description = request.Details,
-                OriginalFileName = request.File.FileName,
-                FileName = request.Name,
-                SizeInMbs = request.File.Length,
-                CreatedBy = _httpContextAccessor.GetUser().userId,
-                IsPrimary = request.IsPrimary
-            };
-            //Save record to db
-            var resp = await _repository.CreateAsync(document);
-            //create server filename
-            var extension = Path.GetExtension(request.File.FileName);
-            var filePath = Path.Combine(DocStore, $"{resp.Id}.{extension}");
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await fileData.CopyToAsync(stream);
-            }
-
+            var resp = await _docService.Upload(request);
             return Ok(new {Message = "Upload Successful", Data = resp});
         }
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using App.Areas.Events.ViewModels;
 using App.Data;
 using Core.Repositories;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace App.Areas.Events.Repositories.Event
@@ -27,13 +28,13 @@ namespace App.Areas.Events.Repositories.Event
 
             if (!string.IsNullOrEmpty(request.Query))
             {
+                var regex = new BsonRegularExpression(request.Query, "i");
                 filter = filter & builder.Or(
-                             builder.Regex(x => x.Name, request.Query),
-                             builder.Regex(x => x.Details, request.Query),
+                             builder.Regex(x => x.Name, regex),
+                             builder.Regex(x => x.Details, regex),
                              builder.AnyEq(x => x.Tags, request.Query)
                          );
             }
-            
             
             if (fullQuery)
             {
@@ -43,8 +44,7 @@ namespace App.Areas.Events.Repositories.Event
                     .ToListAsync();
             }
             var projection = Builders<Models.Event>.Projection
-                .Exclude(x => x.Items)
-                .Exclude(x => x.Images);
+                .Exclude(x => x.Items);
             return await _context.Events.Find(filter)
                 .Project<Models.Event>(projection)
                 .Skip(request.Skip)

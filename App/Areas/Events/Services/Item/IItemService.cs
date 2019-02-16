@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using App.Areas.Events.ViewModels;
 
-namespace App.Areas.Events.Services.EventItem
+namespace App.Areas.Events.Services.Item
 {
     public interface IItemService
     {
