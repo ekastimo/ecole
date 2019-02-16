@@ -47,7 +47,6 @@ namespace App
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseKestrel()
-                .UseUrls("http://0.0.0.0:9001")
                 .Build();
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
