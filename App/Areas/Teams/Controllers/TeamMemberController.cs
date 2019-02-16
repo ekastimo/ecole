@@ -88,12 +88,12 @@ namespace App.Areas.Teams.Controllers
             var contactsMap = await _contactService.GetNamesByIdAsync(contactIds.ToList());
             return data.Select(it =>
             {
-                var contact = contactsMap[it.ContactId];
+                var contact = contactsMap.SafeGet(it.ContactId);
                 var view = _mapper.Map<TeamMemberViewModel>(it);
-                view.ContactName = contact.FullName;
-                view.ContactAvatar = contact.Avatar;
+                view.ContactName = contact?.FullName;
+                view.ContactAvatar = contact?.Avatar;
                 return view;
-            });
+            }).ToList();
         }
 
         /// <summary>
@@ -119,15 +119,35 @@ namespace App.Areas.Teams.Controllers
                 it.TeamId,
                 it.ContactId,
                 it.Role,
-                dict[it.TeamId].Name,
-                dict[it.TeamId].Description
+                dict.SafeGet(it.TeamId).Name,
+                dict.SafeGet(it.TeamId).Description
             }).ToList();
+        }
+
+
+        /// <summary>
+        /// Attach contact to specific team
+        /// </summary>
+        /// <param name="model">Simple Member Model</param>
+        /// <returns></returns>
+        [HttpPost("contact")]
+        [Produces(typeof(IEnumerable<object>))]
+        public async Task<TeamMemberViewModel> CreateMember([FromBody] TeamMemberViewModel model)
+        {
+            Tk.AssertValidIds(model.TeamId,model.ContactId);
+            var userId = _httpContextAccessor.GetContactId();
+            model.CreatedBy = userId;
+            _logger.LogInformation($"create.teamMember Team: {model.TeamId} Contact: {model.ContactId}");
+            var toSave = _mapper.Map<TeamMember>(model);
+            var data = await _repository.CreateAsync(toSave);
+            _logger.LogInformation($"created.teamMember ${data.Id}");
+            return _mapper.Map<TeamMemberViewModel>(data);
         }
 
         /// <summary>
         /// Create a teamMember
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Extend model to add multiple members</param>
         /// <returns></returns>
         [HttpPost]
         [Produces(typeof(TeamMemberMultipleViewModel))]
@@ -135,7 +155,7 @@ namespace App.Areas.Teams.Controllers
         {
             Tk.AssertValidIds(model.TeamId);
             Tk.AssertValidIds(model.ContactIds.ToArray());
-            var (userId, _) = _httpContextAccessor.GetUser();
+            var userId = _httpContextAccessor.GetContactId();
             model.CreatedBy = userId;
             _logger.LogInformation($"create.teamMember ${model.TeamId}");
             var toSave = model.ContactIds.Select(it => new TeamMember

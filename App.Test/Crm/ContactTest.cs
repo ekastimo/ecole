@@ -39,7 +39,7 @@ namespace App.Test.Crm
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var dbContext = new ApplicationDbContext(config);
+            var dbContext = new ApplicationDbContext(config,null);
             ContactRepository = new ContactRepository(dbContext);
             EmailRepository = new EmailRepository(dbContext);
             IdentificationRepository = new IdentificationRepository(dbContext);

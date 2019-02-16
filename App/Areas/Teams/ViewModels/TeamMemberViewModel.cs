@@ -18,7 +18,7 @@ namespace App.Areas.Teams.ViewModels
 
     public class TeamMemberMultipleViewModel 
     {
-        public string CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
         [Required]
         public Guid TeamId { get; set; }
         [Required]

@@ -1677,11 +1677,18 @@
             <param name="contactId">Contact Id</param>
             <returns></returns>
         </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.CreateMember(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
+            <summary>
+            Attach contact to specific team
+            </summary>
+            <param name="model">Simple Member Model</param>
+            <returns></returns>
+        </member>
         <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberMultipleViewModel)">
             <summary>
             Create a teamMember
             </summary>
-            <param name="model"></param>
+            <param name="model">Extend model to add multiple members</param>
             <returns></returns>
         </member>
         <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Update(App.Areas.Teams.ViewModels.TeamMemberViewModel)">

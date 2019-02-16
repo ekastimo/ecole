@@ -33,7 +33,7 @@ namespace App.Test
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var dbContext = new ApplicationDbContext(config);
+            var dbContext = new ApplicationDbContext(config,null);
             EventRepository = new EventRepository(dbContext);
             EventItemRepository = new ItemRepository(dbContext);
             ContactRepository = new ContactRepository(dbContext);
