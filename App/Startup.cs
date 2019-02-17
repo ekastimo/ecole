@@ -171,7 +171,14 @@ namespace App
 
             app.UseCustomErrorHandling();
             app.UseAuthentication();
-            app.UseMvc();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
