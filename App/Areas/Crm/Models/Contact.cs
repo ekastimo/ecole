@@ -1,4 +1,5 @@
-﻿using App.Areas.Crm.Enums;
+﻿using System;
+using App.Areas.Crm.Enums;
 using Core.Models;
 
 namespace App.Areas.Crm.Models
@@ -13,6 +14,8 @@ namespace App.Areas.Crm.Models
         public  Email[] Emails { get; set; }
         public  Address[] Addresses { get; set; }
         public string[] Tags { get; set; }
-       
+
+        public Guid? ChurchLocation { get; set; }
+        public Guid? MissionalCommunity { get; set; }
     }
 }

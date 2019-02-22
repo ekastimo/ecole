@@ -4,6 +4,43 @@
         <name>App</name>
     </assembly>
     <members>
+        <member name="T:App.Areas.Chc.Controllers.LocationController">
+            <inheritdoc />
+            <summary>
+            All end-points dealing with contacts 
+            </summary>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ILocationRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.LocationController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper)">
+            <inheritdoc />
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Create(Core.Models.SearchBase)">
+            <summary>
+            Fetch church locations
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Create(App.Areas.Chc.ViewModel.LocationViewModel)">
+            <summary>
+            Creates Church Location
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Update(App.Areas.Chc.ViewModel.LocationViewModel)">
+            <summary>
+            Updates Church Location
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Delete(System.Guid)">
+            <summary>
+            Delete Church Location
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Crm.Controllers.AddressController">
             <inheritdoc />
             <summary>
@@ -42,7 +79,7 @@
             All end-points dealing with contacts 
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Events.Controllers.EventController},App.Areas.Doc.Services.IDocService)">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.ContactController},App.Areas.Doc.Services.IDocService)">
             <inheritdoc />
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.ContactViewModel)">

@@ -9,7 +9,7 @@ namespace App.Data
     {
         public static void CreateConfigs(IMapperConfigurationExpression cfg)
         {
-            CrmMapper.MapModels(cfg);
+            ChcMapper.MapModels(cfg);
             EventsMapper.MapModels(cfg);
             DocumentsMapper.MapModels(cfg);
         }

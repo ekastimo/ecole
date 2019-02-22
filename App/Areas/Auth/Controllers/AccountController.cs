@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using App.Areas.Auth.Models;
+﻿using App.Areas.Auth.Models;
 using App.Areas.Auth.Services.Account;
 using App.Areas.Auth.ViewModels;
 using App.Areas.Auth.ViewModels.Account;
@@ -20,6 +13,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace App.Areas.Auth.Controllers
 {
@@ -84,7 +84,7 @@ namespace App.Areas.Auth.Controllers
         public object Claims()
         {
             return User.Claims.Select(c =>
-                new {c.Type, c.Value});
+                new { c.Type, c.Value });
         }
 
         [Authorize(Roles = SystemRoles.Admin)]
@@ -92,7 +92,7 @@ namespace App.Areas.Auth.Controllers
         public object MoreClaims()
         {
             return User.Claims.Select(c =>
-                new {c.Type, c.Value});
+                new { c.Type, c.Value });
         }
 
         private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
@@ -100,6 +100,9 @@ namespace App.Areas.Auth.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var contact = await _contactRepository.GetByIdAsync(user.ContactId);
             var person = _mapper.Map<PersonViewModel>(contact.Person);
+            var fullName = $"{person.FirstName} {person.MiddleName} {person.LastName}"
+                .Replace("  ", " ").Trim();
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
@@ -107,7 +110,7 @@ namespace App.Areas.Auth.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("id", user.Id),
                 new Claim("contactId", contact.Id.ToString()),
-                new Claim("fullName",  $"{person.FirstName} {person.MiddleName} {person.LastName}")
+                new Claim("fullName",  fullName)
             };
             foreach (var role in roles)
             {
@@ -115,23 +118,29 @@ namespace App.Areas.Auth.Controllers
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
 
-            var token = new JwtSecurityToken(
-                _configuration["JwtIssuer"],
-                _configuration["JwtIssuer"],
+            var token = new JwtSecurityToken(_configuration["JwtIssuer"],_configuration["JwtIssuer"],
                 claims,
                 expires: expires,
-                signingCredentials: creds
+                signingCredentials: credentials
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            
+
             return new
             {
                 Token = tokenString,
-                User = person
+                User = new UserViewModel
+                {
+                    Id = user.Id,
+                    ContactId = user.ContactId,
+                    Email = user.Email,
+                    Username = user.UserName,
+                    Roles = roles,
+                    FullName = fullName
+                }
             };
         }
 
@@ -150,7 +159,7 @@ namespace App.Areas.Auth.Controllers
         public async Task<object> GetById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if(user==null)
+            if (user == null)
                 throw new NotFoundException($"Invalid user: {id}");
             var roles = await _userManager.GetRolesAsync(user);
             return new UserViewModel
@@ -165,16 +174,16 @@ namespace App.Areas.Auth.Controllers
         [HttpGet("profile")]
         public async Task<object> GetById()
         {
-            var currentUser = _httpContextAccessor.GetUser();
-            var id = currentUser.userId;
-            var user = await _userManager.FindByIdAsync(id);
+            var (userId, userClaims) = _httpContextAccessor.GetUser();
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                throw new NotFoundException($"Invalid user: {id}");
+                throw new NotFoundException($"Invalid user: {userId}");
             var roles = await _userManager.GetRolesAsync(user);
-            var name = currentUser.userClaims["fullName"];
+            var name = userClaims["fullName"];
             return new UserViewModel
             {
                 Id = user.Id,
+                ContactId = user.ContactId,
                 Email = user.Email,
                 Username = user.UserName,
                 Roles = roles,

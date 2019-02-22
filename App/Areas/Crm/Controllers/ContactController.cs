@@ -29,11 +29,11 @@ namespace App.Areas.Crm.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IContactService _contactService;
-        private readonly ILogger<EventController> _logger;
+        private readonly ILogger<ContactController> _logger;
         private readonly IDocService _docService;
 
         /// <inheritdoc />
-        public ContactController(IHttpContextAccessor httpContextAccessor, IContactService contactService, ILogger<EventController> logger,
+        public ContactController(IHttpContextAccessor httpContextAccessor, IContactService contactService, ILogger<ContactController> logger,
             IDocService docService)
         {
             _httpContextAccessor = httpContextAccessor;

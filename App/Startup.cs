@@ -65,6 +65,7 @@ namespace App
 
             services.AddAutoMapper(config =>
             {
+                ChcMapper.MapModels(config);
                 CrmMapper.MapModels(config);
                 EventsMapper.MapModels(config);
                 DocumentsMapper.MapModels(config);

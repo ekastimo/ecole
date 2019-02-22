@@ -44,9 +44,4 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Chc\Controllers\" />
-    <Folder Include="Areas\Chc\Data\" />
-    <Folder Include="Areas\Chc\Repositories\" />
-  </ItemGroup>
 </Project>

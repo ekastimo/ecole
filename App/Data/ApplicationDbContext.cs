@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using App.Areas.Chc.Models;
 using App.Areas.Crm.Models;
 using App.Areas.Doc.Models;
 using App.Areas.Events.Models;
@@ -42,8 +43,10 @@ namespace App.Data
         public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("todos");
         public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("docs");
         public IMongoCollection<Team> Teams => _database.GetCollection<Team>("teams");
-        public IMongoCollection<TeamMember> TeamMembers => _database
-            .GetCollection<TeamMember>("team-members");
-        
+        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("team-members");
+
+        public IMongoCollection<Location> Locations => _database.GetCollection<Location>("locations");
+        public IMongoCollection<CellGroup> CellGroups => _database.GetCollection<CellGroup>("cell-groups");
+
     }
 }
