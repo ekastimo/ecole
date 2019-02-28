@@ -80,7 +80,7 @@ namespace App.Areas.Crm.Controllers
         /// </summary>
         /// <param name="id">Contact Id</param>
         /// <returns></returns>
-        [HttpGet("byid/{id}")]
+        [HttpGet("id/{id}")]
         [Produces(typeof(ContactViewModel))]
         public async Task<ContactViewModel> Get(Guid id)
         {
@@ -148,7 +148,7 @@ namespace App.Areas.Crm.Controllers
         /// </summary>
         /// <param name="guids"></param>
         /// <returns></returns>
-        [HttpPost("byids")]
+        [HttpPost("ids")]
         [Produces(typeof(IEnumerable<ContactViewModel>))]
         public async Task<List<ContactViewModel>> FindByIds([FromBody] List<Guid> guids)
         {
@@ -190,6 +190,22 @@ namespace App.Areas.Crm.Controllers
             _logger.LogInformation("add.person");
             var data = await _contactService.CreateAsync(model);
             _logger.LogInformation($"added.person {data.Id}");
+            return data;
+        }
+
+
+        /// <summary>
+        /// Update Location of a contact
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("chc")]
+        [Produces(typeof(ContactViewModel))]
+        public async Task<ContactViewModel> ContactLocation([FromBody] NewPersonViewModel model)
+        {
+            _logger.LogInformation("update.contact.chc");
+            var data = await _contactService.CreateAsync(model);
+            _logger.LogInformation($"updated..contact.chc {data.Id}");
             return data;
         }
 

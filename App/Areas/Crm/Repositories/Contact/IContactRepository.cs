@@ -19,5 +19,6 @@ namespace App.Areas.Crm.Repositories.Contact
         Task<Models.Contact> GetByIdentificationAsync(string idNumber);
         Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request);
         Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Models.Contact> filter);
+        Task<long> UpdateAsync(FilterDefinition<Models.Contact> filter, UpdateDefinition<Models.Contact> update);
     }
 }

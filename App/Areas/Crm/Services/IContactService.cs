@@ -12,7 +12,9 @@ namespace App.Areas.Crm.Services
     public interface IContactService
     {
         Task<ContactViewModel> CreateAsync(NewPersonViewModel contact);
-        
+
+        Task<ContactChcViewModel> UpdateChcInformation(ContactChcViewModel model);
+
         Task<ContactViewModel> CreateAsync(NewCompanyViewModel contact);
 
         Task<ContactViewModel> GetByIdAsync(Guid id);

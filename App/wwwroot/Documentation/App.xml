@@ -196,6 +196,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:App.Areas.Crm.Controllers.ContactController.ContactLocation(App.Areas.Crm.ViewModels.NewPersonViewModel)">
+            <summary>
+            Update Location of a contact
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewCompanyViewModel)">
             <summary>
             Creates a new company

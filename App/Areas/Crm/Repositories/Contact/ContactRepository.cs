@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.ViewModels;
 using App.Data;
+using Core.Exceptions;
 using Core.Models;
 using Core.Repositories;
 using MongoDB.Bson;
@@ -111,6 +112,14 @@ namespace App.Areas.Crm.Repositories.Contact
                     Avatar = x.Person.Avatar
                 })
                 .ToListAsync();
+        }
+
+        public async Task<long> UpdateAsync(FilterDefinition<Models.Contact> filter, UpdateDefinition<Models.Contact> update)
+        {
+            var result = await _context.Contacts.UpdateOneAsync(filter, update);
+            if (result.ModifiedCount != 1)
+                throw new ClientFriendlyException("record update failed");
+            return result.ModifiedCount;
         }
 
         public async Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request)

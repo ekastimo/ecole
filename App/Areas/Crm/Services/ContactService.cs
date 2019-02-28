@@ -59,6 +59,16 @@ namespace App.Areas.Crm.Services
             return _mapper.Map<ContactViewModel>(result);
         }
 
+        public async Task<ContactChcViewModel> UpdateChcInformation(ContactChcViewModel model)
+        {
+            var filter = Builders<Contact>.Filter.Eq(x => x.Id, model.ContactId);
+            var update = Builders<Contact>.Update
+                .Set(x => x.ChurchLocation, model.ChurchLocation)
+                .Set(x => x.CellGroup, model.CellGroup);
+            await _contactRepository.UpdateAsync(filter, update);
+            return model;
+        }
+
 
         public async Task<ContactViewModel> CreateAsync(ContactViewModel model)
         {
