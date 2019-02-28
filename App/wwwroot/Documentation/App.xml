@@ -4,13 +4,50 @@
         <name>App</name>
     </assembly>
     <members>
+        <member name="T:App.Areas.Chc.Controllers.CellGroupController">
+            <inheritdoc />
+            <summary>
+            All end-points dealing with contacts 
+            </summary>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ICellGroupRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.CellGroupController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper)">
+            <inheritdoc />
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Create(Core.Models.SearchBase)">
+            <summary>
+            Fetch church cellgroups
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Create(App.Areas.Chc.ViewModel.CellGroupViewModel)">
+            <summary>
+            Creates Church CellGroup
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Update(App.Areas.Chc.ViewModel.CellGroupViewModel)">
+            <summary>
+            Updates Church CellGroup
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Delete(System.Guid)">
+            <summary>
+            Delete Church CellGroup
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Chc.Controllers.LocationController">
             <inheritdoc />
             <summary>
             All end-points dealing with contacts 
             </summary>
         </member>
-        <member name="M:App.Areas.Chc.Controllers.LocationController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ILocationRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.LocationController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper)">
+        <member name="M:App.Areas.Chc.Controllers.LocationController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ILocationRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.LocationController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper,App.Areas.Crm.Services.IContactService)">
             <inheritdoc />
         </member>
         <member name="M:App.Areas.Chc.Controllers.LocationController.Create(Core.Models.SearchBase)">
@@ -37,6 +74,20 @@
         <member name="M:App.Areas.Chc.Controllers.LocationController.Delete(System.Guid)">
             <summary>
             Delete Church Location
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.GetById(System.Guid)">
+            <summary>
+            Get Church Location
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Chc.Controllers.LocationController.GetMembers(System.Guid)">
+            <summary>
+            Get Church Location
             </summary>
             <param name="id"></param>
             <returns></returns>

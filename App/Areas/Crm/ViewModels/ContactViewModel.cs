@@ -16,6 +16,12 @@ namespace App.Areas.Crm.ViewModels
         public ICollection<EmailViewModel> Emails { get; set; }
         public ICollection<AddressViewModel> Addresses { get; set; }
         public string[] Tags { get; set; }
+
+        public Guid? ChurchLocation { get; set; }
+        public Guid? CellGroup { get; set; }
+
+        public string ChurchLocationName { get; set; }
+        public string CellGroupName { get; set; }
     }
 
     public class NewContactViewModel

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.Enums;
@@ -11,6 +12,7 @@ using Core.Exceptions;
 using Core.Extensions;
 using Core.Models;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace App.Areas.Crm.Services
 {
@@ -246,9 +248,19 @@ namespace App.Areas.Crm.Services
             var result = await _contactRepository.GetContactsAsync(guids);
             return _mapper.Map<IEnumerable<ContactViewModel>>(result);
         }
+     
+
         public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
         {
-            return await _contactRepository.GetNamesByIdAsync(guids);
+            var filter = Builders<Models.Contact>.Filter
+                .Where(x => guids.Contains(x.Id));
+            var data = await _contactRepository.GetNamesAsync(filter);
+            return data.ToImmutableDictionary(x => x.Id, x => x);
+        }
+
+        public async Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Contact> filter)
+        {
+            return await _contactRepository.GetNamesAsync(filter); ;
         }
 
         public async Task<ContactViewModel> GetByIdentificationAsync(string idNumber)

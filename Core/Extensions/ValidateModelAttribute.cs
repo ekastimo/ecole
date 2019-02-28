@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq;
 
 namespace Core.Extensions
 {
@@ -9,7 +13,7 @@ namespace Core.Extensions
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.ModelState.IsValid)  
+            if (context.ModelState.IsValid)
                 return;
 
             //List<(string Field, List<string> Errors)>
@@ -35,6 +39,43 @@ namespace Core.Extensions
         private static string LowerInvariant(string word)
         {
             return char.ToLowerInvariant(word[0]) + word.Substring(1);
+        }
+    }
+
+
+    public class ValidGuidAttribute : ValidationAttribute
+    {
+        private const string DefaultErrorMessage = "'{0}' does not contain a valid guid";
+
+        public ValidGuidAttribute() : base(DefaultErrorMessage)
+        {
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var input = Convert.ToString(value, CultureInfo.CurrentCulture);
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return null;
+            }
+
+            if (!Guid.TryParse(input, out var guid))
+            {
+                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            }
+            return guid == Guid.Empty ? new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) : null;
+        }
+    }
+
+    public class MustHaveElementsAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value is IList list)
+            {
+                return list.Count > 0;
+            }
+            return false;
         }
     }
 }

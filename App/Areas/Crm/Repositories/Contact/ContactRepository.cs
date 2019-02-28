@@ -99,12 +99,9 @@ namespace App.Areas.Crm.Repositories.Contact
             return await _context.Contacts.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
+        public async Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Models.Contact> filter)
         {
-            
-            var filter = Builders<Models.Contact>.Filter
-                .Where(x => guids.Contains(x.Id));
-            var data = await _context.Contacts.Find(filter)
+            return await _context.Contacts.Find(filter)
                 .Project(x => new MinimalContact
                 {
                     Id = x.Id,
@@ -114,7 +111,6 @@ namespace App.Areas.Crm.Repositories.Contact
                     Avatar = x.Person.Avatar
                 })
                 .ToListAsync();
-            return data.ToImmutableDictionary(x => x.Id, x => x);
         }
 
         public async Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request)

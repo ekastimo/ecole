@@ -16,6 +16,6 @@ namespace App.Areas.Crm.Models
         public string[] Tags { get; set; }
 
         public Guid? ChurchLocation { get; set; }
-        public Guid? MissionalCommunity { get; set; }
+        public Guid? CellGroup { get; set; }
     }
 }

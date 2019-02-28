@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using App.Areas.Crm.Models;
 using App.Areas.Crm.ViewModels;
 using Core.Models;
+using MongoDB.Driver;
 
 namespace App.Areas.Crm.Services
 {
@@ -23,6 +25,7 @@ namespace App.Areas.Crm.Services
 
         Task<IEnumerable<ContactViewModel>> GetContactsAsync(List<Guid> guids);
         Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> contactIds);
+        Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Contact> filter);
         Task<ContactViewModel> GetByIdentificationAsync(string id);
 
         Task<bool> ContactExistsByEmailAsync(params string[] values);

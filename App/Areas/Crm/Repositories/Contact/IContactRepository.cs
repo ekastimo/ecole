@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using App.Areas.Crm.ViewModels;
 using Core.Models;
 using Core.Repositories;
+using MongoDB.Driver;
 
 namespace App.Areas.Crm.Repositories.Contact
 {
@@ -16,7 +17,7 @@ namespace App.Areas.Crm.Repositories.Contact
         Task<bool> ContactExistsByPhoneAsync(string phone);
         Task<IEnumerable<Models.Contact>> GetContactsAsync(List<Guid> guids);
         Task<Models.Contact> GetByIdentificationAsync(string idNumber);
-        Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids);
-        Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request); 
+        Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request);
+        Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Models.Contact> filter);
     }
 }
