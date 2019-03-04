@@ -231,6 +231,7 @@ namespace App.Areas.Crm.Services
         public async Task<ContactViewModel> GetByIdAsync(Guid id)
         {
             var result = await _contactRepository.GetByIdAsync(id);
+
             return _mapper.Map<ContactViewModel>(result);
         }
 

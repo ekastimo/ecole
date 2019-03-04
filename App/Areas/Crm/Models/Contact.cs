@@ -15,7 +15,7 @@ namespace App.Areas.Crm.Models
         public  Address[] Addresses { get; set; }
         public string[] Tags { get; set; }
 
-        public Guid? ChurchLocation { get; set; }
-        public Guid? CellGroup { get; set; }
+        public string ChurchLocation { get; set; }
+        public string CellGroup { get; set; }
     }
 }

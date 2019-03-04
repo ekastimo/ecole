@@ -13,4 +13,12 @@ namespace Core.Models
         public bool IsDeleted { get; set; }
        
     }
+
+    public class ModelBaseCustomId
+    {
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? LastUpdated { get; set; }
+        public bool IsDeleted { get; set; }
+
+    }
 }

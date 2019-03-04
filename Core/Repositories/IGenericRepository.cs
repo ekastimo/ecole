@@ -18,8 +18,15 @@ namespace Core.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        Task<TEntity> GetByIdAsync(string id);
+
+        /// <summary>
+        /// Get entity by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Task<TEntity> GetByIdAsync(Guid id);
-     
+
 
         /// <summary>
         /// Create entity
@@ -42,6 +49,13 @@ namespace Core.Repositories
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<TEntity> UpdateAsync(TEntity entity);
+
+        /// <summary>
+        /// Delete entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<int> DeleteAsync(string id);
 
         /// <summary>
         /// Delete entity

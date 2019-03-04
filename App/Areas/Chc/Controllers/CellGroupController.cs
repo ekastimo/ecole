@@ -84,7 +84,6 @@ namespace App.Areas.Chc.Controllers
         [Produces(typeof(CellGroupViewModel))]
         public async Task<CellGroupViewModel> Update([FromBody] CellGroupViewModel model)
         {
-            Tk.AssertValidIds(model.Id);
             _logger.LogInformation("update.cellgroup");
             var toSave = _mapper.Map<CellGroup>(model);
             var saved = await _repository.UpdateAsync(toSave);

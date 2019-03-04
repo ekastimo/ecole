@@ -6,6 +6,9 @@ namespace App.Areas.Chc.ViewModel
 {
     public class LocationViewModel : Core.Models.ViewModel
     {
+
+        [Required]
+        public new string Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

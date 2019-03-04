@@ -85,7 +85,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Chc.Controllers.LocationController.GetMembers(System.Guid)">
+        <member name="M:App.Areas.Chc.Controllers.LocationController.GetMembers(System.String)">
             <summary>
             Get Church Location
             </summary>
@@ -130,7 +130,7 @@
             All end-points dealing with contacts 
             </summary>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.ContactController},App.Areas.Doc.Services.IDocService)">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Crm.Services.IContactService,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.ContactController},App.Areas.Doc.Services.IDocService,App.Areas.Chc.Repositories.ILocationRepository,App.Areas.Chc.Repositories.ICellGroupRepository)">
             <inheritdoc />
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.ContactViewModel)">
@@ -196,7 +196,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.ContactLocation(App.Areas.Crm.ViewModels.NewPersonViewModel)">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.ContactLocation(App.Areas.Crm.ViewModels.ContactChcViewModel)">
             <summary>
             Update Location of a contact
             </summary>

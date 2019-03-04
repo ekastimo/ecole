@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Areas.Chc.Repositories;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using App.Areas.Doc.Services;
@@ -31,15 +32,19 @@ namespace App.Areas.Crm.Controllers
         private readonly IContactService _contactService;
         private readonly ILogger<ContactController> _logger;
         private readonly IDocService _docService;
+        private readonly ILocationRepository _locationRepository;
+        private readonly ICellGroupRepository _cellGroupRepository;
 
         /// <inheritdoc />
         public ContactController(IHttpContextAccessor httpContextAccessor, IContactService contactService, ILogger<ContactController> logger,
-            IDocService docService)
+            IDocService docService,ILocationRepository locationRepository,ICellGroupRepository cellGroupRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _contactService = contactService;
             _logger = logger;
             _docService = docService;
+            _locationRepository = locationRepository;
+            _cellGroupRepository = cellGroupRepository;
         }
 
 
@@ -88,6 +93,17 @@ namespace App.Areas.Crm.Controllers
             var data = await _contactService.GetByIdAsync(id);
             if (data == null)
                 throw new NotFoundException($"Invalid record id:{id}");
+            if (!string.IsNullOrWhiteSpace(data.ChurchLocation))
+            {
+                var location = await _locationRepository.GetByIdAsync(data.ChurchLocation);
+                data.ChurchLocationName = location.Name;
+            }
+            if (!string.IsNullOrWhiteSpace(data.CellGroup))
+            {
+                var cellGroup = await _cellGroupRepository.GetByIdAsync(data.CellGroup);
+                data.CellGroupName = cellGroup.Name;
+            }
+           
             _logger.LogInformation($"found.contact {data.Id}");
             return data;
         }
@@ -200,12 +216,12 @@ namespace App.Areas.Crm.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("chc")]
-        [Produces(typeof(ContactViewModel))]
-        public async Task<ContactViewModel> ContactLocation([FromBody] NewPersonViewModel model)
+        [Produces(typeof(ContactChcViewModel))]
+        public async Task<ContactChcViewModel> ContactLocation([FromBody] ContactChcViewModel model)
         {
             _logger.LogInformation("update.contact.chc");
-            var data = await _contactService.CreateAsync(model);
-            _logger.LogInformation($"updated..contact.chc {data.Id}");
+            var data = await _contactService.UpdateChcInformation(model);
+            _logger.LogInformation($"updated..contact.chc {data.ContactId}");
             return data;
         }
 

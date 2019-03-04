@@ -24,7 +24,7 @@ namespace Core.Repositories
             return await _collection.Find(filter).Skip(skip).Limit(limit).ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(Guid id)
+        public async Task<TEntity> GetByIdAsync(string id)
         {
             try
             {
@@ -32,6 +32,19 @@ namespace Core.Repositories
                 return await _collection.Find(filter).FirstAsync();
             }
             catch (Exception )
+            {
+                throw new NotFoundException($"Invalid record {id}");
+            }
+        }
+
+        public async Task<TEntity> GetByIdAsync(Guid id)
+        {
+            try
+            {
+                var filter = Builders<TEntity>.Filter.Eq("_id", id);
+                return await _collection.Find(filter).FirstAsync();
+            }
+            catch (Exception)
             {
                 throw new NotFoundException($"Invalid record {id}");
             }
@@ -131,6 +144,13 @@ namespace Core.Repositories
             var filter = Builders<TEntity>.Filter.Eq("_id", id);
             var result = await _collection.DeleteOneAsync(filter);
             return (int) result.DeletedCount;
+        }
+
+        public async Task<int> DeleteAsync(string id)
+        {
+            var filter = Builders<TEntity>.Filter.Eq("_id", id);
+            var result = await _collection.DeleteOneAsync(filter);
+            return (int)result.DeletedCount;
         }
 
         public async Task<bool> MatchesConditionAsync(FilterDefinition<TEntity> filter)

@@ -87,7 +87,6 @@ namespace App.Areas.Chc.Controllers
         [Produces(typeof(LocationViewModel))]
         public async Task<LocationViewModel> Update([FromBody] LocationViewModel model)
         {
-            Tk.AssertValidIds(model.Id);
             _logger.LogInformation("update.location");
             var toSave = _mapper.Map<Location>(model);
             var saved = await _repository.UpdateAsync(toSave);
@@ -135,7 +134,7 @@ namespace App.Areas.Chc.Controllers
         /// <returns></returns>
         [HttpGet("members/{id}")]
         [Produces(typeof(List<MinimalContact>))]
-        public async Task<List<MinimalContact>> GetMembers([FromRoute] Guid id)
+        public async Task<List<MinimalContact>> GetMembers([FromRoute] string id)
         {
             var filter = Builders<Crm.Models.Contact>.Filter
                 .Where(x =>x.ChurchLocation ==id);

@@ -13,11 +13,11 @@ namespace App.Areas.Crm.ViewModels
         public Guid ContactId { get; set; }
 
         [ValidGuid]
-        public Guid ChurchLocation { get; set; }
+        public string ChurchLocation { get; set; }
         public string ChurchLocationName { get; set; }
 
         [ValidGuid]
-        public Guid CellGroup { get; set; } 
+        public string CellGroup { get; set; } 
         public string CellGroupName { get; set; } 
     }
 }
