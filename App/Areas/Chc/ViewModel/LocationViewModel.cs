@@ -4,11 +4,11 @@ using Core.Extensions;
 
 namespace App.Areas.Chc.ViewModel
 {
-    public class LocationViewModel : Core.Models.ViewModel
+    public class LocationViewModel : Core.Models.ViewModelCustomId
     {
 
         [Required]
-        public new string Id { get; set; }
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

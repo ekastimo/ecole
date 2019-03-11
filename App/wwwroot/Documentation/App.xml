@@ -34,7 +34,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Delete(System.Guid)">
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Delete(System.String)">
             <summary>
             Delete Church CellGroup
             </summary>
@@ -71,14 +71,14 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Chc.Controllers.LocationController.Delete(System.Guid)">
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Delete(System.String)">
             <summary>
             Delete Church Location
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Chc.Controllers.LocationController.GetById(System.Guid)">
+        <member name="M:App.Areas.Chc.Controllers.LocationController.GetById(System.String)">
             <summary>
             Get Church Location
             </summary>

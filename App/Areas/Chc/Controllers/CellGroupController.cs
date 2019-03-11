@@ -98,7 +98,7 @@ namespace App.Areas.Chc.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Produces(typeof(CellGroupViewModel))]
-        public async Task<object> Delete([FromRoute] Guid id)
+        public async Task<object> Delete([FromRoute] string id)
         {
             _logger.LogInformation($"delete.cellgroup {id}");
             await _repository.DeleteAsync(id);

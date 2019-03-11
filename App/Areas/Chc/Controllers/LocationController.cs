@@ -101,7 +101,7 @@ namespace App.Areas.Chc.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Produces(typeof(object))]
-        public async Task<object> Delete([FromRoute] Guid id)
+        public async Task<object> Delete([FromRoute] string id)
         {
             _logger.LogInformation($"delete.location {id}");
             await _repository.DeleteAsync(id);
@@ -120,7 +120,7 @@ namespace App.Areas.Chc.Controllers
         /// <returns></returns>
         [HttpGet("id/{id}")]
         [Produces(typeof(LocationViewModel))]
-        public async Task<LocationViewModel> GetById([FromRoute] Guid id)
+        public async Task<LocationViewModel> GetById([FromRoute] string id)
         {
             _logger.LogInformation($"get.location {id}");
             var location = await _repository.GetByIdAsync(id);

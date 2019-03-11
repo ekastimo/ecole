@@ -7,10 +7,11 @@ using Core.Extensions;
 
 namespace App.Areas.Chc.ViewModel
 {
-    public class CellGroupViewModel: Core.Models.ViewModel
-    {
+    public class CellGroupViewModel: Core.Models.ViewModelCustomId
+    {     
+        public string Id { get; set; }
         [Required]
-        public new string Id { get; set; }
+        public string Location { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -20,7 +21,6 @@ namespace App.Areas.Chc.ViewModel
 
         [MustHaveElements]
         public List<string> MeetingTimes { get; set; }
-        [ValidGuid]
-        public Guid Location { get; set; }
+        
     }
 }

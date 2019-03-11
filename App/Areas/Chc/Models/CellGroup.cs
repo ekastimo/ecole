@@ -16,7 +16,7 @@ namespace App.Areas.Chc.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Venue { get; set; }
-        public Guid Location { get; set; }
+        public string Location { get; set; }
         public string Details { get; set; }
         public List<string> MeetingTimes { get; set; }
     }

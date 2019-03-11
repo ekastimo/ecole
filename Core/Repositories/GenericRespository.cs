@@ -71,14 +71,14 @@ namespace Core.Repositories
             }
         }
 
-        private Guid GetId(TEntity entity)
+        private object GetId(TEntity entity)
         {
             try
             {
                 var type = entity.GetType();
                 var prop = type.GetProperty("Id");
                 var value = prop.GetValue(entity);
-                var toRet = value as Guid?;
+                var toRet = value;
                 return toRet ?? throw new InvalidDataException("Invalid record, for update");
             }
             catch (Exception)
@@ -120,7 +120,8 @@ namespace Core.Repositories
             try
             {
                 var id = GetId(entity);
-                var rec = await GetByIdAsync(id);
+                var guidId = id as Guid?;
+                var rec = id is string?await GetByIdAsync(id as string): await GetByIdAsync(guidId.Value);
                 if (rec == null)
                     throw new InvalidDataException("Record not found");
             }
@@ -133,7 +134,16 @@ namespace Core.Repositories
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var id = GetId(entity);
-            var filter = Builders<TEntity>.Filter.Eq("_id", id);
+            FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Empty;
+            if (id is string)
+            {
+                filter = Builders<TEntity>.Filter.Eq("_id", id as string);
+            }
+            else if(id is Guid)
+            {
+                filter = Builders<TEntity>.Filter.Eq("_id", id as Guid?);
+            }
+            
             SetLastUpdated(entity);
             await _collection.ReplaceOneAsync(filter, entity);
             return entity;
