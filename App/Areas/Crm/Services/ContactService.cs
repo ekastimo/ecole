@@ -41,6 +41,8 @@ namespace App.Areas.Crm.Services
             var data = new Contact
             {
                 Category = ContactCategory.Person,
+                ChurchLocation = model.ChurchLocation,
+                CellGroup = model.CellGroup,
                 Person = new Person
                 {
                     FirstName = model.FirstName,

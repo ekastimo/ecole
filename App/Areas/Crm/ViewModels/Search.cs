@@ -12,9 +12,10 @@ namespace App.Areas.Crm.ViewModels
     public class ContactSearchRequest : SearchBase
     {
         public Guid? Id { get; set; }
-        public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string ChurchLocation { get; set; }
+        public string CellGroup { get; set; }
         public string[] Tags { get; set; }
     }
 }

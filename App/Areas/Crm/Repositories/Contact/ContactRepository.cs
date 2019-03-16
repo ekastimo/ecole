@@ -31,9 +31,9 @@ namespace App.Areas.Crm.Repositories.Contact
                 filter = filter & builder.Eq(x => x.Id, request.Id);
             }
 
-            if (!string.IsNullOrEmpty(request.Name))
+            if (!string.IsNullOrEmpty(request.Query))
             {
-                var regex = new BsonRegularExpression(request.Name, "i");
+                var regex = new BsonRegularExpression(request.Query, "i");
                 filter = filter & builder.Or(
                              builder.Regex(x => x.Person.FirstName, regex),
                              builder.Regex(x => x.Person.LastName, regex),
@@ -50,6 +50,16 @@ namespace App.Areas.Crm.Repositories.Contact
             if (!string.IsNullOrEmpty(request.Phone))
             {
                 filter = filter & builder.ElemMatch(x => x.Phones, x => x.Number == request.Phone);
+            }
+
+            if (!string.IsNullOrEmpty(request.ChurchLocation))
+            {
+                filter = filter & builder.Eq(x => x.ChurchLocation, request.ChurchLocation);
+            }
+
+            if (!string.IsNullOrEmpty(request.CellGroup))
+            {
+                filter = filter & builder.Eq(x => x.CellGroup, request.CellGroup);
             }
 
             return await _context.Contacts

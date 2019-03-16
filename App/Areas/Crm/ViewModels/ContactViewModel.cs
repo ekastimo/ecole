@@ -34,6 +34,13 @@ namespace App.Areas.Crm.ViewModels
 
         [Required]
         public string Phone { get; set; }
+
+        [Required]
+        public string ChurchLocation { get; set; }
+
+        [Required]
+        public string CellGroup { get; set; }
+
         public IdentificationCategory? IdentificationCategory { get; set; }
         public string IdentificationNumber { get; set; }
         public DateTime? IdentificationValidFrom { get; set; }
