@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using App.Areas.Auth.Models;
 using App.Areas.Auth.Services.Account;
 using App.Areas.Auth.ViewModels.Account;
+using App.Areas.Chc.Models;
+using App.Areas.Chc.Repositories;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Services;
 using App.Areas.Events.Services.Event;
 using App.Areas.Events.Services.Item;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,7 +38,7 @@ namespace App.Data
                         return;
                     }
 
-                    var roles = new List<string> {SystemRoles.Super, SystemRoles.Admin, SystemRoles.User};
+                    var roles = new List<string> { SystemRoles.Super, SystemRoles.Admin, SystemRoles.User };
                     foreach (var role in roles)
                     {
                         await roleManager.CreateAsync(new ApplicationRole(role));
@@ -60,6 +63,27 @@ namespace App.Data
                         throw new Exception(result.Errors.First().Description);
                     }
 
+
+                    var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+                    var locationRepository = scope.ServiceProvider.GetRequiredService<ILocationRepository>();
+                    var fakeLocations = FakeData.FakeLocations();
+                    foreach (var location in fakeLocations)
+                    {
+                        var model = mapper.Map<Location>(location);
+                        logger.LogInformation(JsonConvert.SerializeObject(location));
+                        await locationRepository.CreateAsync(model);
+                    }
+                    logger.LogWarning($"Added {fakeLocations.Count} Locations");
+
+                    var cellGroupRepository = scope.ServiceProvider.GetRequiredService<ICellGroupRepository>();
+                    var fakeCellGroups = FakeData.FakeCellGroups();
+                    foreach (var cellGroup in fakeCellGroups)
+                    {
+                        var model = mapper.Map<CellGroup>(cellGroup);
+                        logger.LogInformation(JsonConvert.SerializeObject(cellGroup));
+                        await cellGroupRepository.CreateAsync(model);
+                    }
+                    logger.LogWarning($"Added {fakeCellGroups.Count} CellGroups");
                     var contactService = scope.ServiceProvider.GetRequiredService<IContactService>();
                     var fakeContacts = FakeData.FakeContacts();
                     foreach (var contact in fakeContacts)

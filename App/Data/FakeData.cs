@@ -5,6 +5,7 @@ using App.Areas.Crm.ViewModels;
 using App.Areas.Events.ViewModels;
 using Bogus;
 using System.Linq;
+using App.Areas.Chc.ViewModel;
 
 namespace App.Data
 {
@@ -18,9 +19,42 @@ namespace App.Data
             Randomizer.Seed = new Random(8675309);
         }
 
+        public static List<LocationViewModel> FakeLocations(int count = 100)
+        {
+            var loc = new LocationViewModel
+            {
+                Id = "WHKatiKati",
+                Name = "WHKatiKati",
+                Details = "WHKatiKati",
+                MeetingTimes = new List<string>{ "9am", "11am" },
+            };
+            return new List<LocationViewModel>
+            {
+             loc
+            };
+        }
+
+        public static List<CellGroupViewModel> FakeCellGroups(int count = 100)
+        {
+
+            return new List<CellGroupViewModel>
+            {
+                new CellGroupViewModel
+                {
+                    Location = "WHKatiKati",
+                    Id = "DUNAMIS",
+                    Name = "DUNAMIS",
+                    Details = "DUNAMIS",
+                    MeetingTimes =  new List<string>{"6pm"},
+                }
+            };
+        }
+
         public static List<NewPersonViewModel> FakeContacts(int count = 100)
         {
             var persons = new Faker<NewPersonViewModel>()
+                .RuleFor(u => u.ChurchLocation, "WHKatiKati")
+                .RuleFor(u => u.CellGroup, "DUNAMIS")
                 .RuleFor(u => u.Category, ContactCategory.Person)
                 .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
                 .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
@@ -33,7 +67,7 @@ namespace App.Data
                 .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
                 .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
                 .RuleFor(u => u.Tags, f => f.PickRandom(ContactTags.Select(it => it.ToLower()), 3).ToArray())
-                .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber());
+                .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber("####-###-###"));
             return persons.Generate(count);
         }
 

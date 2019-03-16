@@ -38,15 +38,15 @@ namespace App.Data
             logger.LogInformation($"created index on team members {resp}");
         }
 
-        public IMongoCollection<Contact> Contacts => _database.GetCollection<Contact>("contacts");
-        public IMongoCollection<Event> Events => _database.GetCollection<Event>("events");
-        public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("todos");
-        public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("docs");
-        public IMongoCollection<Team> Teams => _database.GetCollection<Team>("teams");
-        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("team-members");
+        public IMongoCollection<Contact> Contacts => _database.GetCollection<Contact>("Contacts");
+        public IMongoCollection<Event> Events => _database.GetCollection<Event>("Events");
+        public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("Todos");
+        public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("Docs");
+        public IMongoCollection<Team> Teams => _database.GetCollection<Team>("Teams");
+        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("TeamMembers");
 
-        public IMongoCollection<Location> Locations => _database.GetCollection<Location>("locations");
-        public IMongoCollection<CellGroup> CellGroups => _database.GetCollection<CellGroup>("cell-groups");
+        public IMongoCollection<Location> Locations => _database.GetCollection<Location>("Locations");
+        public IMongoCollection<CellGroup> CellGroups => _database.GetCollection<CellGroup>("CellGroups");
 
     }
 }
