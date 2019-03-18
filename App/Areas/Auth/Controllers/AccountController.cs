@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace App.Areas.Auth.Controllers
 {
     [Route("api/auth")]
-    [AllowAnonymous]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -79,21 +79,6 @@ namespace App.Areas.Auth.Controllers
             return await GenerateJwtToken(model.Email, user);
         }
 
-        [Authorize]
-        [HttpGet("claims")]
-        public object Claims()
-        {
-            return User.Claims.Select(c =>
-                new { c.Type, c.Value });
-        }
-
-        [Authorize(Roles = SystemRoles.Admin)]
-        [HttpGet("x-claims")]
-        public object MoreClaims()
-        {
-            return User.Claims.Select(c =>
-                new { c.Type, c.Value });
-        }
 
         private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
         {
@@ -144,6 +129,7 @@ namespace App.Areas.Auth.Controllers
             };
         }
 
+        [Authorize(Roles = SystemRoles.Admin)]
         [HttpGet("users")]
         public List<UserViewModel> Get()
         {
@@ -155,8 +141,10 @@ namespace App.Areas.Auth.Controllers
             }).ToList();
         }
 
+
+        [Authorize(Roles = SystemRoles.Admin)]
         [HttpGet("users/{id}")]
-        public async Task<object> GetById(string id)
+        public async Task<UserViewModel> GetById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
@@ -172,7 +160,7 @@ namespace App.Areas.Auth.Controllers
         }
 
         [HttpGet("profile")]
-        public async Task<object> GetById()
+        public async Task<UserViewModel> GetById()
         {
             var (userId, userClaims) = _httpContextAccessor.GetUser();
             var user = await _userManager.FindByIdAsync(userId);
