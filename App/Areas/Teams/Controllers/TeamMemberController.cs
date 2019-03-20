@@ -144,6 +144,24 @@ namespace App.Areas.Teams.Controllers
             return _mapper.Map<TeamMemberViewModel>(data);
         }
 
+
+        /// <summary>
+        /// Update contact on a specific team
+        /// </summary>
+        /// <param name="model">Simple Member Model</param>
+        /// <returns></returns>
+        [HttpPut("contact")]
+        [Produces(typeof(IEnumerable<object>))]
+        public async Task<TeamMemberViewModel> UpdateMember([FromBody] TeamMemberViewModel model)
+        {
+            Tk.AssertValidIds(model.TeamId, model.ContactId);
+            _logger.LogInformation($"update.teamMember Team: {model.TeamId} Contact: {model.ContactId}");
+            var toSave = _mapper.Map<TeamMember>(model);
+            var data = await _repository.UpdateAsync(toSave);
+            _logger.LogInformation($"updated.teamMember ${data.Id}");
+            return _mapper.Map<TeamMemberViewModel>(data);
+        }
+
         /// <summary>
         /// Create a teamMember
         /// </summary>

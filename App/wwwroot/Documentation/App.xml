@@ -1779,6 +1779,13 @@
             <param name="model">Simple Member Model</param>
             <returns></returns>
         </member>
+        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.UpdateMember(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
+            <summary>
+            Update contact on a specific team
+            </summary>
+            <param name="model">Simple Member Model</param>
+            <returns></returns>
+        </member>
         <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberMultipleViewModel)">
             <summary>
             Create a teamMember
