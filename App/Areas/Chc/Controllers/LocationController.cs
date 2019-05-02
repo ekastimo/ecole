@@ -137,7 +137,7 @@ namespace App.Areas.Chc.Controllers
         public async Task<List<MinimalContact>> GetMembers([FromRoute] string id)
         {
             var filter = Builders<Crm.Models.Contact>.Filter
-                .Where(x =>x.ChurchLocation ==id);
+                .Where(x =>x.MetaData.ChurchLocation ==id);
             _logger.LogInformation($"get.location {id}");
             return await _contactService.GetNamesAsync(filter);
         }

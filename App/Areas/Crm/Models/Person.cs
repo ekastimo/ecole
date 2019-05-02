@@ -11,7 +11,6 @@ namespace App.Areas.Crm.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         public CivilStatus? CivilStatus { get; set; }
-        public DateTime DateOfBirth { get; set; }
         public string About { get; set; }
         public string Avatar { get; set; }
     }

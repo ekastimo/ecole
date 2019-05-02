@@ -41,14 +41,16 @@ namespace App.Areas.Crm.Services
             var data = new Contact
             {
                 Category = ContactCategory.Person,
-                ChurchLocation = model.ChurchLocation,
-                CellGroup = model.CellGroup,
+                MetaData = new MetaData
+                {
+                    ChurchLocation = model.ChurchLocation,
+                    CellGroup = model.CellGroup
+                },
                 Person = new Person
                 {
                     FirstName = model.FirstName,
                     MiddleName = model.LastName,
                     LastName = model.MiddleName,
-                    DateOfBirth = model.DateOfBirth,
                     Gender = model.Gender,
                     Salutation = model.Salutation,
                     CivilStatus = model.CivilStatus,
@@ -57,6 +59,16 @@ namespace App.Areas.Crm.Services
                 }
             };
             LoadProperties(data, model);
+            data.Events = new[]
+            {
+                new ContactEvent
+                {
+                    Id = Guid.NewGuid(),
+                    Category = ContactEventCategory.Birthday,
+                    Value = model.DateOfBirth
+                }
+            };
+
             var result = await _contactRepository.CreateAsync(data);
             return _mapper.Map<ContactViewModel>(result);
         }
@@ -65,8 +77,8 @@ namespace App.Areas.Crm.Services
         {
             var filter = Builders<Contact>.Filter.Eq(x => x.Id, model.ContactId);
             var update = Builders<Contact>.Update
-                .Set(x => x.ChurchLocation, model.ChurchLocation)
-                .Set(x => x.CellGroup, model.CellGroup);
+                .Set(x => x.MetaData.ChurchLocation, model.ChurchLocation)
+                .Set(x => x.MetaData.CellGroup, model.CellGroup);
             await _contactRepository.UpdateAsync(filter, update);
             return model;
         }
@@ -74,7 +86,7 @@ namespace App.Areas.Crm.Services
 
         public async Task<ContactViewModel> CreateAsync(ContactViewModel model)
         {
-            var emailAddresses = model.Emails.Select(it => it.Address).ToArray();
+            var emailAddresses = model.Emails.Select(it => it.Value).ToArray();
             var contactExists = await ContactExistsByEmailAsync(emailAddresses);
             if (contactExists)
                 throw new ClientFriendlyException($"One of the emails: {emailAddresses.Stringify()} already exists");
@@ -129,6 +141,7 @@ namespace App.Areas.Crm.Services
             {
                 throw new ClientFriendlyException($"Invalid contact {contactId}");
             }
+
             var person = _mapper.Map<Person>(personModel);
             person.Avatar = result.Person.Avatar;
             result.Person = person;
@@ -159,7 +172,7 @@ namespace App.Areas.Crm.Services
             {
                 Id = Guid.NewGuid(),
                 Category = model.IdentificationCategory.Value,
-                Number = model.IdentificationNumber,
+                Value = model.IdentificationNumber,
                 StartDate = model.IdentificationValidFrom.Value,
                 ExpiryDate = model.IdentificationValidTo.Value,
                 IsPrimary = true
@@ -169,13 +182,13 @@ namespace App.Areas.Crm.Services
 
         private static void LoadProperties(Contact contact, NewContactViewModel model)
         {
-            var idData = ValidateId(model);
+            var (valid, identification) = ValidateId(model);
             bool IsDefined(string value) => !string.IsNullOrWhiteSpace(value);
 
-            contact.Identifications = idData.valid
+            contact.Identifications = valid
                 ? new[]
                 {
-                    idData.identification
+                    identification
                 }
                 : new Identification[] { };
 
@@ -186,11 +199,12 @@ namespace App.Areas.Crm.Services
                     {
                         Id = Guid.NewGuid(),
                         Category = EmailCategory.Personal,
-                        Address = model.Email,
+                        Value = model.Email,
                         IsPrimary = true
                     }
                 }
                 : new Email[] { };
+
             contact.Phones = IsDefined(model.Phone)
                 ? new[]
                 {
@@ -198,7 +212,7 @@ namespace App.Areas.Crm.Services
                     {
                         Id = Guid.NewGuid(),
                         Category = PhoneCategory.Mobile,
-                        Number = model.Phone,
+                        Value = model.Phone,
                         IsPrimary = true
                     }
                 }
@@ -207,7 +221,7 @@ namespace App.Areas.Crm.Services
             contact.Tags = hasTags
                 ? model.Tags.ToArray()
                 : new string[] { };
-            contact.Addresses= new Address[0];
+            contact.Addresses = new Address[0];
         }
 
         public async Task<ContactViewModel> CreateAsync(NewCompanyViewModel model)
@@ -261,11 +275,11 @@ namespace App.Areas.Crm.Services
             var result = await _contactRepository.GetContactsAsync(guids);
             return _mapper.Map<IEnumerable<ContactViewModel>>(result);
         }
-     
+
 
         public async Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> guids)
         {
-            var filter = Builders<Models.Contact>.Filter
+            var filter = Builders<Contact>.Filter
                 .Where(x => guids.Contains(x.Id));
             var data = await _contactRepository.GetNamesAsync(filter);
             return data.ToImmutableDictionary(x => x.Id, x => x);
@@ -273,7 +287,8 @@ namespace App.Areas.Crm.Services
 
         public async Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Contact> filter)
         {
-            return await _contactRepository.GetNamesAsync(filter); ;
+            return await _contactRepository.GetNamesAsync(filter);
+            ;
         }
 
         public async Task<ContactViewModel> GetByIdentificationAsync(string idNumber)

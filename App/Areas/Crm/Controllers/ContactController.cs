@@ -93,17 +93,6 @@ namespace App.Areas.Crm.Controllers
             var data = await _contactService.GetByIdAsync(id);
             if (data == null)
                 throw new NotFoundException($"Invalid record id:{id}");
-            if (!string.IsNullOrWhiteSpace(data.ChurchLocation))
-            {
-                var location = await _locationRepository.GetByIdAsync(data.ChurchLocation);
-                data.ChurchLocationName = location.Name;
-            }
-            if (!string.IsNullOrWhiteSpace(data.CellGroup))
-            {
-                var cellGroup = await _cellGroupRepository.GetByIdAsync(data.CellGroup);
-                data.CellGroupName = cellGroup.Name;
-            }
-           
             _logger.LogInformation($"found.contact {data.Id}");
             return data;
         }

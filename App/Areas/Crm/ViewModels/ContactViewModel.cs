@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using App.Areas.Crm.Enums;
+using App.Areas.Crm.Models;
 using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
@@ -10,36 +11,30 @@ namespace App.Areas.Crm.ViewModels
     {
         public ContactCategory Category { get; set; }
         public PersonViewModel Person { get; set; }
+        
         public CompanyViewModel Company { get; set; }
-        public ICollection<IdentificationViewModel> Identifications { get; set; }
-        public ICollection<PhoneViewModel> Phones { get; set; }
-        public ICollection<EmailViewModel> Emails { get; set; }
-        public ICollection<AddressViewModel> Addresses { get; set; }
+        public IdentificationViewModel[] Identifications { get; set; }
+        public PhoneViewModel[] Phones { get; set; }
+        public EmailViewModel[] Emails { get; set; }
+        public AddressViewModel[] Addresses { get; set; }
+
+        public ContactEventViewModel[] Events { get; set; }
         public string[] Tags { get; set; }
 
-        public string ChurchLocation { get; set; }
-        public string CellGroup { get; set; }
-
-        public string ChurchLocationName { get; set; }
-        public string CellGroupName { get; set; }
+        public MetaData MetaData { get; set; }
     }
 
     public class NewContactViewModel
     {
-        [Required]
-        public ContactCategory Category { get; set; }
+        [Required] public ContactCategory Category { get; set; }
 
-        [Required]
-        public string Email { get; set; }
+        [Required] public string Email { get; set; }
 
-        [Required]
-        public string Phone { get; set; }
+        [Required] public string Phone { get; set; }
 
-        [Required]
-        public string ChurchLocation { get; set; }
+        [Required] public string ChurchLocation { get; set; }
 
-        [Required]
-        public string CellGroup { get; set; }
+        [Required] public string CellGroup { get; set; }
 
         public IdentificationCategory? IdentificationCategory { get; set; }
         public string IdentificationNumber { get; set; }
@@ -51,18 +46,24 @@ namespace App.Areas.Crm.ViewModels
     public class NewPersonViewModel : NewContactViewModel
     {
         public new ContactCategory Category { get; set; } = ContactCategory.Person;
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+
+        [Required] public string FirstName { get; set; }
+
+        [Required] public string LastName { get; set; }
         public string MiddleName { get; set; }
-        [Required]
-        public Gender Gender { get; set; }
-        [Required]
-        public DateTime DateOfBirth { get; set; }
+
+        [Required] public Gender Gender { get; set; }
+
+        [Required] public DateTime DateOfBirth { get; set; }
+
         public CivilStatus? CivilStatus { get; set; }
+
         public Salutation? Salutation { get; set; }
+
         public string About { get; set; }
+
+        public string AgeRange { get; set; }
+
         public string Avatar { get; set; }
     }
 
@@ -81,11 +82,10 @@ namespace App.Areas.Crm.ViewModels
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public string FullName => $"{Salutation} {FirstName} {MiddleName} {LastName}".Replace("  "," ").Trim();
+        public string FullName => $"{Salutation} {FirstName} {MiddleName} {LastName}".Replace("  ", " ").Trim();
         public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Avatar { get; set; }
-
     }
 }

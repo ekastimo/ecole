@@ -1,20 +1,21 @@
 ﻿using App.Areas.Crm.Enums;
 using Core.Models;
+using System;
 
 namespace App.Areas.Crm.ViewModels
 {
     public class AddressViewModel : MiniViewModel
     {
+        public Guid ContactId { get; set; }
         public AddressCategory Category { get; set; }
-        public Country Country { get; set; }
+
+        public string Country { get; set; }
         public string District { get; set; }
-        public string County { get; set; }
-        public string SubCounty { get; set; }
-        public string Village { get; set; }
-        public string Parish { get; set; }
-        public string OriginalFreeform { get; set; }
-        public string PostalCode { get; set; }
-        public string Street { get; set; }
+        public string Freeform { get; set; }
+        public string LatLon { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool IsPrimary { get; set; }
     }
 }

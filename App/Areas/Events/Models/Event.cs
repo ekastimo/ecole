@@ -12,10 +12,18 @@ namespace App.Areas.Events.Models
         public DateTime EndDate { get; set; }
         public Guid CreatedBy { get; set; }
         public string Venue { get; set; }
-        public string FreeFormAddress { get; set; }
+        public EventLocation Location { get; set; }
         public string GeoCoOrdinates { get; set; }
         public string[] Images { get; set; } = { };
         public string[] Tags { get; set; } = { };
         public Item[] Items { get; set; } = { };
+    }
+
+    public class EventLocation {
+        public string Description { get; set; }
+        public string Id { get; set; }
+        public string PlaceId { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
     }
 }

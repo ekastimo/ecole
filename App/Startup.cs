@@ -71,6 +71,7 @@ namespace App
                 DocumentsMapper.MapModels(config);
                 EventsMapper.MapModels(config);
                 TeamsMapper.MapModels(config);
+                ExternalMapper.MapModels(config);
             });
 
             // Add application services.

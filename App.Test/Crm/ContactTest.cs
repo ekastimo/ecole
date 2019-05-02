@@ -28,18 +28,19 @@ namespace App.Test.Crm
         private ContactService ContactService { get; }
         public IdentificationRepository IdentificationRepository { get; }
         private readonly ILogger<EventService> _eventLogger = Mock.Of<ILogger<EventService>>();
+        private readonly ILogger<ApplicationDbContext> _logger = Mock.Of<ILogger<ApplicationDbContext>>();
         private ILogger<ItemService> _eventItemLogger = Mock.Of<ILogger<ItemService>>();
         private readonly ILogger<ContactService> _contactLogger = Mock.Of<ILogger<ContactService>>();
         private Mapper Mapper { get; }
 
         public ContactTest()
         {
-            BsonSerializer.RegisterSerializer(typeof(Guid), new GuidSerializer(BsonType.String));
+       
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var dbContext = new ApplicationDbContext(config,null);
+            var dbContext = new ApplicationDbContext(config,_logger);
             ContactRepository = new ContactRepository(dbContext);
             EmailRepository = new EmailRepository(dbContext);
             IdentificationRepository = new IdentificationRepository(dbContext);
@@ -64,12 +65,12 @@ namespace App.Test.Crm
             var contactId = data.Id;
             var email = new Email
             {
-                Address = "test@email.com",
+                Value = "test@email.com",
                 Category = EmailCategory.Personal,
                 IsPrimary = false
             };
             var emailSaved = await EmailRepository.CreateAsync(contactId, email);
-            emailSaved.Address = "test@email.bar";
+            emailSaved.Value = "test@email.bar";
             var emailUpdated = await EmailRepository.UpdateAsync(contactId, emailSaved);
             var deletion = await EmailRepository.DeleteAsync(contactId, emailUpdated.Id);
             Debug.WriteLine(deletion);

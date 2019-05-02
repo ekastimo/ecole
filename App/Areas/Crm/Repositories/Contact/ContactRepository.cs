@@ -44,22 +44,22 @@ namespace App.Areas.Crm.Repositories.Contact
 
             if (!string.IsNullOrEmpty(request.Email))
             {
-                filter = filter & builder.ElemMatch(x => x.Emails, x => x.Address == request.Email);
+                filter = filter & builder.ElemMatch(x => x.Emails, x => x.Value == request.Email);
             }
 
             if (!string.IsNullOrEmpty(request.Phone))
             {
-                filter = filter & builder.ElemMatch(x => x.Phones, x => x.Number == request.Phone);
+                filter = filter & builder.ElemMatch(x => x.Phones, x => x.Value == request.Phone);
             }
 
             if (!string.IsNullOrEmpty(request.ChurchLocation))
             {
-                filter = filter & builder.Eq(x => x.ChurchLocation, request.ChurchLocation);
+                filter = filter & builder.Eq(x => x.MetaData.ChurchLocation, request.ChurchLocation);
             }
 
             if (!string.IsNullOrEmpty(request.CellGroup))
             {
-                filter = filter & builder.Eq(x => x.CellGroup, request.CellGroup);
+                filter = filter & builder.Eq(x => x.MetaData.CellGroup, request.CellGroup);
             }
 
             return await _context.Contacts
@@ -79,21 +79,21 @@ namespace App.Areas.Crm.Repositories.Contact
         public async Task<bool> ContactExistsByIdentificationAsync(string idNumber)
         {
             var filter = Builders<Models.Contact>.Filter
-                .ElemMatch(x => x.Identifications, x => x.Number == idNumber);
+                .ElemMatch(x => x.Identifications, x => x.Value == idNumber);
             return await _context.Contacts.Find(filter).AnyAsync();
         }
 
         public async Task<bool> ContactExistsByEmailAsync(string email)
         {
             var filter = Builders<Models.Contact>.Filter
-                .ElemMatch(x => x.Emails, x => x.Address == email);
+                .ElemMatch(x => x.Emails, x => x.Value == email);
             return await _context.Contacts.Find(filter).AnyAsync();
         }
 
         public async Task<bool> ContactExistsByPhoneAsync(string phone)
         {
             var filter = Builders<Models.Contact>.Filter
-                .ElemMatch(x => x.Phones, x => x.Number == phone);
+                .ElemMatch(x => x.Phones, x => x.Value == phone);
             return await _context.Contacts.Find(filter).AnyAsync();
         }
 
@@ -106,7 +106,7 @@ namespace App.Areas.Crm.Repositories.Contact
         public async Task<Models.Contact> GetByIdentificationAsync(string idNumber)
         {
             var filter = Builders<Models.Contact>.Filter
-                .ElemMatch(x => x.Identifications, x => x.Number == idNumber);
+                .ElemMatch(x => x.Identifications, x => x.Value == idNumber);
             return await _context.Contacts.Find(filter).FirstOrDefaultAsync();
         }
 

@@ -1706,6 +1706,18 @@
             <param name="fullQuery"></param>
             <returns></returns>
         </member>
+        <member name="T:App.Areas.External.MapsController">
+            <summary>
+            Documents API
+            </summary>
+        </member>
+        <member name="M:App.Areas.External.MapsController.Search(App.Areas.External.Models.MapSearch)">
+            <summary>
+            Searches files
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Teams.Controllers.TeamController">
             <summary>
             Documents API
