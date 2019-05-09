@@ -31,7 +31,7 @@ namespace Core.Repositories
                 var filter = Builders<TEntity>.Filter.Eq("_id", id);
                 return await _collection.Find(filter).FirstAsync();
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw new NotFoundException($"Invalid record {id}");
             }
@@ -121,7 +121,7 @@ namespace Core.Repositories
             {
                 var id = GetId(entity);
                 var guidId = id as Guid?;
-                var rec = id is string?await GetByIdAsync(id as string): await GetByIdAsync(guidId.Value);
+                var rec = id is string ? await GetByIdAsync(id as string) : await GetByIdAsync(guidId.Value);
                 if (rec == null)
                     throw new InvalidDataException("Record not found");
             }
@@ -134,18 +134,22 @@ namespace Core.Repositories
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var id = GetId(entity);
-            FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Empty;
-            if (id is string)
+            var filter = Builders<TEntity>.Filter.Empty;
+            switch (id)
             {
-                filter = Builders<TEntity>.Filter.Eq("_id", id as string);
+                case string idStr:
+                    filter = Builders<TEntity>.Filter.Eq("_id", idStr);
+                    break;
+                case Guid idGuid:
+                    filter = Builders<TEntity>.Filter.Eq("_id", idGuid);
+                    break;
             }
-            else if(id is Guid)
-            {
-                filter = Builders<TEntity>.Filter.Eq("_id", id as Guid?);
-            }
-            
             SetLastUpdated(entity);
-            await _collection.ReplaceOneAsync(filter, entity);
+            var result = await _collection.ReplaceOneAsync(filter, entity);
+            if (result.ModifiedCount <= 0)
+            {
+                throw new InvalidDataException("Record not updated");
+            }
             return entity;
         }
 
@@ -160,7 +164,7 @@ namespace Core.Repositories
         {
             var filter = Builders<TEntity>.Filter.Eq("_id", id);
             var result = await _collection.DeleteOneAsync(filter);
-            return (int)result.DeletedCount;
+            return (int) result.DeletedCount;
         }
 
         public async Task<bool> MatchesConditionAsync(FilterDefinition<TEntity> filter)

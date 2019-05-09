@@ -13,11 +13,21 @@ using MongoDB.Driver.Core.Events;
 
 namespace App.Data
 {
+    public static class ClientHolder
+    {
+        private static MongoClient Client;
+
+        public static MongoClient GetClient(MongoClientSettings settings)
+        {
+            return Client ?? (Client = new MongoClient(settings));
+        }
+    }
+
     public class ApplicationDbContext
     {
         private readonly IMongoDatabase _database;
 
-        public ApplicationDbContext(IConfiguration config,ILogger<ApplicationDbContext> logger)
+        public ApplicationDbContext(IConfiguration config, ILogger<ApplicationDbContext> logger)
         {
             var mongoConnectionUrl = new MongoUrl(config.GetMongoConnection());
             var settings = MongoClientSettings.FromUrl(mongoConnectionUrl);
@@ -29,10 +39,10 @@ namespace App.Data
                     logger.LogInformation(msg);
                 });
             };
-            var client = new MongoClient(settings);
+            var client = ClientHolder.GetClient(settings);
             _database = client.GetDatabase(config.GetMongoDatabase());
-            var index= Builders<TeamMember>.IndexKeys.Ascending(d => d.ContactId).Descending(d => d.TeamId);
-            var options = new CreateIndexOptions { Unique = true,Sparse=true };
+            var index = Builders<TeamMember>.IndexKeys.Ascending(d => d.ContactId).Descending(d => d.TeamId);
+            var options = new CreateIndexOptions {Unique = true, Sparse = true};
             var indexModel = new CreateIndexModel<TeamMember>(index, options);
             var resp = TeamMembers.Indexes.CreateOne(indexModel);
             logger.LogInformation($"created index on team members {resp}");
@@ -47,6 +57,5 @@ namespace App.Data
 
         public IMongoCollection<Location> Locations => _database.GetCollection<Location>("Locations");
         public IMongoCollection<CellGroup> CellGroups => _database.GetCollection<CellGroup>("CellGroups");
-
     }
 }

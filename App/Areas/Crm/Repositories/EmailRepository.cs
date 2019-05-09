@@ -58,7 +58,7 @@ namespace App.Areas.Crm.Repositories
 
             var result = await _context.Contacts.UpdateOneAsync(filter, update);
             if (result.ModifiedCount != 1)
-                throw new ClientFriendlyException($"record deletion failed {parentId}");
+                throw new ClientFriendlyException($"record deletion failed contact:{parentId} record:{entityId}");
             return (int) result.ModifiedCount;
         }
     }

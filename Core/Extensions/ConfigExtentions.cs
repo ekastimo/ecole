@@ -21,5 +21,16 @@ namespace Core.Extensions
             return configuration["FileUploadLocation"];
         }
 
+
+        public static string GetMapsUrl(this IConfiguration configuration)
+        {
+            return configuration["Maps:Url"];
+        }
+
+        public static string GetMapsKey(this IConfiguration configuration)
+        {
+            return configuration["Maps:Key"];
+        }
+
     }
 }

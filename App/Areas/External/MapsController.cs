@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace App.Areas.External
 {
@@ -21,11 +22,13 @@ namespace App.Areas.External
     {
         private readonly IMapper _mapper;
         private readonly ILogger<MapsController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public MapsController(IMapper mapper, ILogger<MapsController> logger)
+        public MapsController(IMapper mapper, ILogger<MapsController> logger,IConfiguration configuration)
         {
             _mapper = mapper;
             _logger = logger;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -41,10 +44,11 @@ namespace App.Areas.External
             {
                 return new List<AutoCompleteResult>();
             }
-            string googleKey = "AIzaSyC0hVunyllacL30Yl4weMs2YZAErtrApr0";
-            string googleKey2 = "AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g";
-            string url = $"https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key={googleKey}&input={request.Query}";
-            _logger.LogInformation($"delete.request Url:{url}");
+            _logger.LogInformation("Query maps");
+            var baseUrl = _configuration.GetMapsUrl();
+            var key = _configuration.GetMapsKey();
+            var url = $"{baseUrl}?key={key}&input={request.Query}&fields=geometry/location";
+            
             using (var client = new HttpClient())
             {
                 var httpRequest = new HttpRequestMessage

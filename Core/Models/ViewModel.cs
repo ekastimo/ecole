@@ -7,7 +7,7 @@ namespace Core.Models
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastUpdated { get; set; }
-        public Guid ReferenceId { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class ViewModelCustomId

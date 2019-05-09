@@ -1,10 +1,8 @@
 ﻿using App.Areas.Chc.Models;
 using App.Areas.Chc.ViewModel;
-using App.Areas.Crm.Models;
-using App.Areas.Crm.ViewModels;
 using AutoMapper;
 
-namespace App.Areas.Crm.Utils 
+namespace App.Areas.Chc.Utils 
 {
     public class ChcMapper
     {

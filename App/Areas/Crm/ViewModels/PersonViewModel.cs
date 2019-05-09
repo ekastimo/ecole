@@ -15,14 +15,9 @@ namespace App.Areas.Crm.ViewModels
 
         [Required]
         public Gender Gender { get; set; }
-
-        [Required]
-        public DateTime DateOfBirth { get; set; }
-
         public CivilStatus? CivilStatus { get; set; }
+        public string AgeRange { get; set; }
         public string About { get; set; }
         public string Avatar { get; set; }
     }
-
-    
 }

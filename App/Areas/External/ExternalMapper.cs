@@ -1,9 +1,7 @@
-﻿using App.Areas.Crm.Models;
-using App.Areas.Crm.ViewModels;
-using App.Areas.External.Models;
+﻿using App.Areas.External.Models;
 using AutoMapper;
 
-namespace App.Areas.Crm.Utils 
+namespace App.Areas.External 
 {
     public class ExternalMapper
     {

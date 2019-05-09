@@ -14,7 +14,7 @@ namespace App.Areas.External.Models
     public class GoogleAutoCompleteResult
     {
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string FreeForm { get; set; }
 
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -25,7 +25,7 @@ namespace App.Areas.External.Models
 
     public class AutoCompleteResult
     {
-        public string Description { get; set; }   
+        public string FreeForm { get; set; }    
         public string Id { get; set; }
         public string PlaceId { get; set; }
     }

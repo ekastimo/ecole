@@ -19,18 +19,88 @@ namespace App.Data
             Randomizer.Seed = new Random(8675309);
         }
 
-        public static List<LocationViewModel> FakeLocations(int count = 100)
+        public static List<LocationViewModel> FakeLocations()
         {
-            var loc = new LocationViewModel
-            {
-                Id = "WHKatiKati",
-                Name = "WHKatiKati",
-                Details = "WHKatiKati",
-                MeetingTimes = new List<string>{ "9am", "11am" },
-            };
+          
             return new List<LocationViewModel>
             {
-             loc
+                new LocationViewModel
+                {
+                    Id = "WHKatiKati",
+                    Name = "WHKatiKati",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHNalya",
+                    Name = "WHNalya",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHJinja",
+                    Name = "WHJinja",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHGayaza",
+                    Name = "WHGayaza",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHBugolobi",
+                    Name = "WHBugolobi",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHEntebe",
+                    Name = "WHEntebe",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHMukono",
+                    Name = "WHMukono",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHKubuye",
+                    Name = "WHKubuye",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "9am", "11am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHMakerere",
+                    Name = "WHMakerere",
+                    Details = "",
+                    MeetingTimes = new List<string>{ "10am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHMbarara",
+                    Name = "WHMbarara",
+                    Details = "",
+                    MeetingTimes = new List<string>{"10am" },
+                },
+                new LocationViewModel
+                {
+                    Id = "WHDowntown",
+                    Name = "WHDowntown",
+                    Details = "",
+                    MeetingTimes = new List<string>{"10am" },
+                }
             };
         }
 
@@ -45,6 +115,14 @@ namespace App.Data
                     Id = "DUNAMIS",
                     Name = "DUNAMIS",
                     Details = "DUNAMIS",
+                    MeetingTimes =  new List<string>{"6pm"},
+                },
+                new CellGroupViewModel
+                {
+                    Location = "WHKatiKati",
+                    Id = "KMC",
+                    Name = "KMC",
+                    Details = "KMC",
                     MeetingTimes =  new List<string>{"6pm"},
                 }
             };
