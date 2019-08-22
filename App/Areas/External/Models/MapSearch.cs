@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace App.Areas.External.Models
 {
@@ -16,17 +12,22 @@ namespace App.Areas.External.Models
         [JsonProperty("description")]
         public string FreeForm { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
         [JsonProperty("place_id")]
         public string PlaceId { get; set; }
     }
 
     public class AutoCompleteResult
     {
-        public string FreeForm { get; set; }    
-        public string Id { get; set; }
+        public string FreeForm { get; set; } 
         public string PlaceId { get; set; }
+        public override string ToString()
+        {
+            return base.ToString(); 
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

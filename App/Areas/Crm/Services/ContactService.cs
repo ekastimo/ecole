@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Models;
-using App.Areas.Crm.Repositories.Contact;
+using App.Areas.Crm.Repositories;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
@@ -32,53 +32,15 @@ namespace App.Areas.Crm.Services
             _logger = logger;
         }
 
-        public async Task<ContactViewModel> CreateAsync(NewPersonViewModel model)
-        {
-            var contactExists = await ContactExistsByEmailAsync(model.Email);
-            if (contactExists)
-                throw new ClientFriendlyException($"Contact ( Email:{model.Email}) already exists");
-
-            var data = new Contact
-            {
-                Category = ContactCategory.Person,
-                MetaData = new MetaData
-                {
-                    ChurchLocation = model.ChurchLocation,
-                    CellGroup = model.CellGroup
-                },
-                Person = new Person
-                {
-                    FirstName = model.FirstName,
-                    MiddleName = model.LastName,
-                    LastName = model.MiddleName,
-                    Gender = model.Gender,
-                    Salutation = model.Salutation,
-                    CivilStatus = model.CivilStatus,
-                    About = model.About,
-                    Avatar = model.Avatar
-                }
-            };
-            LoadProperties(data, model);
-            data.Events = new[]
-            {
-                new ContactEvent
-                {
-                    Id = Guid.NewGuid(),
-                    Category = ContactEventCategory.Birthday,
-                    Value = model.DateOfBirth
-                }
-            };
-
-            var result = await _contactRepository.CreateAsync(data);
-            return _mapper.Map<ContactViewModel>(result);
-        }
-
         public async Task<ContactChcViewModel> UpdateChcInformation(ContactChcViewModel model)
         {
             var filter = Builders<Contact>.Filter.Eq(x => x.Id, model.ContactId);
             var update = Builders<Contact>.Update
-                .Set(x => x.MetaData.ChurchLocation, model.ChurchLocation)
-                .Set(x => x.MetaData.CellGroup, model.CellGroup);
+                .Set(x => x.MetaData, new MetaData
+                {
+                    ChurchLocation = model.ChurchLocation,
+                    CellGroup = model.CellGroup
+                });
             await _contactRepository.UpdateAsync(filter, update);
             return model;
         }
@@ -154,95 +116,6 @@ namespace App.Areas.Crm.Services
             return await _contactRepository.SearchMinimalAsync(request);
         }
 
-        private static (bool valid, Identification identification) ValidateId(NewContactViewModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.IdentificationNumber))
-            {
-                return (false, null);
-            }
-
-            if (model.IdentificationCategory == null ||
-                model.IdentificationValidFrom == null ||
-                model.IdentificationValidTo == null)
-            {
-                return (false, null);
-            }
-
-            var identification = new Identification
-            {
-                Id = Guid.NewGuid(),
-                Category = model.IdentificationCategory.Value,
-                Value = model.IdentificationNumber,
-                StartDate = model.IdentificationValidFrom.Value,
-                ExpiryDate = model.IdentificationValidTo.Value,
-                IsPrimary = true
-            };
-            return (true, identification);
-        }
-
-        private static void LoadProperties(Contact contact, NewContactViewModel model)
-        {
-            var (valid, identification) = ValidateId(model);
-            bool IsDefined(string value) => !string.IsNullOrWhiteSpace(value);
-
-            contact.Identifications = valid
-                ? new[]
-                {
-                    identification
-                }
-                : new Identification[] { };
-
-            contact.Emails = IsDefined(model.Email)
-                ? new[]
-                {
-                    new Email
-                    {
-                        Id = Guid.NewGuid(),
-                        Category = EmailCategory.Personal,
-                        Value = model.Email,
-                        IsPrimary = true
-                    }
-                }
-                : new Email[] { };
-
-            contact.Phones = IsDefined(model.Phone)
-                ? new[]
-                {
-                    new Phone
-                    {
-                        Id = Guid.NewGuid(),
-                        Category = PhoneCategory.Mobile,
-                        Value = model.Phone,
-                        IsPrimary = true
-                    }
-                }
-                : new Phone[] { };
-            var hasTags = model.Tags?.Any() ?? false;
-            contact.Tags = hasTags
-                ? model.Tags.ToArray()
-                : new string[] { };
-            contact.Addresses = new Address[0];
-        }
-
-        public async Task<ContactViewModel> CreateAsync(NewCompanyViewModel model)
-        {
-            var data = new Contact
-            {
-                Category = ContactCategory.Company,
-                Company = new Company
-                {
-                    Name = model.Name
-                }
-            };
-            LoadProperties(data, model);
-
-            var contactExists = await ContactExistsByIdentificationAsync(model.IdentificationNumber);
-            if (contactExists)
-                throw new Exception($"Company ( NIN:{model.IdentificationNumber}) already exists");
-
-            var result = await _contactRepository.CreateAsync(data);
-            return _mapper.Map<ContactViewModel>(result);
-        }
 
         public async Task<ContactViewModel> GetByIdAsync(Guid id)
         {
@@ -281,14 +154,13 @@ namespace App.Areas.Crm.Services
         {
             var filter = Builders<Contact>.Filter
                 .Where(x => guids.Contains(x.Id));
-            var data = await _contactRepository.GetNamesAsync(filter);
+            var data = await _contactRepository.GetMinimalAsync(filter);
             return data.ToImmutableDictionary(x => x.Id, x => x);
         }
 
         public async Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Contact> filter)
         {
-            return await _contactRepository.GetNamesAsync(filter);
-            ;
+            return await _contactRepository.GetMinimalAsync(filter);
         }
 
         public async Task<ContactViewModel> GetByIdentificationAsync(string idNumber)

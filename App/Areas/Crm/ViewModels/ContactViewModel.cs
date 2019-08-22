@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Models;
 using Core.Models;
@@ -23,57 +21,6 @@ namespace App.Areas.Crm.ViewModels
 
         public MetaData MetaData { get; set; }
     }
-
-    public class NewContactViewModel
-    {
-        [Required] public ContactCategory Category { get; set; }
-
-        [Required] public string Email { get; set; }
-
-        [Required] public string Phone { get; set; }
-
-        [Required] public string ChurchLocation { get; set; }
-
-        [Required] public string CellGroup { get; set; }
-
-        public IdentificationCategory? IdentificationCategory { get; set; }
-        public string IdentificationNumber { get; set; }
-        public DateTime? IdentificationValidFrom { get; set; }
-        public DateTime? IdentificationValidTo { get; set; }
-        public ICollection<string> Tags { get; set; }
-    }
-
-    public class NewPersonViewModel : NewContactViewModel
-    {
-        public new ContactCategory Category { get; set; } = ContactCategory.Person;
-
-        [Required] public string FirstName { get; set; }
-
-        [Required] public string LastName { get; set; }
-        public string MiddleName { get; set; }
-
-        [Required] public Gender Gender { get; set; }
-
-        [Required] public DateTime DateOfBirth { get; set; }
-
-        public CivilStatus? CivilStatus { get; set; }
-
-        public Salutation? Salutation { get; set; }
-
-        public string About { get; set; }
-
-        public string AgeRange { get; set; }
-
-        public string Avatar { get; set; }
-    }
-
-    public class NewCompanyViewModel : NewContactViewModel
-    {
-        public new ContactCategory Category { get; set; } = ContactCategory.Company;
-        [Required] public CompanyCategory CompanyCategory { get; set; }
-        [Required] public string Name { get; set; }
-    }
-
 
     public class MinimalContact
     {

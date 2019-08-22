@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Auth.Models;
 using App.Areas.Auth.ViewModels.Account;
 using App.Areas.Auth.ViewModels.Manage;
+using App.Areas.Crm.Enums;
+using App.Areas.Crm.Models;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using Core.Exceptions;
@@ -42,15 +45,31 @@ namespace App.Areas.Auth.Services.Account
         public async Task<ApplicationUser> Register([FromBody] RegisterViewModel model)
         {
             _logger.LogInformation($"creating new user email:{model.Email}");
-            var contactModel = new NewPersonViewModel
+            var contactModel = new ContactViewModel 
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                MiddleName = model.MiddleName,
-                DateOfBirth = model.DateOfBirth,
-                Gender = model.Gender,
-                Email = model.Email,
-                Phone = model.Phone
+                Person = new PersonViewModel
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    MiddleName = model.MiddleName,
+                    Gender = model.Gender
+                },
+                Phones = new[]
+                {
+                    new PhoneViewModel
+                    {
+                        Category =  PhoneCategory.Mobile,
+                        Value = model.Phone
+                    }
+                },
+                Emails = new[]
+                {
+                    new EmailViewModel
+                    {
+                        Category = EmailCategory.Personal,
+                        Value = model.Email
+                    }
+                }
             };
             var contactExists = await _contactService.ContactExistsByEmailAsync(model.Email);
             if (contactExists)

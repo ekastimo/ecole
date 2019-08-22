@@ -14,7 +14,7 @@ namespace Core.Models
        
     }
 
-    public class ModelBaseCustomId
+    public class ModelBaseCustom
     {
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? LastUpdated { get; set; }

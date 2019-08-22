@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Areas.Crm.Repositories.Contact;
+using App.Areas.Crm.Repositories;
 using App.Areas.Crm.Services;
 using App.Areas.Teams.Models;
 using App.Areas.Teams.Repositories;

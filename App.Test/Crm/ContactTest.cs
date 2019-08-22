@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using App.Areas.Crm.Enums;
 using App.Areas.Crm.Models;
 using App.Areas.Crm.Repositories;
-using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using App.Areas.Events.Services.Event;
@@ -39,20 +38,47 @@ namespace App.Test.Crm
         private Mapper Mapper { get; }
         readonly MongoDbRunner _runner = MongoDbRunner.Start(singleNodeReplSet: true);
 
-        private readonly NewPersonViewModel _contact = new NewPersonViewModel
+        private readonly ContactViewModel _contact = new ContactViewModel
         {
-            FirstName = "Timothy",
-            LastName = "Kasasa",
-            MiddleName = "Emmanuel",
-            AgeRange = "18-35",
-            About = "About Me",
-            Avatar = "",
-            Gender = Gender.Male,
-            DateOfBirth = DateTime.Today,
-            CellGroup = "KMC",
-            ChurchLocation = "WHKatiKati",
-            Phone = "0772120258",
-            Email = "ekastimo@gmail.com"
+            Person = new PersonViewModel
+            {
+                FirstName = "Timothy",
+                LastName = "Kasasa",
+                MiddleName = "Emmanuel",
+                AgeRange = "18-35",
+                About = "About Me",
+                Avatar = "",
+                Gender = Gender.Male,
+            },
+            Phones = new []
+            {
+                new PhoneViewModel
+                {
+                    Category =  PhoneCategory.Mobile,
+                    Value = "0772120258"
+                }
+            },
+            Emails = new []
+            {
+                new EmailViewModel
+                {
+                    Category = EmailCategory.Personal,
+                    Value = "ekastimo@gmail.com"
+                }
+            },
+            MetaData = new MetaData
+            {
+                CellGroup = "KMC",
+                ChurchLocation = "WHKatiKati",
+            },
+            Events = new []
+            {
+                new ContactEventViewModel
+                {
+                    Category = ContactEventCategory.Birthday,
+                    Value = DateTime.Today
+                }
+            }
         };
 
         private Guid _guid;
@@ -87,7 +113,14 @@ namespace App.Test.Crm
         [Fact]
         public async Task EmailManipulationWorks ()
         {
-            _contact.Email = "ekastimo@yahoo.com";
+            _contact.Emails = new[]
+            {
+                new EmailViewModel
+                {
+                    Category = EmailCategory.Personal,
+                    Value = "ekastimo@yahoo.com"
+                }
+            };
             var data = await ContactService.CreateAsync(_contact);
             Assert.NotEqual(Guid.Empty, data.Id);
            

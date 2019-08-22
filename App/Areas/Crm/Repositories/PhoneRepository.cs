@@ -40,6 +40,7 @@ namespace App.Areas.Crm.Repositories
             var builder = Builders<Models.Contact>.Filter;
             var filter = builder.Eq(x => x.Id, parentId)
                          & builder.ElemMatch(x => x.Phones, it => it.Id == entity.Id);
+
             var update = Builders<Models.Contact>.Update
                 .Set(x => x.Phones[-1], entity);
             var result = await _context.Contacts.UpdateOneAsync(filter, update);

@@ -10,7 +10,7 @@ namespace App.Areas.Crm.Repositories
     {
         Task<Models.Address> CreateAsync(Guid parentId, Models.Address entity);
         Task<Models.Address> UpdateAsync(Guid parentId, Models.Address entity);
-        Task<int> DeleteAsync(Guid parentId, Guid entytId);
+        Task<int> DeleteAsync(Guid parentId, Guid entityId);
     }
 
     public class AddressRepository : IAddressRepository

@@ -2,7 +2,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using App.Areas.Crm.Repositories;
-using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using App.Areas.Events.Repositories.Event;

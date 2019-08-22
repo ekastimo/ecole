@@ -6,13 +6,10 @@ using App.Areas.Chc.Repositories;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using App.Areas.Doc.Services;
-using App.Areas.Doc.ViewModels;
-using App.Areas.Events.Controllers;
 using Core.Controllers;
 using Core.Exceptions;
 using Core.Extensions;
 using Core.Helpers;
-using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,10 +25,8 @@ namespace App.Areas.Crm.Controllers
     [Route("api/crm/contact")]
     public class ContactController : BaseController
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IContactService _contactService;
         private readonly ILogger<ContactController> _logger;
-        private readonly IDocService _docService;
         private readonly ILocationRepository _locationRepository;
         private readonly ICellGroupRepository _cellGroupRepository;
 
@@ -39,10 +34,8 @@ namespace App.Areas.Crm.Controllers
         public ContactController(IHttpContextAccessor httpContextAccessor, IContactService contactService, ILogger<ContactController> logger,
             IDocService docService,ILocationRepository locationRepository,ICellGroupRepository cellGroupRepository)
         {
-            _httpContextAccessor = httpContextAccessor;
             _contactService = contactService;
             _logger = logger;
-            _docService = docService;
             _locationRepository = locationRepository;
             _cellGroupRepository = cellGroupRepository;
         }
@@ -63,7 +56,6 @@ namespace App.Areas.Crm.Controllers
             return data;
         }
 
-
         /// <summary>
         /// Searches contacts
         /// </summary>
@@ -71,7 +63,7 @@ namespace App.Areas.Crm.Controllers
         /// <returns></returns>
         [HttpGet]
         [Produces(typeof(IEnumerable<ContactViewModel>))]
-        public async Task<List<ContactViewModel>> Search(ContactSearchRequest request)
+        public async Task<List<ContactViewModel>> Get(ContactSearchRequest request)
         {
             var json = JsonConvert.SerializeObject(request);
             _logger.LogInformation($"search.contacts ${json}");
@@ -85,7 +77,7 @@ namespace App.Areas.Crm.Controllers
         /// </summary>
         /// <param name="id">Contact Id</param>
         /// <returns></returns>
-        [HttpGet("id/{id}")]
+        [HttpGet("{id}")]
         [Produces(typeof(ContactViewModel))]
         public async Task<ContactViewModel> Get(Guid id)
         {
@@ -94,22 +86,6 @@ namespace App.Areas.Crm.Controllers
             if (data == null)
                 throw new NotFoundException($"Invalid record id:{id}");
             _logger.LogInformation($"found.contact {data.Id}");
-            return data;
-        }
-
-        /// <summary>
-        /// Searches contacts
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpGet("search")]
-        [Produces(typeof(IEnumerable<MinimalContact>))]
-        public async Task<List<MinimalContact>> SearchContacts(SearchBase request)
-        {
-            var json = JsonConvert.SerializeObject(request);
-            _logger.LogInformation($"search.contacts ${json}");
-            var data = (await _contactService.SearchMinimalAsync(request)).ToList();
-            _logger.LogInformation($"found.contacts {data.Count}");
             return data;
         }
 
@@ -151,15 +127,15 @@ namespace App.Areas.Crm.Controllers
         /// <summary>
         /// Returns contacts with all the listed ids
         /// </summary>
-        /// <param name="guids"></param>
+        /// <param name="guidList"></param>
         /// <returns></returns>
         [HttpPost("ids")]
         [Produces(typeof(IEnumerable<ContactViewModel>))]
-        public async Task<List<ContactViewModel>> FindByIds([FromBody] List<Guid> guids)
+        public async Task<List<ContactViewModel>> FindByIds([FromBody] List<Guid> guidList)
         {
-            var json = JsonConvert.SerializeObject(guids);
+            var json = JsonConvert.SerializeObject(guidList);
             _logger.LogInformation($"search.contacts.ids ${json}");
-            var data = (await _contactService.GetContactsAsync(guids)).ToList();
+            var data = (await _contactService.GetContactsAsync(guidList)).ToList();
             _logger.LogInformation($"found.contacts {data.Count}");
             return data;
         }
@@ -180,104 +156,6 @@ namespace App.Areas.Crm.Controllers
                 throw new NotFoundException($"Invalid record nin:{idNumber}");
             _logger.LogInformation($"found.contact {data.Id}");
             return data;
-        }
-
-
-        /// <summary>
-        /// Creates a new person
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("person")]
-        [Produces(typeof(ContactViewModel))]
-        public async Task<ContactViewModel> Create([FromBody] NewPersonViewModel model)
-        {
-            _logger.LogInformation("add.person");
-            var data = await _contactService.CreateAsync(model);
-            _logger.LogInformation($"added.person {data.Id}");
-            return data;
-        }
-
-
-        /// <summary>
-        /// Update Location of a contact
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("chc")]
-        [Produces(typeof(ContactChcViewModel))]
-        public async Task<ContactChcViewModel> ContactLocation([FromBody] ContactChcViewModel model)
-        {
-            _logger.LogInformation("update.contact.chc");
-            var data = await _contactService.UpdateChcInformation(model);
-            _logger.LogInformation($"updated..contact.chc {data.ContactId}");
-            return data;
-        }
-
-        /// <summary>
-        /// Creates a new company
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("company")]
-        [Produces(typeof(ContactViewModel))]
-        public async Task<ContactViewModel> Create([FromBody] NewCompanyViewModel model)
-        {
-            _logger.LogInformation("add.comapny");
-            var data = await _contactService.CreateAsync(model);
-            _logger.LogInformation($"added.comapny {data.Id}");
-            return data;
-        }
-
-
-        /// <summary>
-        /// Update avatar
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("avatar")]
-        public async Task<ActionResult> UpdateAvatar(UploadRequest request)
-        {
-            var contactId = request.RefrenceId;
-            if (contactId == null || contactId.Value == Guid.Empty)
-            {
-                throw new ClientFriendlyException($"Invalid contact id: {contactId}");
-            }
-
-            var contact = await _contactService.GetByIdAsync(contactId.Value);
-            if (contact == null)
-            {
-                throw new ClientFriendlyException($"Invalid contact id: {contactId}");
-            }
-
-            var resp = await _docService.Upload(request);
-            var avatar = $"http://localhost:9001/api/docs/download/{resp.Id}";
-            contact.Person.Avatar = avatar;
-            await _contactService.UpdateAsync(contact);
-            return Ok(new {message = "Upload Successful", avatar});
-        }
-
-        /// <summary>
-        /// Update basic information
-        /// </summary>
-        /// <param name="contactId">The contact to be updated</param>
-        /// <param name="person">Person data</param>
-        /// <returns></returns>
-        [HttpPut("person/{contactId}")]
-        public async Task<ContactViewModel> UpdatePerson(Guid contactId, [FromBody] PersonViewModel person)
-        {
-  
-            if (contactId == Guid.Empty)
-            {
-                throw new ClientFriendlyException($"Invalid contact id: {contactId}");
-            }
-
-            var contact = await _contactService.UpdatePerson(contactId, person);
-            if (contact == null)
-            {
-                throw new ClientFriendlyException($"Invalid contact id: {contactId}");
-            }
-            return contact;
         }
     }
 }

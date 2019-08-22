@@ -1,5 +1,4 @@
-﻿using System;
-using App.Areas.Crm.Enums;
+﻿using App.Areas.Crm.Enums;
 
 namespace App.Areas.Crm.Models
 {

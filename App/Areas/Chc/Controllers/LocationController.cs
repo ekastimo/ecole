@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Areas.Chc.Models;
 using App.Areas.Chc.Repositories;
@@ -8,11 +6,9 @@ using App.Areas.Chc.ViewModel;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using App.Areas.Doc.Services;
-using App.Areas.Events.Controllers;
 using AutoMapper;
 using Core.Controllers;
 using Core.Extensions;
-using Core.Helpers;
 using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +51,7 @@ namespace App.Areas.Chc.Controllers
         /// <returns></returns>
         [HttpGet]
         [Produces(typeof(IEnumerable<LocationViewModel>))]
-        public async Task<IEnumerable<LocationViewModel>> Create([FromQuery] SearchBase request)
+        public async Task<IEnumerable<LocationViewModel>> Search([FromQuery] SearchBase request)
         {
             _logger.LogInformation("get.locations");
             var data = await _repository.SearchAsync(request);

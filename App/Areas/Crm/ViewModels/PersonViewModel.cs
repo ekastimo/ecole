@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Areas.Crm.Enums;
 
 namespace App.Areas.Crm.ViewModels

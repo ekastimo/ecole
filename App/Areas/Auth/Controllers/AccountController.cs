@@ -2,7 +2,6 @@
 using App.Areas.Auth.Services.Account;
 using App.Areas.Auth.ViewModels;
 using App.Areas.Auth.ViewModels.Account;
-using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.ViewModels;
 using AutoMapper;
 using Core.Exceptions;
@@ -20,6 +19,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using App.Areas.Crm.Repositories;
 
 namespace App.Areas.Auth.Controllers
 {
@@ -137,7 +137,8 @@ namespace App.Areas.Auth.Controllers
             {
                 Id = it.Id,
                 Email = it.Email,
-                Username = it.UserName
+                Username = it.UserName,
+                ContactId = it.ContactId
             }).ToList();
         }
 

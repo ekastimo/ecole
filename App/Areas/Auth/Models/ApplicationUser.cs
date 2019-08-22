@@ -1,5 +1,4 @@
 ﻿using System;
-using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
 
 namespace App.Areas.Auth.Models

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Driver.Linq;
 using System.Threading.Tasks;
 using App.Areas.Teams.Models;
 using App.Areas.Teams.ViewModels;
 using App.Data;
 using Core.Repositories;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace App.Areas.Teams.Repositories

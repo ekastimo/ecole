@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using App.Areas.Crm.Enums;
-using App.Areas.Crm.ViewModels;
 using App.Areas.Events.ViewModels;
 using Bogus;
 using System.Linq;
 using App.Areas.Chc.ViewModel;
+using App.Areas.Crm.ViewModels;
 
 namespace App.Data
 {
     public class FakeData
     {
         public static string[] EventTags = {"Party", "food", "Money", "Kadanke", "Free", "Family", "educational"};
-        public static string[] ContactTags = {"Client", "Service Provider", "Customer", "Afro"};
+        public static string[] ContactTags = {"Client", "Customer", "Afro"};
 
         static FakeData()
         {
@@ -128,24 +128,50 @@ namespace App.Data
             };
         }
 
-        public static List<NewPersonViewModel> FakeContacts(int count = 100)
+        private static T[] ToArray<T>(params T[] data)
         {
-            var persons = new Faker<NewPersonViewModel>()
-                .RuleFor(u => u.ChurchLocation, "WHKatiKati")
-                .RuleFor(u => u.CellGroup, "DUNAMIS")
+            return data;
+        }
+
+        public static List<ContactViewModel> FakeContacts(int count = 100)
+        {
+            var persons = new Faker<ContactViewModel>()
+                .RuleFor(u => u.MetaData.ChurchLocation, "WHKatiKati")
+                .RuleFor(u => u.MetaData.CellGroup, "DUNAMIS")
+
+
                 .RuleFor(u => u.Category, ContactCategory.Person)
-                .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
-                .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
-                .RuleFor(u => u.MiddleName, (f, u) => f.Name.LastName())
-                .RuleFor(u => u.Gender, f => f.PickRandom<Gender>())
-                .RuleFor(u => u.CivilStatus, f => f.PickRandom<CivilStatus>())
-                .RuleFor(u => u.Salutation, f => f.PickRandom<Salutation>())
-                .RuleFor(u => u.DateOfBirth, f => f.Date.Past())
-                .RuleFor(u => u.About, f => f.Lorem.Paragraph())
-                .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
-                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
-                .RuleFor(u => u.Tags, f => f.PickRandom(ContactTags.Select(it => it.ToLower()), 3).ToArray())
-                .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber("####-###-###"));
+                .RuleFor(u => u.Person.FirstName, (f, u) => f.Name.FirstName())
+                .RuleFor(u => u.Person.LastName, (f, u) => f.Name.LastName())
+                .RuleFor(u => u.Person.MiddleName, (f, u) => f.Name.LastName())
+                .RuleFor(u => u.Person.Gender, f => f.PickRandom<Gender>())
+                .RuleFor(u => u.Person.CivilStatus, f => f.PickRandom<CivilStatus>())
+                .RuleFor(u => u.Person.Salutation, f => f.PickRandom<Salutation>())
+                .RuleFor(u => u.Person.About, f => f.Lorem.Paragraph())
+                .RuleFor(u => u.Person.Avatar, f => f.Internet.Avatar())
+
+
+                .RuleFor(u => u.Events, f => ToArray(
+                    new ContactEventViewModel
+                    {
+                        Category = ContactEventCategory.Birthday,
+                        Value = f.Date.Past()
+                    }))
+
+                .RuleFor(u => u.Emails, (f, u) => ToArray(
+                    new EmailViewModel
+                    {
+                        Category = EmailCategory.Personal,
+                        Value = f.Internet.Email(u.Person.FirstName, u.Person.LastName)
+                    }))
+                .RuleFor(u => u.Phones, (f, u) => ToArray(
+                    new PhoneViewModel
+                    {
+                        Category = PhoneCategory.Mobile,
+                        Value = f.Phone.PhoneNumber("07########")
+                    }))
+                .RuleFor(u => u.Tags, f => f.PickRandom(ContactTags.Select(it => it.ToLower()), 3).ToArray());
+                
             return persons.Generate(count);
         }
 

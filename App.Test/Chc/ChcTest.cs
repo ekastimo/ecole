@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Crm.Repositories;
-using App.Areas.Crm.Repositories.Contact;
 using App.Areas.Crm.Services;
 using App.Areas.Events.Services.Event;
 using App.Areas.Events.Services.Item;
@@ -33,8 +32,7 @@ namespace App.Test.Chc
         [Fact]
         public async Task CreateContact()
         {
-            var location = FakeData.FakeLocations(1).First();
-            Console.WriteLine(location);
+            var location = FakeData.FakeLocations().First();
         }
 
    

@@ -13,7 +13,7 @@
         <member name="M:App.Areas.Chc.Controllers.CellGroupController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ICellGroupRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.CellGroupController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper)">
             <inheritdoc />
         </member>
-        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Create(Core.Models.SearchBase)">
+        <member name="M:App.Areas.Chc.Controllers.CellGroupController.Get(Core.Models.SearchBase)">
             <summary>
             Fetch church cellgroups
             </summary>
@@ -50,7 +50,7 @@
         <member name="M:App.Areas.Chc.Controllers.LocationController.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,App.Areas.Chc.Repositories.ILocationRepository,Microsoft.Extensions.Logging.ILogger{App.Areas.Chc.Controllers.LocationController},App.Areas.Doc.Services.IDocService,AutoMapper.IMapper,App.Areas.Crm.Services.IContactService)">
             <inheritdoc />
         </member>
-        <member name="M:App.Areas.Chc.Controllers.LocationController.Create(Core.Models.SearchBase)">
+        <member name="M:App.Areas.Chc.Controllers.LocationController.Search(Core.Models.SearchBase)">
             <summary>
             Fetch church locations
             </summary>
@@ -140,7 +140,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.Search(App.Areas.Crm.ViewModels.ContactSearchRequest)">
+        <member name="M:App.Areas.Crm.Controllers.ContactController.Get(App.Areas.Crm.ViewModels.ContactSearchRequest)">
             <summary>
             Searches contacts
             </summary>
@@ -152,13 +152,6 @@
             Gets a specific contact
             </summary>
             <param name="id">Contact Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.SearchContacts(Core.Models.SearchBase)">
-            <summary>
-            Searches contacts
-            </summary>
-            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.Update(App.Areas.Crm.ViewModels.ContactViewModel)">
@@ -179,7 +172,7 @@
             <summary>
             Returns contacts with all the listed ids
             </summary>
-            <param name="guids"></param>
+            <param name="guidList"></param>
             <returns></returns>
         </member>
         <member name="M:App.Areas.Crm.Controllers.ContactController.GetByIdentification(System.String)">
@@ -187,42 +180,6 @@
             Gets a specific contact by identification number
             </summary>
             <param name="idNumber">Contact identification</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewPersonViewModel)">
-            <summary>
-            Creates a new person
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.ContactLocation(App.Areas.Crm.ViewModels.ContactChcViewModel)">
-            <summary>
-            Update Location of a contact
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.Create(App.Areas.Crm.ViewModels.NewCompanyViewModel)">
-            <summary>
-            Creates a new company
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.UpdateAvatar(App.Areas.Doc.ViewModels.UploadRequest)">
-            <summary>
-            Update avatar
-            </summary>
-            <param name="request"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Crm.Controllers.ContactController.UpdatePerson(System.Guid,App.Areas.Crm.ViewModels.PersonViewModel)">
-            <summary>
-            Update basic information
-            </summary>
-            <param name="contactId">The contact to be updated</param>
-            <param name="person">Person data</param>
             <returns></returns>
         </member>
         <member name="T:App.Areas.Crm.Controllers.EmailController">
@@ -288,6 +245,42 @@
             </summary>
             <param name="contactId"></param>
             <param name="id"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.MetaDataController.ContactLocation(App.Areas.Crm.ViewModels.ContactChcViewModel)">
+            <summary>
+            Update Location of a contact
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PersonController.SearchContacts(Core.Models.SearchBase)">
+            <summary>
+            Searches people
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PersonController.UpdatePerson(System.Guid,App.Areas.Crm.ViewModels.PersonViewModel)">
+            <summary>
+            Update basic information
+            </summary>
+            <param name="contactId">The contact to be updated</param>
+            <param name="person">Person data</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PersonController.Create(App.Areas.Crm.ViewModels.ContactViewModel)">
+            <summary>
+            Creates a new person
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.PersonController.UpdateAvatar(App.Areas.Doc.ViewModels.UploadRequest)">
+            <summary>
+            Update avatar
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
         </member>
         <member name="T:App.Areas.Crm.Controllers.PhoneController">
             <inheritdoc />

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using App.Areas.Crm.ViewModels;
 using Core.Extensions;
 
 namespace App.Areas.Chc.ViewModel
@@ -15,12 +13,12 @@ namespace App.Areas.Chc.ViewModel
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Venue { get; set; }
+        public AddressViewModel Venue { get; set; }
         [Required]
         public string Details { get; set; }
-
         [MustHaveElements]
         public List<string> MeetingTimes { get; set; }
-        
+        public List<string> Tags { get; set; }
+
     }
 }

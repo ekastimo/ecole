@@ -11,11 +11,7 @@ namespace App.Areas.Crm.Services
     
     public interface IContactService
     {
-        Task<ContactViewModel> CreateAsync(NewPersonViewModel contact);
-
         Task<ContactChcViewModel> UpdateChcInformation(ContactChcViewModel model);
-
-        Task<ContactViewModel> CreateAsync(NewCompanyViewModel contact);
 
         Task<ContactViewModel> GetByIdAsync(Guid id);
 
@@ -25,7 +21,7 @@ namespace App.Areas.Crm.Services
 
         Task<IEnumerable<ContactViewModel>> SearchAsync(ContactSearchRequest request); 
 
-        Task<IEnumerable<ContactViewModel>> GetContactsAsync(List<Guid> guids);
+        Task<IEnumerable<ContactViewModel>> GetContactsAsync(List<Guid> guidList);
         Task<IDictionary<Guid, MinimalContact>> GetNamesByIdAsync(List<Guid> contactIds);
         Task<List<MinimalContact>> GetNamesAsync(FilterDefinition<Contact> filter);
         Task<ContactViewModel> GetByIdentificationAsync(string id);
