@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using App.Areas.Crm.Enums;
 
 namespace App.Areas.Crm.ViewModels
@@ -15,7 +16,7 @@ namespace App.Areas.Crm.ViewModels
         [Required]
         public Gender Gender { get; set; }
         public CivilStatus? CivilStatus { get; set; }
-        public string AgeRange { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string About { get; set; }
         public string Avatar { get; set; }
     }

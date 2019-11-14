@@ -52,7 +52,8 @@ namespace App.Areas.Auth.Services.Account
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     MiddleName = model.MiddleName,
-                    Gender = model.Gender
+                    Gender = model.Gender,
+                    DateOfBirth = model.DateOfBirth
                 },
                 Phones = new[]
                 {

@@ -45,7 +45,7 @@ namespace App.Test.Crm
                 FirstName = "Timothy",
                 LastName = "Kasasa",
                 MiddleName = "Emmanuel",
-                AgeRange = "18-35",
+                DateOfBirth = DateTime.Today,
                 About = "About Me",
                 Avatar = "",
                 Gender = Gender.Male,
@@ -71,11 +71,11 @@ namespace App.Test.Crm
                 CellGroup = "KMC",
                 ChurchLocation = "WHKatiKati",
             },
-            Events = new []
+            Occasions = new []
             {
-                new ContactEventViewModel
+                new OccasionViewModel
                 {
-                    Category = ContactEventCategory.Birthday,
+                    Category = OccasionCategory.Birthday,
                     Value = DateTime.Today
                 }
             }

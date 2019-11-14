@@ -51,11 +51,12 @@
         Other = 0
     }
 
-    public enum ContactEventCategory
+    public enum OccasionCategory
     {
         Birthday = 0,
         Anniversary = 1,
-        Engaged = 2
+        Engaged = 2,
+        Other = 3
     }
 
     public enum PhoneCategory

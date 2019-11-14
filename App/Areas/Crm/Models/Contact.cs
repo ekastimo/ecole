@@ -14,7 +14,7 @@ namespace App.Areas.Crm.Models
         public  Phone[] Phones { get; set; }
         public  Email[] Emails { get; set; }
         public  Address[] Addresses { get; set; }
-        public  ContactEvent[] Events { get; set; }
+        public  Occasion[] Occasions { get; set; }
         public string[] Tags { get; set; }
         
     }

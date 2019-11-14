@@ -4,8 +4,9 @@ using Core.Models;
 
 namespace App.Areas.Crm.ViewModels
 {
-    public class ContactEventViewModel : ViewModel
+    public class OccasionViewModel: MiniViewModel
     {
+        public string Details { get; set; }
         public OccasionCategory Category { get; set; }
         public DateTime Value { get; set; }
     }

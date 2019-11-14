@@ -253,6 +253,38 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="T:App.Areas.Crm.Controllers.OccasionController">
+            <inheritdoc />
+            <summary>
+            Occasion API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.OccasionController.#ctor(App.Areas.Crm.Repositories.IOccasionRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{App.Areas.Crm.Controllers.OccasionController})">
+            <summary>
+            Controller for occasions
+            </summary>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.OccasionController.Post(System.Guid,App.Areas.Crm.ViewModels.OccasionViewModel)">
+            <summary>
+            Create a new occasion
+            </summary>
+            <param name="contactId"></param>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.OccasionController.Put(System.Guid,App.Areas.Crm.ViewModels.OccasionViewModel)">
+            <summary>
+            Updates an occasion
+            </summary>
+            <param name="contactId"></param>
+            <param name="model"></param>
+        </member>
+        <member name="M:App.Areas.Crm.Controllers.OccasionController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes an occasion
+            </summary>
+            <param name="contactId"></param>
+            <param name="id"></param>
+        </member>
         <member name="M:App.Areas.Crm.Controllers.PersonController.SearchContacts(Core.Models.SearchBase)">
             <summary>
             Searches people

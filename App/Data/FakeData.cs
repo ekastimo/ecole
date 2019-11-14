@@ -150,12 +150,13 @@ namespace App.Data
                     CivilStatus = f.PickRandom<CivilStatus>(),
                     Salutation = f.PickRandom<Salutation>(),
                     About = f.Lorem.Paragraph(),
-                    Avatar = f.Internet.Avatar()
+                    Avatar = f.Internet.Avatar(),
+                    DateOfBirth = f.Date.Past(18)
                 })
-                .RuleFor(u => u.Events, f => ToArray(
-                    new ContactEventViewModel
+                .RuleFor(u => u.Occasions, f => ToArray(
+                    new OccasionViewModel
                     {
-                        Category = ContactEventCategory.Birthday,
+                        Category = OccasionCategory.Birthday,
                         Value = f.Date.Past()
                     }))
                 .RuleFor(u => u.Emails, (f, u) => ToArray(
@@ -169,6 +170,15 @@ namespace App.Data
                     {
                         Category = PhoneCategory.Mobile,
                         Value = f.Phone.PhoneNumber("07########")
+                    }))
+                .RuleFor(u => u.Addresses, (f, u) => ToArray(
+                    new AddressViewModel
+                    {
+                        Category = AddressCategory.Home,
+                        Country = f.Address.Country(),
+                        District = f.Address.State(),
+                        County = f.Address.City(),
+                        Street = f.Address.StreetName()
                     }))
                 .RuleFor(u => u.Tags, f => f.PickRandom(ContactTags.Select(it => it.ToLower()), 3).ToArray());
 

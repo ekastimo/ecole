@@ -1,4 +1,5 @@
-﻿using App.Areas.Crm.Enums;
+﻿using System;
+using App.Areas.Crm.Enums;
 
 namespace App.Areas.Crm.Models
 {
@@ -10,7 +11,7 @@ namespace App.Areas.Crm.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         public CivilStatus? CivilStatus { get; set; }
-        public string AgeRange { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string About { get; set; }
         public string Avatar { get; set; }
     }

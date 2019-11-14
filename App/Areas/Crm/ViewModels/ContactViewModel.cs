@@ -16,7 +16,7 @@ namespace App.Areas.Crm.ViewModels
         public EmailViewModel[] Emails { get; set; }
         public AddressViewModel[] Addresses { get; set; }
 
-        public ContactEventViewModel[] Events { get; set; }
+        public OccasionViewModel[] Occasions { get; set; }
         public string[] Tags { get; set; }
 
         public MetaData MetaData { get; set; }

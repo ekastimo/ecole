@@ -4,9 +4,10 @@ using System;
 
 namespace App.Areas.Crm.Models
 {
-    public class ContactEvent: ModelBase
+    public class Occasion: ModelBase
     {
-        public ContactEventCategory Category { get; set; }
+        public string Details { get; set; }
+        public OccasionCategory Category { get; set; }
         public DateTime Value { get; set; }
     }
 }
