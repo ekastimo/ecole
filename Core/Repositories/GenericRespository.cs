@@ -77,13 +77,12 @@ namespace Core.Repositories
             {
                 var type = entity.GetType();
                 var prop = type.GetProperty("Id");
-                var value = prop.GetValue(entity);
-                var toRet = value;
-                return toRet ?? throw new InvalidDataException("Invalid record, for update");
+                var value = prop?.GetValue(entity);
+                return value ?? throw new ClientFriendlyException("Invalid record, for update");
             }
             catch (Exception)
             {
-                throw new InvalidDataException("Invalid record, for update");
+                throw new ClientFriendlyException("Invalid record, for update");
             }
         }
 
@@ -97,7 +96,7 @@ namespace Core.Repositories
             }
             catch (Exception)
             {
-                throw new InvalidDataException("Cant change lastUpdated");
+                throw new ClientFriendlyException("Cant change lastUpdated");
             }
         }
 
@@ -107,27 +106,40 @@ namespace Core.Repositories
             {
                 var type = entity.GetType();
                 var prop = type.GetProperty("CreatedAt");
-                prop.SetValue(entity, DateTime.Now);
+                prop?.SetValue(entity, DateTime.Now);
             }
             catch (Exception)
             {
-                throw new InvalidDataException("Cant change CreatedAt");
+                throw new ClientFriendlyException("Cant change CreatedAt");
             }
         }
 
         private async Task AssertRecordExists(TEntity entity)
         {
+            var exception = new ClientFriendlyException("Record not found");
             try
             {
                 var id = GetId(entity);
-                var guidId = id as Guid?;
-                var rec = id is string ? await GetByIdAsync(id as string) : await GetByIdAsync(guidId.Value);
+                object rec;
+                switch (id)
+                {
+                    case Guid g:
+                        rec = await GetByIdAsync(g);
+                        break;
+                    case string s:
+                        rec = await GetByIdAsync(s);
+                        break;
+                    default:
+                        rec = null;
+                        break;
+                }
+
                 if (rec == null)
-                    throw new InvalidDataException("Record not found");
+                    throw exception;
             }
             catch (Exception)
             {
-                throw new InvalidDataException("Record not found");
+                throw exception;
             }
         }
 
@@ -144,12 +156,14 @@ namespace Core.Repositories
                     filter = Builders<TEntity>.Filter.Eq("_id", idGuid);
                     break;
             }
+
             SetLastUpdated(entity);
             var result = await _collection.ReplaceOneAsync(filter, entity);
             if (result.ModifiedCount <= 0)
             {
-                throw new InvalidDataException("Record not updated");
+                throw new ClientFriendlyException("Record not updated");
             }
+
             return entity;
         }
 

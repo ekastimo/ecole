@@ -1743,6 +1743,39 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="T:App.Areas.Tags.TagsController">
+            <summary>
+            Tags Controller
+            </summary>
+        </member>
+        <member name="M:App.Areas.Tags.TagsController.Search(App.Areas.Tags.TagSearchRequest)">
+            <summary>
+            Searches tags
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Tags.TagsController.Create(App.Areas.Tags.Tag)">
+            <summary>
+            Create a tag
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Tags.TagsController.Update(App.Areas.Tags.Tag)">
+            <summary>
+            Update a tag
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Tags.TagsController.Delete(System.Guid)">
+            <summary>
+            Delete a tag
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Teams.Controllers.TeamController">
             <summary>
             Documents API

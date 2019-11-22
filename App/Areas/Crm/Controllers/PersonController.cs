@@ -64,7 +64,7 @@ namespace App.Areas.Crm.Controllers
         /// <param name="person">Person data</param>
         /// <returns></returns>
         [HttpPut("{contactId}")]
-        public async Task<ContactViewModel> UpdatePerson(Guid contactId, [FromBody] PersonViewModel person)
+        public async Task<PersonViewModel> UpdatePerson(Guid contactId, [FromBody] PersonViewModel person)
         {
 
             if (contactId == Guid.Empty)

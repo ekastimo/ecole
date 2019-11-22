@@ -51,6 +51,7 @@ namespace App.Data
         public IMongoCollection<Event> Events => _database.GetCollection<Event>("Events");
         public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("Todos");
         public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("Docs");
+        public IMongoCollection<Areas.Tags.Tag> Tags => _database.GetCollection<Areas.Tags.Tag>("Tags");
         public IMongoCollection<Team> Teams => _database.GetCollection<Team>("Teams");
         public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("TeamMembers");
 

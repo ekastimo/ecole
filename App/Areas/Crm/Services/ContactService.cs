@@ -96,7 +96,7 @@ namespace App.Areas.Crm.Services
             return _mapper.Map<ContactViewModel>(result);
         }
 
-        public async Task<ContactViewModel> UpdatePerson(Guid contactId, PersonViewModel personModel)
+        public async Task<PersonViewModel> UpdatePerson(Guid contactId, PersonViewModel personModel)
         {
             var result = await _contactRepository.GetByIdAsync(contactId);
             if (result == null)
@@ -108,7 +108,7 @@ namespace App.Areas.Crm.Services
             person.Avatar = result.Person.Avatar;
             result.Person = person;
             var updated = await _contactRepository.UpdateAsync(result);
-            return _mapper.Map<ContactViewModel>(updated);
+            return _mapper.Map<PersonViewModel>(updated.Person);
         }
 
         public async Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request)

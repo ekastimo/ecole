@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using App.Areas.Auth.Models;
 using App.Areas.Auth.ViewModels.Account;
 using App.Areas.Auth.ViewModels.Manage;
 using App.Areas.Crm.Enums;
-using App.Areas.Crm.Models;
 using App.Areas.Crm.Services;
 using App.Areas.Crm.ViewModels;
 using Core.Exceptions;

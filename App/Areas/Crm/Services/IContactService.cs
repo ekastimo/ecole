@@ -32,7 +32,7 @@ namespace App.Areas.Crm.Services
 
         Task<bool> ContactExistsByIdentificationAsync(string data);
         Task<ContactViewModel> CreateAsync(ContactViewModel contact);
-        Task<ContactViewModel> UpdatePerson(Guid contactId, PersonViewModel person); 
+        Task<PersonViewModel> UpdatePerson(Guid contactId, PersonViewModel person); 
 
         Task<IEnumerable<MinimalContact>> SearchMinimalAsync(SearchBase request);
     }
