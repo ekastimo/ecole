@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Areas.Teams.Controllers;
 using Core.Controllers;
 using Core.Extensions;
 using Core.Helpers;
@@ -22,12 +21,12 @@ namespace App.Areas.Tags
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITagRepository _repository;
-        private readonly ILogger<TeamController> _logger;
+        private readonly ILogger<TagsController> _logger;
 
         public TagsController(
             IHttpContextAccessor httpContextAccessor, 
             ITagRepository repository,
-            ILogger<TeamController> logger)
+            ILogger<TagsController> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _repository = repository;

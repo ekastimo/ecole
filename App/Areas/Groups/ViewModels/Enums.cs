@@ -1,18 +1,18 @@
-﻿namespace App.Areas.Teams.ViewModels
+﻿namespace App.Areas.Groups.ViewModels
 {
-    public enum TeamPrivacy
+    public enum GroupPrivacy
     {
         Private = 0,
         Public = 1
     }
 
-    public enum TeamStatus
+    public enum GroupStatus
     {
         Active = 0,
         Blocked = 1
     }
 
-    public enum TeamRole
+    public enum GroupRole
     {
         Member = 0,
         Leader = 1

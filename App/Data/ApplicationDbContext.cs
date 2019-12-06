@@ -2,7 +2,7 @@
 using App.Areas.Crm.Models;
 using App.Areas.Doc.Models;
 using App.Areas.Events.Models;
-using App.Areas.Teams.Models;
+using App.Areas.Groups.Models;
 using Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -40,10 +40,10 @@ namespace App.Data
             };
             var client = ClientHolder.GetClient(settings);
             _database = client.GetDatabase(config.GetMongoDatabase());
-            var index = Builders<TeamMember>.IndexKeys.Ascending(d => d.ContactId).Descending(d => d.TeamId);
+            var index = Builders<Member>.IndexKeys.Ascending(d => d.ContactId).Descending(d => d.GroupId);
             var options = new CreateIndexOptions {Unique = true, Sparse = true};
-            var indexModel = new CreateIndexModel<TeamMember>(index, options);
-            var resp = TeamMembers.Indexes.CreateOne(indexModel);
+            var indexModel = new CreateIndexModel<Member>(index, options);
+            var resp = GroupMembers.Indexes.CreateOne(indexModel);
             logger.LogInformation($"created index on team members {resp}");
         }
 
@@ -52,8 +52,8 @@ namespace App.Data
         public IMongoCollection<Todo> Todos => _database.GetCollection<Todo>("Todos");
         public IMongoCollection<Doc> Docs => _database.GetCollection<Doc>("Docs");
         public IMongoCollection<Areas.Tags.Tag> Tags => _database.GetCollection<Areas.Tags.Tag>("Tags");
-        public IMongoCollection<Team> Teams => _database.GetCollection<Team>("Teams");
-        public IMongoCollection<TeamMember> TeamMembers => _database.GetCollection<TeamMember>("TeamMembers");
+        public IMongoCollection<Group> Groups => _database.GetCollection<Group>("Groups");
+        public IMongoCollection<Member> GroupMembers => _database.GetCollection<Member>("GroupMembers");
 
         public IMongoCollection<Location> Locations => _database.GetCollection<Location>("Locations");
         public IMongoCollection<CellGroup> CellGroups => _database.GetCollection<CellGroup>("CellGroups");

@@ -30,9 +30,6 @@ namespace App.Areas.Crm.ViewModels
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string FullName => $"{Salutation} {FirstName} {MiddleName} {LastName}".Replace("  ", " ").Trim();
-        public Gender Gender { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
         public string Avatar { get; set; }
     }
 }

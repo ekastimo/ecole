@@ -7,6 +7,7 @@ namespace App.Areas.Crm.ViewModels
     public class AddressViewModel : MiniViewModel
     {
         #region Local Address
+
         public AddressCategory Category { get; set; }
         public string Country { get; set; }
         public string District { get; set; }

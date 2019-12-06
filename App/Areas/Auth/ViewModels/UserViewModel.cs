@@ -10,6 +10,7 @@ namespace App.Areas.Auth.ViewModels
         public string Username { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
+        public string Avatar { get; set; }
         public ICollection<string> Roles { get; set; }
     }
 }

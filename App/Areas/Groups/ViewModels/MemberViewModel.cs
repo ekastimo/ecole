@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Core.Models;
 
-namespace App.Areas.Teams.ViewModels
+namespace App.Areas.Groups.ViewModels
 {
-    public class TeamMemberViewModel : ViewModel
+    public class MemberViewModel : ViewModel
     {
-        public Guid TeamId { get; set; }
+        public Guid GroupId { get; set; }
         public Guid ContactId { get; set; }
         public string ContactName { get; set; }
         public string ContactAvatar { get; set; }
         public Guid CreatedBy { get; set; }
-        public TeamRole Role { get; set; }
-        public TeamStatus Status { get; set; }
+        public GroupRole Role { get; set; }
+        public GroupStatus Status { get; set; }
     }
 
-    public class TeamMemberMultipleViewModel 
+    public class CreateMembersViewModel
     {
         public Guid CreatedBy { get; set; }
         [Required]
-        public Guid TeamId { get; set; }
+        public Guid GroupId { get; set; }
         [Required]
         public List<Guid> ContactIds { get; set; }
         [Required]
-        public TeamRole Role { get; set; }
-        public TeamStatus Status { get; set; }
+        public GroupRole Role { get; set; }
+        public GroupStatus Status { get; set; }
     }
 }

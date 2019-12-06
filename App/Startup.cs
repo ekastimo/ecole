@@ -11,7 +11,7 @@ using App.Areas.Crm.Utils;
 using App.Areas.Doc.Utils;
 using App.Areas.Events.Utils;
 using App.Areas.External;
-using App.Areas.Teams.Utils;
+using App.Areas.Groups.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -72,7 +72,7 @@ namespace App
                 EventsMapper.MapModels(config);
                 DocumentsMapper.MapModels(config);
                 EventsMapper.MapModels(config);
-                TeamsMapper.MapModels(config);
+                GroupsMapper.MapModels(config);
                 ExternalMapper.MapModels(config);
             });
 

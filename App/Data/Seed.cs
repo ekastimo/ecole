@@ -32,13 +32,13 @@ namespace App.Data
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                     var accountService = scope.ServiceProvider.GetRequiredService<IAccountService>();
                     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-                    var isSeeded = await roleManager.RoleExistsAsync(SystemRoles.Super);
+                    var isSeeded = await roleManager.RoleExistsAsync(AuthConstants.Super);
                     if (isSeeded)
                     {
                         return;
                     }
 
-                    var roles = new List<string> { SystemRoles.Super, SystemRoles.Admin, SystemRoles.User };
+                    var roles = new List<string> { AuthConstants.Super, AuthConstants.Admin, AuthConstants.User };
                     foreach (var role in roles)
                     {
                         await roleManager.CreateAsync(new ApplicationRole(role));
@@ -62,7 +62,6 @@ namespace App.Data
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
-
 
                     var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
                     var locationRepository = scope.ServiceProvider.GetRequiredService<ILocationRepository>();

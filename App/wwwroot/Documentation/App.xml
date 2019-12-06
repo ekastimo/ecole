@@ -1743,6 +1743,107 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="T:App.Areas.Groups.Controllers.GroupController">
+            <summary>
+            Documents API
+            </summary>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.GroupController.Search(App.Areas.Groups.ViewModels.GroupSearchRequest)">
+            <summary>
+            Searches teams
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.GroupController.Get(System.Guid)">
+            <summary>
+            Gets a specific team
+            </summary>
+            <param name="id">Group Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.GroupController.Create(App.Areas.Groups.ViewModels.GroupViewModel)">
+            <summary>
+            Create a team
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.GroupController.Update(App.Areas.Groups.ViewModels.GroupViewModel)">
+            <summary>
+            Updates a team
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.GroupController.Delete(System.Guid)">
+            <summary>
+            Deletes a team
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Areas.Groups.Controllers.MemberController">
+            <summary>
+            Members Controller
+            </summary>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Search(App.Areas.Groups.ViewModels.MemberSearchRequest)">
+            <summary>
+            Searches members
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Get(System.Guid)">
+            <summary>
+            Gets members of a specific group
+            </summary>
+            <param name="groupId">Group Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.GetGroups(System.Guid)">
+            <summary>
+            Gets groups of a specific contact
+            </summary>
+            <param name="contactId">Contact Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.CreateMember(App.Areas.Groups.ViewModels.MemberViewModel)">
+            <summary>
+            Attach contact to specific group
+            </summary>
+            <param name="model">Simple Member Model</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.UpdateMember(App.Areas.Groups.ViewModels.MemberViewModel)">
+            <summary>
+            Update contact on a specific group
+            </summary>
+            <param name="model">Simple Member Model</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Create(App.Areas.Groups.ViewModels.CreateMembersViewModel)">
+            <summary>
+            Create a groupMember
+            </summary>
+            <param name="model">Extend model to add multiple members</param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Update(App.Areas.Groups.ViewModels.MemberViewModel)">
+            <summary>
+            Updates a groupMember
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Delete(System.Guid)">
+            <summary>
+            Deletes a groupMember
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:App.Areas.Tags.TagsController">
             <summary>
             Tags Controller
@@ -1772,107 +1873,6 @@
         <member name="M:App.Areas.Tags.TagsController.Delete(System.Guid)">
             <summary>
             Delete a tag
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="T:App.Areas.Teams.Controllers.TeamController">
-            <summary>
-            Documents API
-            </summary>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamController.Search(App.Areas.Teams.ViewModels.TeamSearchRequest)">
-            <summary>
-            Searches teams
-            </summary>
-            <param name="request"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamController.Get(System.Guid)">
-            <summary>
-            Gets a specific team
-            </summary>
-            <param name="id">Team Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamController.Create(App.Areas.Teams.ViewModels.TeamViewModel)">
-            <summary>
-            Create a team
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamController.Update(App.Areas.Teams.ViewModels.TeamViewModel)">
-            <summary>
-            Updates a team
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamController.Delete(System.Guid)">
-            <summary>
-            Deletes a team
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="T:App.Areas.Teams.Controllers.TeamMemberController">
-            <summary>
-            Documents API
-            </summary>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Search(App.Areas.Teams.ViewModels.TeamMemberSearchRequest)">
-            <summary>
-            Searches teamMembers
-            </summary>
-            <param name="request"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Get(System.Guid)">
-            <summary>
-            Gets members of a specific team
-            </summary>
-            <param name="teamId">Team Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.GetTeams(System.Guid)">
-            <summary>
-            Gets teams of a specific contact
-            </summary>
-            <param name="contactId">Contact Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.CreateMember(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
-            <summary>
-            Attach contact to specific team
-            </summary>
-            <param name="model">Simple Member Model</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.UpdateMember(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
-            <summary>
-            Update contact on a specific team
-            </summary>
-            <param name="model">Simple Member Model</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Create(App.Areas.Teams.ViewModels.TeamMemberMultipleViewModel)">
-            <summary>
-            Create a teamMember
-            </summary>
-            <param name="model">Extend model to add multiple members</param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Update(App.Areas.Teams.ViewModels.TeamMemberViewModel)">
-            <summary>
-            Updates a teamMember
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:App.Areas.Teams.Controllers.TeamMemberController.Delete(System.Guid)">
-            <summary>
-            Deletes a teamMember
             </summary>
             <param name="id"></param>
             <returns></returns>

@@ -126,16 +126,14 @@ namespace App.Areas.Crm.Repositories
 
         public async Task<List<MinimalContact>> GetMinimalAsync(FilterDefinition<Models.Contact> filter)
         {
-            var query = _context.Contacts.AsQueryable()
-                .Select(x => new MinimalContact
+            var query = _context.Contacts.Find(filter)
+                .Project(x => new MinimalContact
                 {
                     Id = x.Id,
                     FirstName = x.Person.FirstName,
                     LastName = x.Person.LastName,
                     MiddleName = x.Person.MiddleName,
-                    Avatar = x.Person.Avatar,
-                    Email = x.Emails[0].Value,
-                    Phone = x.Phones[0].Value
+                    Avatar = x.Person.Avatar
                 });
             return await query.ToListAsync();
         }
@@ -157,7 +155,7 @@ namespace App.Areas.Crm.Repositories
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
                 var regex = new BsonRegularExpression(request.Query, "i");
-                filter = builder.Or(
+                filter &= builder.Or(
                     builder.Regex(x => x.Person.FirstName, regex),
                     builder.Regex(x => x.Person.LastName, regex),
                     builder.Regex(x => x.Person.MiddleName, regex),

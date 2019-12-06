@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Areas.Teams.Services;
-using App.Areas.Teams.ViewModels;
+using App.Areas.Groups.Services;
+using App.Areas.Groups.ViewModels;
 using Core.Controllers;
 using Core.Exceptions;
 using Core.Extensions;
@@ -13,21 +13,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace App.Areas.Teams.Controllers
+namespace App.Areas.Groups.Controllers
 {
     /// <summary>
     /// Documents API
     /// </summary>
-    [AreaName("Teams")]
-    [Route("api/teams/team")]
-    public class TeamController : BaseController
+    [AreaName("Groups")]
+    [Route("api/groups/group")]
+    public class GroupController : BaseController
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ITeamService _service;
-        private readonly ILogger<TeamController> _logger;
+        private readonly IGroupService _service;
+        private readonly ILogger<GroupController> _logger;
 
-        public TeamController(IHttpContextAccessor httpContextAccessor, ITeamService service,
-            ILogger<TeamController> logger)
+        public GroupController(IHttpContextAccessor httpContextAccessor, IGroupService service,
+            ILogger<GroupController> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _service = service;
@@ -40,8 +40,8 @@ namespace App.Areas.Teams.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        [Produces(typeof(IEnumerable<TeamViewModel>))]
-        public async Task<IEnumerable<TeamViewModel>> Search(TeamSearchRequest request)
+        [Produces(typeof(IEnumerable<GroupViewModel>))]
+        public async Task<IEnumerable<GroupViewModel>> Search(GroupSearchRequest request)
         {
             var json = JsonConvert.SerializeObject(request);
             _logger.LogInformation($"teams.by.query ${json}");
@@ -53,11 +53,11 @@ namespace App.Areas.Teams.Controllers
         /// <summary>
         /// Gets a specific team
         /// </summary>
-        /// <param name="id">Team Id</param>
+        /// <param name="id">Group Id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Produces(typeof(TeamViewModel))]
-        public async Task<TeamViewModel> Get(Guid id)
+        [Produces(typeof(GroupViewModel))]
+        public async Task<GroupViewModel> Get(Guid id)
         {
             _logger.LogInformation($"team.by.id ${id}");
             var data = await _service.GetByIdAsync(id);
@@ -73,8 +73,8 @@ namespace App.Areas.Teams.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [Produces(typeof(TeamViewModel))]
-        public async Task<TeamViewModel> Create([FromBody] TeamViewModel model)
+        [Produces(typeof(GroupViewModel))]
+        public async Task<GroupViewModel> Create([FromBody] GroupViewModel model)
         {
             model.CreatedBy = _httpContextAccessor.GetContactId();
             _logger.LogInformation($"create.team ${model.Name}");
@@ -89,8 +89,8 @@ namespace App.Areas.Teams.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [Produces(typeof(TeamViewModel))]
-        public async Task<TeamViewModel> Update([FromBody] TeamViewModel model)
+        [Produces(typeof(GroupViewModel))]
+        public async Task<GroupViewModel> Update([FromBody] GroupViewModel model)
         {
             _logger.LogInformation($"update.team ${model.Id}");
             Tk.AssertValidIds(model.Id);

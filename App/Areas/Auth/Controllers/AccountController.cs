@@ -20,6 +20,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using App.Areas.Crm.Repositories;
+using App.Data;
+using MongoDB.Driver;
 
 namespace App.Areas.Auth.Controllers
 {
@@ -35,6 +37,7 @@ namespace App.Areas.Auth.Controllers
         private readonly IAccountService _accountService;
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userManager,
@@ -43,7 +46,8 @@ namespace App.Areas.Auth.Controllers
             IConfiguration configuration,
             IAccountService accountService,
             IContactRepository contactRepository,
-            IMapper mapper
+            IMapper mapper, ApplicationDbContext context
+
         )
         {
             _httpContextAccessor = httpContextAccessor;
@@ -54,6 +58,7 @@ namespace App.Areas.Auth.Controllers
             _accountService = accountService;
             _contactRepository = contactRepository;
             _mapper = mapper;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -78,7 +83,6 @@ namespace App.Areas.Auth.Controllers
             var user = await _accountService.Register(model);
             return await GenerateJwtToken(model.Email, user);
         }
-
 
         private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
         {
@@ -129,21 +133,27 @@ namespace App.Areas.Auth.Controllers
             };
         }
 
-        [Authorize(Roles = SystemRoles.Admin)]
+        [Authorize(Roles = AuthConstants.Admin)]
         [HttpGet("users")]
         public List<UserViewModel> Get()
         {
-            return _userManager.Users.Select(it => new UserViewModel
-            {
-                Id = it.Id,
-                Email = it.Email,
-                Username = it.UserName,
-                ContactId = it.ContactId
-            }).ToList();
+            var result = (from u in _userManager.Users.AsQueryable()
+                join c in _context.Contacts.AsQueryable() on u.ContactId equals c.Id
+                select new UserViewModel
+                {
+                    Id = u.Id,
+                    Email = u.Email,
+                    Username = u.UserName,
+                    ContactId = u.ContactId,
+                    FullName = $"{c.Person.FirstName} {c.Person.LastName}",
+                    Avatar = c.Person.Avatar,
+                    Roles = u.Roles
+                }).ToList();
+            return result;
         }
 
 
-        [Authorize(Roles = SystemRoles.Admin)]
+        [Authorize(Roles = AuthConstants.Admin)]
         [HttpGet("users/{id}")]
         public async Task<UserViewModel> GetById(string id)
         {

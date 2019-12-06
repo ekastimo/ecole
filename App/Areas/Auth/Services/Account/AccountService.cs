@@ -86,13 +86,10 @@ namespace App.Areas.Auth.Services.Account
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(it => $"{it.Code}: {it.Description}").ToArray();
-                _logger.LogError($"user-creation.failed {string.Join(",", errors)}");
-                throw new ClientFriendlyException("Oops, we were unable to register you, please try again");
-            }
-            return user;
+            if (result.Succeeded) return user;
+            var errors = result.Errors.Select(it => $"{it.Code}: {it.Description}").ToArray();
+            _logger.LogError($"user-creation.failed {string.Join(",", errors)}");
+            throw new ClientFriendlyException("Oops, we were unable to register you, please try again");
         }
 
         public async Task<object> AssignRoles(AssignRolesViewModel model)
