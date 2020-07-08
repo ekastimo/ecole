@@ -1809,7 +1809,7 @@
             <param name="contactId">Contact Id</param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Groups.Controllers.MemberController.CreateMember(App.Areas.Groups.ViewModels.MemberViewModel)">
+        <member name="M:App.Areas.Groups.Controllers.MemberController.CreateMember(App.Areas.Groups.ViewModels.CreateMemberModel)">
             <summary>
             Attach contact to specific group
             </summary>
@@ -1823,7 +1823,7 @@
             <param name="model">Simple Member Model</param>
             <returns></returns>
         </member>
-        <member name="M:App.Areas.Groups.Controllers.MemberController.Create(App.Areas.Groups.ViewModels.CreateMembersViewModel)">
+        <member name="M:App.Areas.Groups.Controllers.MemberController.Create(App.Areas.Groups.ViewModels.CreateMembersModel)">
             <summary>
             Create a groupMember
             </summary>

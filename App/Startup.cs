@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using App.Data;
+using App.Hubs;
 using AspNetCore.Identity.Mongo;
 using AutoMapper;
 using Core.Extensions;
@@ -146,20 +147,9 @@ namespace App
                 var xmlPath = Path.Combine(basePath, "Documentation", "App.xml");
                 c.IncludeXmlComments(xmlPath);
                 c.DescribeAllEnumsAsStrings();
-                //c.TagActionsBy();
-//                c.TagActionsBy(api =>
-//                    {
-//                        if (!api.TryGetMethodInfo(out var methodInfo))
-//                        {
-//                            return api.RelativePath;
-//                        }
-//
-//                        var attrs = Attribute.GetCustomAttributes(methodInfo.DeclaringType);
-//                        var areaName = attrs?.FirstOrDefault(it => it is AreaName) as AreaName;
-//                        return areaName?.GetName() ?? api.RelativePath;
-//                    }
-//                );
+
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -192,6 +182,11 @@ namespace App
                 c.RoutePrefix = "docs";
             });
             app.UseFileServer();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
+            });
         }
 
         private void ConfigureDepenedencyInjection(IServiceCollection services)

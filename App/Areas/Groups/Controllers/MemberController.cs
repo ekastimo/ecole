@@ -131,7 +131,7 @@ namespace App.Areas.Groups.Controllers
         /// <returns></returns>
         [HttpPost("contact")]
         [Produces(typeof(IEnumerable<object>))]
-        public async Task<MemberViewModel> CreateMember([FromBody] MemberViewModel model)
+        public async Task<MemberViewModel> CreateMember([FromBody] CreateMemberModel model)
         {
             Tk.AssertValidIds(model.GroupId,model.ContactId);
             var userId = _httpContextAccessor.GetContactId();
@@ -167,8 +167,8 @@ namespace App.Areas.Groups.Controllers
         /// <param name="model">Extend model to add multiple members</param>
         /// <returns></returns>
         [HttpPost]
-        [Produces(typeof(CreateMembersViewModel))]
-        public async Task<CreateMembersViewModel> Create([FromBody] CreateMembersViewModel model)
+        [Produces(typeof(CreateMembersModel))]
+        public async Task<CreateMembersModel> Create([FromBody] CreateMembersModel model)
         {
             Tk.AssertValidIds(model.GroupId);
             Tk.AssertValidIds(model.ContactIds.ToArray());

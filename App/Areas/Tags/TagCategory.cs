@@ -2,7 +2,6 @@
 {
     public enum TagCategory
     {
-        Group = 0,
-        Person = 1
+        T
     }
 }

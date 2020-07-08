@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Core.Extensions;
 using Core.Models;
 
 namespace App.Areas.Groups.ViewModels
@@ -16,7 +17,21 @@ namespace App.Areas.Groups.ViewModels
         public GroupStatus Status { get; set; }
     }
 
-    public class CreateMembersViewModel
+    public class CreateMemberModel 
+    {
+        [Required]
+        [ValidGuid]
+        public Guid GroupId { get; set; }
+        [Required]
+        [ValidGuid]
+        public Guid ContactId { get; set; }
+        [Required]
+        public GroupRole Role { get; set; }
+
+        public Guid CreatedBy { get; set; }
+    }
+
+    public class CreateMembersModel
     {
         public Guid CreatedBy { get; set; }
         [Required]
